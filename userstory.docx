@@ -1,0 +1,75 @@
+User Story: Customer Login for Ecommerce Application
+Title: Login to Ecommerce Account
+
+As a registered ecommerce customer,
+I want to securely log in to my account using my email address or mobile number and password,
+So that I can access my personal account, view order history, manage my cart and wishlist, update shipping details, and complete purchases faster.
+
+Description
+The ecommerce application should provide a secure and user-friendly login functionality for registered customers. Users should be able to enter valid credentials, receive appropriate validation messages, and access their account after successful authentication.
+
+Acceptance Criteria
+Login Page Access
+
+Given the user is on the ecommerce website or app,
+When the user clicks the Login or Sign In option,
+Then the system should display the login page/form.
+Valid Login
+
+Given the user has a registered account,
+When the user enters a valid email/mobile number and password,
+And clicks the Login button,
+Then the system should authenticate the user,
+And redirect the user to the homepage, account dashboard, or previously visited checkout/cart page.
+Invalid Credentials
+
+Given the user enters an incorrect email/mobile number or password,
+When the user clicks the Login button,
+Then the system should display an error message such as:
+“Invalid email/mobile number or password.”
+Required Field Validation
+
+Given the user leaves the email/mobile number or password field empty,
+When the user clicks the Login button,
+Then the system should display validation messages:
+Email/mobile number is required
+Password is required
+Password Masking
+
+Given the user enters a password,
+Then the password should be hidden/masked by default.
+The user may have an option to show or hide the password.
+Forgot Password
+
+Given the user has forgotten their password,
+When the user clicks Forgot Password,
+Then the system should navigate the user to the password recovery flow.
+Remember Me
+
+Given the user selects Remember Me,
+When login is successful,
+Then the system may keep the user signed in for future visits based on security policy.
+Account Lock/Security
+
+Given the user enters incorrect credentials multiple times,
+When the allowed number of attempts is exceeded,
+Then the system should temporarily block login attempts or show additional verification.
+Successful Session
+
+Given the login is successful,
+Then the system should create a secure user session,
+And display the user as logged in across the application.
+Business Rules
+Only registered users should be able to log in.
+Passwords must be securely stored and never displayed in plain text.
+Login should use secure communication such as HTTPS.
+Error messages should not reveal whether the email/mobile number or password is incorrect.
+Users should be redirected back to checkout if they were trying to purchase before login.
+Priority
+High
+
+Dependencies
+User registration functionality
+Authentication service/API
+Password recovery functionality
+User account/dashboard module
