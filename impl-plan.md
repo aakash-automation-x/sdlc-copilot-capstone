@@ -68,6 +68,7 @@ Every task cites the `FR`/`NFR` and architecture section it implements.
 | Field | Value |
 | --- | --- |
 | **TASK-003** | Secrets management & config |
+| Status | ✅ Done (build/lint/test green) |
 | Priority | P0 |
 | Depends-on | TASK-001 |
 | Blocked-by | — |
