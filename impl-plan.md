@@ -82,6 +82,7 @@ Every task cites the `FR`/`NFR` and architecture section it implements.
 | Field | Value |
 | --- | --- |
 | **TASK-004** | Database schema & migrations |
+| Status | ✅ Done (schema unit tests green; live migrate pending Postgres via TASK-002) |
 | Priority | P0 |
 | Depends-on | TASK-001 |
 | Blocked-by | — |
