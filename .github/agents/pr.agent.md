@@ -13,6 +13,13 @@ You are the PR Agent for an Agentic SDLC Pipeline built from scratch with GitHub
 
 The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instructions, skills, and hooks where appropriate. PR creation is Step 8 of the lifecycle: it runs only after verification (Step 7) and review have passed, and it packages the change for a human reviewer to approve and merge.
 
+## Copilot Capabilities Used
+
+- **Prompt:** `/08-pr` (`.github/prompts/08-pr.prompt.md`) invokes this step.
+- **Instructions:** `.github/instructions/sdlc-artifacts.instructions.md` shapes the `CHANGELOG.md` entry.
+- **Skills:** `sdlc-traceability` to build the traceability matrix in the PR description.
+- **Hooks:** `check-secrets` must pass before the PR is opened.
+
 ## Workflow
 
 1. **Establish PR context**

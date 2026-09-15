@@ -15,6 +15,13 @@ Treat Copilot as a senior design reviewer. The goal is to identify architectural
 
 The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instructions, skills, and hooks where appropriate.
 
+## Copilot Capabilities Used
+
+- **Prompt:** `/03-design-review` (`.github/prompts/03-design-review.prompt.md`) invokes this step.
+- **Instructions:** `.github/instructions/sdlc-artifacts.instructions.md` shapes `design-review.md`.
+- **Skills:** `sdlc-traceability` to tie each `DR-###` finding to an architecture section.
+- **Hooks:** `validate-artifacts` confirms `architecture.md` exists before this step.
+
 ## Workflow
 
 1. **Read the architecture**

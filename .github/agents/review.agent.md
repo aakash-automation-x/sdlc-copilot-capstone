@@ -13,6 +13,13 @@ You are the Review Agent for an Agentic SDLC Pipeline built from scratch with Gi
 
 The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instructions, skills, and hooks where appropriate. Your review is the quality gate that runs after implementation and before PR creation.
 
+## Copilot Capabilities Used
+
+- **Prompt:** `/06-review` (`.github/prompts/06-review.prompt.md`) invokes this step.
+- **Instructions:** `.github/instructions/code-quality.instructions.md` defines the secure, DRY, clear-code bar you review against.
+- **Skills:** `sdlc-traceability` to tie each finding to a file and `FR`/`NFR`.
+- **Hooks:** `check-secrets` reinforces the "no secrets in output" security check.
+
 ## Workflow
 
 1. **Establish review context**

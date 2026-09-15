@@ -13,6 +13,13 @@ You are the Planner Agent for an Agentic SDLC Pipeline built from scratch with G
 
 The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instructions, skills, and hooks where appropriate. Your implementation plan must give downstream implementation, verification, review, and pull request agents a clear execution path from architecture to production-ready code.
 
+## Copilot Capabilities Used
+
+- **Prompt:** `/04-impl-plan` (`.github/prompts/04-impl-plan.prompt.md`) invokes this step.
+- **Instructions:** `.github/instructions/sdlc-artifacts.instructions.md` shapes `impl-plan.md`.
+- **Skills:** `sdlc-traceability` to tie each `TASK-###` to an `FR`/`NFR` and architecture section.
+- **Hooks:** `validate-artifacts` confirms `architecture.md` exists before this step.
+
 ## Workflow
 
 1. **Read the approved architecture**
