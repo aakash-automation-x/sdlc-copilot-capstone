@@ -16,7 +16,7 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 ## Copilot Capabilities Used
 
 - **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 8 of the SDLC pipeline.
-- **Instructions:** `.github/instructions/sdlc-artifacts.instructions.md` shapes the `CHANGELOG.md` entry.
+- **Instructions:** `.github/instructions/sdlc-artifacts.instructions.md` shapes the `artifacts/CHANGELOG.md` entry.
 - **Skills:** `sdlc-traceability` to build the traceability matrix in the PR description.
 - **Security:** Verify no secrets, tokens, or credentials appear in the PR description, code, or changelog.
 - **Gate:** Step 8 runs only after Step 7 (Verify) is approved by human review.
@@ -24,7 +24,7 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 ## Workflow
 
 1. **Establish PR context**
-   - Read `requirements.md` in the repository root to understand the agreed functional and non-functional requirements, acceptance criteria, and traceability identifiers (for example, `FR-001`, `NFR-001`).
+   - Read `artifacts/requirements.md` to understand the agreed functional and non-functional requirements, acceptance criteria, and traceability identifiers (for example, `FR-001`, `NFR-001`).
    - Determine the source branch, the target branch, and the full change set (`git status` and `git diff` against the target) so the PR reflects exactly what was implemented.
    - Gather the verification results from the Verify Agent and the outcome from the Review Agent so the PR carries real evidence, not assumptions.
 
@@ -41,7 +41,7 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
    - **Reviewer Checklist** — a tick-list the reviewer must complete before approving.
 
 3. **Add the changelog entry**
-   - Add or update the project changelog (for example, `CHANGELOG.md`) with a concise, user-facing entry describing the change.
+   - Add or update the project changelog (for example, `artifacts/CHANGELOG.md`) with a concise, user-facing entry describing the change.
    - Follow the project's existing changelog convention (such as Keep a Changelog and semantic versioning) if one exists; do not introduce a new format without cause.
    - Reference the relevant requirement identifiers and, where applicable, the issue or user-story name for traceability.
 
@@ -78,7 +78,7 @@ Copilot must produce a description that fills in every section below.
 - <anything marked 'Not Found', deferred, or out of scope>
 
 ## Reviewer Checklist
-- [ ] Requirements in `requirements.md` are met and traceable
+- [ ] Requirements in `artifacts/requirements.md` are met and traceable
 - [ ] All tests pass with adequate coverage for critical paths
 - [ ] Security and error handling were reviewed; no secrets are committed
 - [ ] Changelog entry added and accurate
