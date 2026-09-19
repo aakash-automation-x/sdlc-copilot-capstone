@@ -24,14 +24,14 @@ The orchestrator manages all 8 steps sequentially:
 | Step | Agent | Output artifact |
 | --- | --- | --- |
 | **Entry Point** | **SDLC Orchestrator** | **`ORCHESTRATION_LOG.md`** (state tracking) |
-| 1 | Requirements Agent | `requirements.md` |
-| 2 | Architect Agent | `architecture.md` |
-| 3 | Design Review Agent | `design-review.md` |
-| 4 | Planner Agent | `impl-plan.md` |
+| 1 | Requirements Agent | `artifacts/requirements.md` |
+| 2 | Architect Agent | `artifacts/architecture.md` |
+| 3 | Design Review Agent | `artifacts/design-review.md` |
+| 4 | Planner Agent | `artifacts/impl-plan.md` |
 | 5 | Implementation Agent | source code + tests |
 | 6 | Review Agent | review notes / fixes |
 | 7 | Verify Agent | test suite + content check |
-| 8 | PR Agent | Pull Request + `CHANGELOG.md` |
+| 8 | PR Agent | Pull Request + `artifacts/CHANGELOG.md` |
 
 ## Running the full pipeline
 
@@ -70,8 +70,8 @@ The orchestrator:
 ## Working agreements
 
 - Read the upstream artifact before producing the next one.
-- Keep the SDLC deliverables (`requirements.md`, `architecture.md`,
-  `design-review.md`, `impl-plan.md`, `CHANGELOG.md`) in the repository root.
+- Keep the SDLC deliverables (`artifacts/requirements.md`, `artifacts/architecture.md`,
+  `artifacts/design-review.md`, `artifacts/impl-plan.md`, `artifacts/CHANGELOG.md`) in the `artifacts/` directory.
 - Prefer small, reviewable commits with messages that reference the task or
   requirement ID.
 - Escalate ambiguous or high-impact decisions to the user instead of guessing.

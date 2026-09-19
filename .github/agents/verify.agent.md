@@ -24,7 +24,7 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 ## Workflow
 
 1. **Establish verification context**
-   - Read `requirements.md` in the repository root to understand the functional and non-functional requirements, acceptance criteria, and traceability identifiers (for example, `FR-001`, `NFR-001`).
+   - Read `artifacts/requirements.md` to understand the functional and non-functional requirements, acceptance criteria, and traceability identifiers (for example, `FR-001`, `NFR-001`).
    - Identify the components, modules, and files that make up the current implementation, and the final output document to be quality-checked.
    - Detect the project's language, test framework, runner, and existing test layout. Reuse the established conventions; do not introduce a new framework without cause.
 
