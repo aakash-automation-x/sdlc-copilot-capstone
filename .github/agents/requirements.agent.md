@@ -15,10 +15,9 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 
 ## Copilot Capabilities Used
 
-- **Prompt:** `/01-requirements` (`.github/prompts/01-requirements.prompt.md`) invokes this step.
+- **Orchestrator:** Invoked by `/00-orchestrator` prompt, which manages the full SDLC pipeline.
 - **Instructions:** `.github/instructions/sdlc-artifacts.instructions.md` shapes `requirements.md`.
 - **Skills:** `read-user-story` to ingest the story; `sdlc-traceability` to assign `FR-###` / `NFR-###` IDs.
-- **Hooks:** `validate-artifacts` (SessionStart) reports pipeline status.
 
 ## Workflow
 

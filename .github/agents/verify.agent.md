@@ -15,10 +15,11 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 
 ## Copilot Capabilities Used
 
-- **Prompt:** `/07-verify` (`.github/prompts/07-verify.prompt.md`) invokes this step.
+- **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 7 of the SDLC pipeline.
 - **Instructions:** `.github/instructions/tests.instructions.md` governs the generated unit and integration tests.
 - **Skills:** `sdlc-traceability` to map every test to a requirement ID.
-- **Hooks:** `check-secrets` scans changes before verification is signalled complete.
+- **Security:** Verify no secrets, tokens, or credentials appear in test output or logs.
+- **Gate:** Step 7 runs only after Step 6 (Review) is approved by human review.
 
 ## Workflow
 

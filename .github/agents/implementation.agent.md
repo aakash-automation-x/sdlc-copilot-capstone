@@ -15,10 +15,11 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 
 ## Copilot Capabilities Used
 
-- **Prompt:** `/05-implementation` (`.github/prompts/05-implementation.prompt.md`) invokes this step.
+- **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 5 of the SDLC pipeline.
 - **Instructions:** `.github/instructions/code-quality.instructions.md` (OWASP-safe, DRY code) and `tests.instructions.md` (test coverage) apply automatically to source and test files.
 - **Skills:** `sdlc-traceability` keeps every commit tied to a `TASK-###` / `FR`.
-- **Hooks:** `check-secrets` (PreToolUse) blocks credentials from being committed; `validate-artifacts` confirms `impl-plan.md` exists before this step.
+- **Security:** Never commit secrets, tokens, or credentials; review all output for sensitive data.
+- **Gate:** Step 5 runs only after Step 4 (Implementation Plan) is approved by human review.
 
 ## Workflow
 
