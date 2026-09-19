@@ -17,10 +17,10 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 
 ## Copilot Capabilities Used
 
-- **Prompt:** `/03-design-review` (`.github/prompts/03-design-review.prompt.md`) invokes this step.
+- **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 3 of the SDLC pipeline.
 - **Instructions:** `.github/instructions/sdlc-artifacts.instructions.md` shapes `design-review.md`.
-- **Skills:** `sdlc-traceability` to tie each `DR-###` finding to an architecture section.
-- **Hooks:** `validate-artifacts` confirms `architecture.md` exists before this step.
+- **Skills:** `sdlc-traceability` to tie each finding to an architecture section.
+- **Gate:** Step 3 runs only after Step 2 (Architecture) is approved by human review.
 
 ## Workflow
 
