@@ -15,10 +15,10 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 
 ## Copilot Capabilities Used
 
-- **Prompt:** `/02-architecture` (`.github/prompts/02-architecture.prompt.md`) invokes this step.
+- **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 2 of the SDLC pipeline.
 - **Instructions:** `.github/instructions/sdlc-artifacts.instructions.md` shapes `architecture.md`.
 - **Skills:** `sdlc-traceability` to trace each component to `FR-###` / `NFR-###`.
-- **Hooks:** `validate-artifacts` confirms `requirements.md` exists before this step.
+- **Gate:** Step 2 runs only after Step 1 (Requirements) is approved by human review.
 
 ## Workflow
 

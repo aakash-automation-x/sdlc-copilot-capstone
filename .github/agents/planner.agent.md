@@ -15,10 +15,10 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 
 ## Copilot Capabilities Used
 
-- **Prompt:** `/04-impl-plan` (`.github/prompts/04-impl-plan.prompt.md`) invokes this step.
+- **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 4 of the SDLC pipeline.
 - **Instructions:** `.github/instructions/sdlc-artifacts.instructions.md` shapes `impl-plan.md`.
 - **Skills:** `sdlc-traceability` to tie each `TASK-###` to an `FR`/`NFR` and architecture section.
-- **Hooks:** `validate-artifacts` confirms `architecture.md` exists before this step.
+- **Gate:** Step 4 runs only after Step 3 (Design Review) is approved by human review.
 
 ## Workflow
 

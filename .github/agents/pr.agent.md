@@ -15,10 +15,11 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 
 ## Copilot Capabilities Used
 
-- **Prompt:** `/08-pr` (`.github/prompts/08-pr.prompt.md`) invokes this step.
+- **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 8 of the SDLC pipeline.
 - **Instructions:** `.github/instructions/sdlc-artifacts.instructions.md` shapes the `CHANGELOG.md` entry.
 - **Skills:** `sdlc-traceability` to build the traceability matrix in the PR description.
-- **Hooks:** `check-secrets` must pass before the PR is opened.
+- **Security:** Verify no secrets, tokens, or credentials appear in the PR description, code, or changelog.
+- **Gate:** Step 8 runs only after Step 7 (Verify) is approved by human review.
 
 ## Workflow
 

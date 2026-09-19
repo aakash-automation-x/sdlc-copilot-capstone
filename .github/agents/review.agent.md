@@ -15,10 +15,11 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 
 ## Copilot Capabilities Used
 
-- **Prompt:** `/06-review` (`.github/prompts/06-review.prompt.md`) invokes this step.
+- **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 6 of the SDLC pipeline.
 - **Instructions:** `.github/instructions/code-quality.instructions.md` defines the secure, DRY, clear-code bar you review against.
 - **Skills:** `sdlc-traceability` to tie each finding to a file and `FR`/`NFR`.
-- **Hooks:** `check-secrets` reinforces the "no secrets in output" security check.
+- **Security:** Verify no secrets, tokens, or credentials appear in output or logs.
+- **Gate:** Step 6 runs only after Step 5 (Implementation) is approved by human review.
 
 ## Workflow
 
