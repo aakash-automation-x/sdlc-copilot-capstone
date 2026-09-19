@@ -16,14 +16,14 @@ This is the **only prompt** you need. The orchestrator invokes all agents sequen
 /00-orchestrator
 ```
 Runs all 8 steps in sequence:
-1. Requirements Agent → `requirements.md`
-2. Architect Agent → `architecture.md`
-3. Design Review Agent → `design-review.md`
-4. Planner Agent → `impl-plan.md`
+1. Requirements Agent → `artifacts/requirements.md`
+2. Architect Agent → `artifacts/architecture.md`
+3. Design Review Agent → `artifacts/design-review.md`
+4. Planner Agent → `artifacts/impl-plan.md`
 5. Implementation Agent → code + tests
 6. Review Agent → review notes / fixes
 7. Verify Agent → test suite + content check
-8. PR Agent → Pull Request + `CHANGELOG.md`
+8. PR Agent → Pull Request + `artifacts/CHANGELOG.md`
 
 After each step completes:
 - ✅ Approve & Proceed to next step
@@ -91,13 +91,13 @@ Orchestrator: Pre-flight checks...
 
 Orchestrator: Invoking Requirements Agent (/01-requirements)...
 [Requirements Agent runs...]
-✅ requirements.md created
+✅ artifacts/requirements.md created
 
 ---
 
 ## Step 1 Review Gate: Requirements Agent
 
-**Artifact:** requirements.md
+**Artifact:** artifacts/requirements.md
 
 **Summary:**
 - 12 functional requirements (FR-001 to FR-012)
@@ -120,13 +120,13 @@ Orchestrator: Updating ORCHESTRATION_LOG.md...
 
 Orchestrator: Invoking Architect Agent (/02-architecture)...
 [Architect Agent runs...]
-✅ architecture.md created
+✅ artifacts/architecture.md created
 
 ---
 
 ## Step 2 Review Gate: Architect Agent
 
-**Artifact:** architecture.md
+**Artifact:** artifacts/architecture.md
 
 **Summary:**
 - Microservices architecture (4 primary services)
@@ -152,13 +152,13 @@ User: We need to add an event bus for async messaging. Can you include that?
 
 Orchestrator: Captured feedback. Re-invoking Architect Agent with your input...
 [Architect Agent runs with event bus requirement...]
-✅ architecture.md updated
+✅ artifacts/architecture.md updated
 
 ---
 
 ## Step 2 Review Gate (Revised): Architect Agent
 
-**Artifact:** architecture.md
+**Artifact:** artifacts/architecture.md
 
 **Summary:**
 - Microservices architecture (4 primary services)
@@ -196,9 +196,9 @@ The orchestrator maintains `ORCHESTRATION_LOG.md` in your repository:
 
 | Step | Agent | Status | Artifact | Started | Completed | Notes |
 |------|-------|--------|----------|---------|-----------|-------|
-| 1 | Requirements | ✅ Approved | requirements.md | 2024-01-15 10:00 | 2024-01-15 10:15 | No changes requested |
-| 2 | Architect | ✅ Approved | architecture.md | 2024-01-15 10:16 | 2024-01-15 10:45 | Requested: add event bus; 1 revision |
-| 3 | Design Review | in-progress | design-review.md | 2024-01-15 10:46 | — | — |
+| 1 | Requirements | ✅ Approved | artifacts/requirements.md | 2024-01-15 10:00 | 2024-01-15 10:15 | No changes requested |
+| 2 | Architect | ✅ Approved | artifacts/architecture.md | 2024-01-15 10:16 | 2024-01-15 10:45 | Requested: add event bus; 1 revision |
+| 3 | Design Review | in-progress | artifacts/design-review.md | 2024-01-15 10:46 | — | — |
 ```
 
 ## When to Use Each Command

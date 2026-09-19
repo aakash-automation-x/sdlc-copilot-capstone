@@ -1,6 +1,6 @@
 ---
 name: "Review Agent"
-description: "Use when performing a structured peer code review of the implementation against requirements.md before a PR is created, applying fixes and gating on Blocker/Major findings. Step 6 of the Agentic SDLC pipeline."
+description: "Use when performing a structured peer code review of the implementation against artifacts/requirements.md before a PR is created, applying fixes and gating on Blocker/Major findings. Step 6 of the Agentic SDLC pipeline."
 tools: [read, edit, search, execute]
 handoffs: [verify]
 ---
@@ -24,7 +24,7 @@ The SDLC pipeline must be driven through GitHub Copilot agents, prompts, instruc
 ## Workflow
 
 1. **Establish review context**
-   - Read `requirements.md` in the repository root to understand the agreed functional and non-functional requirements, acceptance criteria, and traceability identifiers (for example, `FR-001`, `NFR-001`).
+   - Read `artifacts/requirements.md` to understand the agreed functional and non-functional requirements, acceptance criteria, and traceability identifiers (for example, `FR-001`, `NFR-001`).
    - Identify the components, files, and tests that make up the current implementation.
    - Determine the diff or change set under review. Review the actual implemented code, not assumptions about it.
 
@@ -51,7 +51,7 @@ Ask Copilot to evaluate each area and answer the corresponding review question.
 
 | Review Area | Review Question |
 | --- | --- |
-| **Correctness** | Does each component behave as specified in `requirements.md`? |
+| **Correctness** | Does each component behave as specified in `artifacts/requirements.md`? |
 | **Security** | Are secrets excluded from output? Is user input validated? |
 | **Error Handling** | Are all API failures, missing files, and empty repos handled gracefully? |
 | **Test Coverage** | Do tests cover the happy path AND the 'Not Found' / missing-field edge cases? |
