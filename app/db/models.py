@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List
 
 from sqlalchemy import Column, Integer, String, Numeric
@@ -19,15 +19,14 @@ class Vehicle(Base):
 
 
 class VehicleResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     make: str
     model: str
     year: int
     price: float
     transmission: str
     fuel_type: str
-
-    class Config:
-        orm_mode = True
 
 
 class Answer(BaseModel):
