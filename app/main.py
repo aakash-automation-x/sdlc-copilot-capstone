@@ -1,7 +1,9 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
+from sqlalchemy.orm import Session
 from starlette.responses import Response
 
-from app.db.models import UserAnswer
+from app.db.database import get_db
+from app.db.models import UserAnswer, VehicleResponse
 from app.api import api
 
 app = FastAPI()
@@ -42,3 +44,11 @@ def create_answer(payload: UserAnswer):
 @app.get("/result/{user_id}")
 def read_result(user_id: int):
     return api.read_result(user_id)
+
+
+@app.get("/vehicles/{vehicle_id}", response_model=VehicleResponse)
+def get_vehicle(vehicle_id: int, db: Session = Depends(get_db)):
+    vehicle = api.get_vehicle_by_id(vehicle_id, db)
+    if vehicle is None:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    return vehicle

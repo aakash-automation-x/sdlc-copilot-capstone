@@ -1,5 +1,11 @@
 import json
 
+from app.db.models import Vehicle
+
+
+def get_vehicle_by_id(vehicle_id: int, db):
+    return db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()
+
 
 def read_user():
     with open('data/users.json') as stream:
