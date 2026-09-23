@@ -13,4 +13,4 @@
 | 5 | Implementation | ✅ Approved | source code + tests | 2026-09-23 | 2026-09-23 | Approved by user |
 | 6 | Review | ✅ Approved | review notes / fixes | 2026-09-23 | 2026-09-23 | Approved by user |
 | 7 | Verify | ✅ Approved | test suite + content check | 2026-09-23 | 2026-09-23 | Approved by user |
-| 8 | PR Agent | in-progress | artifacts/CHANGELOG.md | 2026-09-23 | — | — |
+| 8 | PR Agent | ✅ completed | artifacts/CHANGELOG.md | 2026-09-23 | 2026-09-23 | Branch pushed; PR ready to open |
