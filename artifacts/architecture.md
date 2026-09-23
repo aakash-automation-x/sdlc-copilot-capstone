@@ -116,6 +116,24 @@ Existing endpoints (`/`, `/user`, `/question`, `/alternatives`, `/answer`, `/res
 
 ---
 
+## 7a. Vehicle Table Schema (DR-005)
+
+| Column | Type | Constraint | Notes |
+|--------|------|------------|-------|
+| `id` | Integer | PRIMARY KEY | Auto-increment |
+| `make` | String(100) | NOT NULL | e.g. "Toyota" |
+| `model` | String(100) | NOT NULL | e.g. "Corolla" |
+| `year` | Integer | NOT NULL | e.g. 2022 |
+| `price` | Numeric(12,2) | NOT NULL | e.g. 24999.99 |
+| `transmission` | String(50) | NOT NULL | e.g. "automatic" |
+| `fuel_type` | String(50) | NOT NULL | e.g. "petrol" |
+
+**VehicleResponse fields (DR-003):** make, model, year, price, transmission, fuel_type — `id` is excluded from the response per AC-001.
+
+**Test strategy (DR-002, DR-006):** Tests override `get_db` with a SQLite in-memory engine; schema created via `Base.metadata.create_all`; Alembic deferred as out of scope.
+
+---
+
 ## 8. Assumptions and Constraints
 
 | # | Assumption / Constraint |

@@ -7,8 +7,8 @@
 | Step | Agent | Status | Artifact | Started | Completed | Reviewer Notes |
 |------|-------|--------|----------|---------|-----------|----------------|
 | 1 | Requirements | ✅ Approved | artifacts/requirements.md | 2026-09-23 | 2026-09-23 | Approved by user |
-| 2 | Architect | in-progress | artifacts/architecture.md | 2026-09-23 | — | — |
-| 3 | Design Review | pending | artifacts/design-review.md | — | — | — |
+| 2 | Architect | ✅ Approved | artifacts/architecture.md | 2026-09-23 | 2026-09-23 | Approved by user |
+| 3 | Design Review | in-progress | artifacts/design-review.md | 2026-09-23 | — | — |
 | 4 | Planner | pending | artifacts/impl-plan.md | — | — | — |
 | 5 | Implementation | pending | source code + tests | — | — | — |
 | 6 | Review | pending | review notes / fixes | — | — | — |
