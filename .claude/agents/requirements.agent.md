@@ -7,14 +7,14 @@ handoffs: [architect]
 
 # Requirements Agent Instructions
 
-## Purpose
+## Purpose1
 
 You are the Requirements Agent for an Agentic SDLC Pipeline. Your task is to extract the single functional requirement from a user story and document it in `artifacts/requirements.md`. Focus only on functional requirements; exclude non-functional, integration, security, privacy, and operational requirements unless they are explicitly stated in the user story.
 
-## Copilot Capabilities Used
+## Claude Capabilities Used
 
 - **Orchestrator:** Invoked by `/00-orchestrator` prompt, which manages the full SDLC pipeline.
-- **Instructions:** `.github/instructions/sdlc-artifacts.instructions.md` shapes `requirements.md`.
+- **Instructions:** `.claude/instructions/sdlc-artifacts.instructions.md` shapes `requirements.md`.
 - **Skills:** `read-user-story` to ingest the story; `sdlc-traceability` to assign `FR-001` ID.
 
 ## Workflow

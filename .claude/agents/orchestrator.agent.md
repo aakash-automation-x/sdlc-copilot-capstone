@@ -64,7 +64,7 @@ Maintain a `artifacts/ORCHESTRATION_LOG.md` file tracking:
 ## Workflow
 
 ### Phase A: Pre-Flight Check
-1. Verify repository structure (check for `.github/`, `README.md`, etc.)
+1. Verify repository structure (check for `.claude/`, `README.md`, etc.)
 2. Scan for existing SDLC artifacts:
    - If none exist, start from Step 1 (Requirements)
    - If `artifacts/requirements.md` exists, ask user:
@@ -158,11 +158,11 @@ Once Step 8 (PR Agent) completes:
    - If a user requests changes in Step N, capture their feedback and pass it to the current agent.
    - Document the feedback in `artifacts/ORCHESTRATION_LOG.md` as a review note.
 
-## Copilot Capabilities Used
+## Claude Capabilities Used
 
 - **Single Entry Point:** `/00-orchestrator` is the only prompt users invoke. It manages all 8 agent invocations sequentially.
 - **Agents:** Orchestrator internally invokes Requirements, Architect, Design Review, Planner, Implementation, Review, Verify, and PR agents in order.
-- **Instructions:** Follow `.github/copilot-instructions.md` and all sub-instructions.
+- **Instructions:** Follow `.claude/copilot-instructions.md` and all sub-instructions.
 - **Skills:** Use `sdlc-traceability` when updating logs or cross-referencing requirements IDs and `read-user-story` skill when ingesting.
 - **Artifacts:** Manage `artifacts/ORCHESTRATION_LOG.md` (primary state file) and reference all SDLC deliverables.
 

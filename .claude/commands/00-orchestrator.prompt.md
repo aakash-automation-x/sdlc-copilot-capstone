@@ -211,4 +211,4 @@ The orchestrator maintains `ORCHESTRATION_LOG.md` in your repository:
 | Restart entire pipeline | `/00-orchestrator restart` |
 | Jump to Step 5 (skip 1–4) | `/00-orchestrator resume step=5` |
 
-Follow `.github/agents/orchestrator.agent.md` for full orchestrator logic and error handling.
+Follow `.claude/agents/orchestrator.agent.md` for full orchestrator logic and error handling.
