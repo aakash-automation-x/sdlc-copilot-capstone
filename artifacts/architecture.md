@@ -139,15 +139,17 @@ sequenceDiagram
 
 | Technology | Version constraint | Rationale |
 |---|---|---|
-| **FastAPI** | 0.46.0 (pinned) | Specified in user story; provides automatic OpenAPI docs, Pydantic integration, and ASGI request handling |
-| **Uvicorn** | 0.11.1 (pinned) | ASGI server compatible with pinned FastAPI version |
-| **SQLAlchemy** | >=1.3.0,<2.0.0 | Specified in user story; ORM abstraction allows SQLite/PostgreSQL swap via `DATABASE_URL` |
-| **PostgreSQL** | Production target | Specified in user story; psycopg2-binary driver included |
-| **SQLite** | Dev/test only | Zero-config alternative enabled by `DATABASE_URL` defaulting to SQLite; test suite uses in-memory SQLite |
-| **Pydantic** | v2 (implied by `ConfigDict`) | `VehicleResponse` uses `ConfigDict(from_attributes=True)` — Pydantic v2 syntax |
-| **pytest** | 5.3.2 (pinned) | Test framework; `starlette.testclient.TestClient` provides HTTP-level testing without a running server |
+| **Python** | >=3.10 | Active runtime is Python 3.14 (confirmed by `__pycache__` bytecode); all dependencies must support Python 3.10+. |
+| **FastAPI** | 0.115.0 (pinned) | Updated from 0.46.0 to the first fully stable Pydantic v2-compatible release line (DD-001); provides automatic OpenAPI docs, Pydantic integration, and ASGI request handling. |
+| **Uvicorn** | >=0.24.0 | Updated from 0.11.1 to a version compatible with FastAPI 0.115.x and Python 3.14 (DD-001). |
+| **SQLAlchemy** | >=1.4.0,<2.0.0 | Lower bound raised from 1.3.0 to 1.4.0 (DD-002) to guarantee `from sqlalchemy.orm import declarative_base` is available; upper bound retained to avoid SQLAlchemy 2.0 API changes. |
+| **PostgreSQL** | Production target | Specified in user story; psycopg2-binary driver included. |
+| **SQLite** | Dev/test only | Zero-config alternative enabled by `DATABASE_URL` defaulting to SQLite; test suite uses in-memory SQLite. |
+| **Pydantic** | >=2.0.0,<3.0.0 (explicit) | `VehicleResponse` uses `ConfigDict(from_attributes=True)` — Pydantic v2 syntax. Now pinned explicitly rather than implied. Resolves R-001 (DD-001). |
+| **pytest** | >=7.0.0 | Updated from 5.3.2 to a version compatible with Python 3.14 (DD-001). |
+| **requests** | >=2.28.0 | Updated from 2.22.0 for Python 3.14 compatibility. |
 
-**Note on Pydantic version:** `ConfigDict(from_attributes=True)` is Pydantic v2 API, but the pinned FastAPI 0.46.0 was released against Pydantic v1. The Planner Agent must confirm which Pydantic version is installed and whether FastAPI needs an upgrade. This is captured as Risk R-001 below.
+**Note on dependency modernisation (DD-001, DD-002):** The original pinned versions (FastAPI 0.46.0, uvicorn 0.11.1, pytest 5.3.2) were released in 2019–2020 and are incompatible with the active Python 3.14 runtime and with Pydantic v2 syntax used in the codebase. Risk R-001 is resolved by upgrading FastAPI to 0.115.0 and adding an explicit Pydantic v2 pin.
 
 ---
 
@@ -190,7 +192,7 @@ FastAPI's built-in Uvicorn access logging provides per-request method, path, sta
 | ID | Assumption |
 |---|---|
 | A-001 | The `vehicles` table exists and is pre-populated before the application starts. No seeding mechanism is in scope. |
-| A-002 | `vehicle_id` is always a positive integer; FastAPI path parameter parsing enforces this. |
+| A-002 | FastAPI path parameter parsing enforces that `vehicle_id` is an integer; it does not reject zero or negative values. Non-positive IDs (e.g., 0, -1) will reach the service layer and return HTTP 404 via a DB miss. Adding a `Path(..., gt=0)` constraint is deferred as a future hardening item (see DR-005). |
 | A-003 | The `price` field returning as `float` (Python) rather than `Decimal` is acceptable for display consumers. |
 | A-004 | A single Uvicorn worker process is sufficient for MVP deployment. |
 
@@ -211,7 +213,7 @@ FastAPI's built-in Uvicorn access logging provides per-request method, path, sta
 
 | ID | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|---|
-| R-001 | FastAPI 0.46.0 was built for Pydantic v1; `ConfigDict(from_attributes=True)` is Pydantic v2 syntax. If both are installed at their respective pinned versions the app will fail at startup. | High | High | Planner Agent must check installed Pydantic version and either (a) upgrade FastAPI to a version that supports Pydantic v2, or (b) replace `ConfigDict` with `class Config: orm_mode = True` for Pydantic v1 compatibility. |
+| R-001 | ~~FastAPI 0.46.0 was built for Pydantic v1; `ConfigDict(from_attributes=True)` is Pydantic v2 syntax.~~ **RESOLVED (DR-001 / DD-001):** FastAPI upgraded to 0.115.0 with explicit `pydantic>=2.0.0,<3.0.0` dependency; Pydantic v2 syntax in `VehicleResponse` is now fully compatible. | ~~High~~ Resolved | ~~High~~ n/a | Applied: FastAPI 0.115.0 + Pydantic v2 explicit pin. See design-review.md DR-001. |
 | R-002 | SQLAlchemy `<2.0.0` constraint combined with Pydantic v2 and a newer Python environment may produce deprecation warnings or subtle compatibility issues. | Medium | Low | Run `pytest` before delivery to confirm no import-time errors. |
 | R-003 | No database migration tooling means schema drift is possible if the `vehicles` table definition changes. | Low | Medium | Out of scope for this MVP; document as a future concern. |
 
@@ -221,7 +223,7 @@ FastAPI's built-in Uvicorn access logging provides per-request method, path, sta
 
 | ID | Question | Owner |
 |---|---|---|
-| OQ-001 | Which Pydantic version is installed in the project's virtual environment? Resolution determines whether R-001 is already present or not. | Planner / Implementation Agent |
+| OQ-001 | ~~Which Pydantic version is installed?~~ **RESOLVED:** Pydantic v2 is the required version; FastAPI has been upgraded to 0.115.0 to match. See DR-001 / DD-001 in `artifacts/design-review.md`. | Design Review Agent |
 | OQ-002 | Is there an Alembic migration or a seeding script for the `vehicles` table, or must it be created manually? | Planner Agent |
 | OQ-003 | Should the `id` field ever be exposed (e.g., for client-side navigation)? Current design omits it. | Product / Requirements Agent |
 
