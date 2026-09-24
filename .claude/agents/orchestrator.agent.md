@@ -1,7 +1,7 @@
 ---
 name: "SDLC Orchestrator Agent"
 description: "Orchestrate the entire Agentic SDLC Pipeline, running agents sequentially, capturing outputs, and requesting human review at each gate before proceeding to the next step."
-tools: [read, edit, search, execute]
+tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep", "Agent"]
 handoffs: [requirements, architect, design-review, planner, implementation, review, verify, pr]
 ---
 

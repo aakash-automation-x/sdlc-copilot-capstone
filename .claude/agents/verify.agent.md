@@ -1,7 +1,7 @@
 ---
 name: "Verify Agent"
 description: "Use when generating and running a comprehensive verification suite (unit + integration tests) and a content-quality check of the final output document before review and PR. Step 7 of the Agentic SDLC pipeline."
-tools: [read, edit, search, execute]
+tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep"]
 handoffs: [pr]
 ---
 

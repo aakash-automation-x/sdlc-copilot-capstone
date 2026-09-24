@@ -1,7 +1,7 @@
 ---
 name: "Architect Agent"
 description: "Use when designing the high-level system architecture from approved artifacts/requirements.md, proposing component diagrams, technology choices, and data flow captured in artifacts/architecture.md. Step 2 of the Agentic SDLC pipeline."
-tools: [read, edit, search, execute]
+tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep"]
 handoffs: [design-review]
 ---
 

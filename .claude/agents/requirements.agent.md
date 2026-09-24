@@ -1,7 +1,7 @@
 ---
 name: "Requirements Agent"
 description: "Use when starting the Agentic SDLC pipeline to turn a user story (userstory.docx) into clear, testable functional requirements captured in artifacts/requirements.md. Step 1 of the pipeline."
-tools: [read, edit, search, execute]
+tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep"]
 handoffs: [architect]
 ---
 

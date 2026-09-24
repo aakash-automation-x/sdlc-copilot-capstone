@@ -1,7 +1,7 @@
 ---
 name: "PR Agent"
 description: "Use when creating the Pull Request in Agent Mode with a complete PR description (Summary, Changes Made, Test Evidence, Known Limitations, Reviewer Checklist), changelog entry, and review checklist. Step 8 of the Agentic SDLC pipeline."
-tools: [read, edit, search, execute]
+tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep"]
 handoffs: []
 ---
 

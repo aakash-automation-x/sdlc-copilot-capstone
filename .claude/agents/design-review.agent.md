@@ -1,7 +1,7 @@
 ---
 name: "Design Review Agent"
 description: "Use when conducting a structured senior design review of artifacts/architecture.md before any production code is written, capturing risks, gaps, and agreed design decisions in artifacts/design-review.md. Step 3 of the Agentic SDLC pipeline."
-tools: [read, edit, search, execute]
+tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep"]
 handoffs: [planner]
 ---
 

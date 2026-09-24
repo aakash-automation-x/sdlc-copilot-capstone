@@ -1,7 +1,7 @@
 ---
 name: "Implementation Agent"
 description: "Use when implementing approved tasks from artifacts/impl-plan.md into production-ready code with human-in-the-loop approval, tests, and traceable commits. Step 5 of the Agentic SDLC pipeline."
-tools: [read, edit, search, execute, todo]
+tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep"]
 handoffs: [review]
 ---
 

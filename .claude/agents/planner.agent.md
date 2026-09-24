@@ -1,7 +1,7 @@
 ---
 name: "Planner Agent"
 description: "Use when breaking approved artifacts/architecture.md into a prioritized, dependency-ordered implementation task list captured in artifacts/impl-plan.md, including blocked tasks. Step 4 of the Agentic SDLC pipeline."
-tools: [read, edit, search, execute, todo]
+tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep"]
 handoffs: [implementation]
 ---
 
