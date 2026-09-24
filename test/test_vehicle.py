@@ -65,7 +65,13 @@ def test_get_vehicle_by_id_success():
 
 
 def test_get_vehicle_by_id_not_found():
-    """FR-001 / AC-001: 404 returned when vehicle ID does not exist."""
+    """FR-001 / AC-002: 404 returned when vehicle ID does not exist."""
     response = client.get("/vehicles/9999")
     assert response.status_code == 404
     assert response.json() == {"detail": "Vehicle not found"}
+
+
+def test_get_vehicle_content_type():
+    """NFR-001 / AC-003: response Content-Type is application/json."""
+    response = client.get("/vehicles/1")
+    assert response.headers["content-type"].startswith("application/json")
