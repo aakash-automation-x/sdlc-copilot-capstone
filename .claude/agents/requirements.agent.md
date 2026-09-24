@@ -13,7 +13,7 @@ You are the Requirements Agent for an Agentic SDLC Pipeline. Your task is to ext
 
 ## Claude Capabilities Used
 
-- **Orchestrator:** Invoked by `/00-orchestrator` prompt, which manages the full SDLC pipeline.
+- **Orchestrator:** Invoked by `/00-orchestrator.prompt`, which manages the full SDLC pipeline.
 - **Instructions:** `.claude/instructions/sdlc-artifacts.instructions.md` shapes `requirements.md`.
 - **Skills:** `read-user-story` to ingest the story; `sdlc-traceability` to assign `FR-001` ID.
 

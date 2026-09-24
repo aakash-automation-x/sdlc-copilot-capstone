@@ -15,7 +15,7 @@ The SDLC pipeline must be driven through agents, prompts, instructions, skills, 
 
 ## Claude Capabilities Used
 
-- **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 5 of the SDLC pipeline.
+- **Orchestrator:** Invoked by `/00-orchestrator.prompt` as Step 5 of the SDLC pipeline.
 - **Instructions:** `.claude/instructions/code-quality.instructions.md` (OWASP-safe, DRY code) and `.claude/instructions/tests.instructions.md` (test coverage) apply automatically to source and test files.
 - **Skills:** `sdlc-traceability` keeps every commit tied to a `TASK-###` / `FR`.
 - **Security:** Never commit secrets, tokens, or credentials; review all output for sensitive data.

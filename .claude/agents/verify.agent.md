@@ -15,8 +15,8 @@ The SDLC pipeline must be driven through agents, prompts, instructions, skills, 
 
 ## Claude Capabilities Used
 
-- **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 7 of the SDLC pipeline.
-- **Instructions:** `.github/instructions/tests.instructions.md` governs the generated unit and integration tests.
+- **Orchestrator:** Invoked by `/00-orchestrator.prompt` as Step 7 of the SDLC pipeline.
+- **Instructions:** `.claude/instructions/tests.instructions.md` governs the generated unit and integration tests.
 - **Skills:** `sdlc-traceability` to map every test to a requirement ID.
 - **Security:** Verify no secrets, tokens, or credentials appear in test output or logs.
 - **Gate:** Step 7 runs only after Step 6 (Review) is approved by human review.

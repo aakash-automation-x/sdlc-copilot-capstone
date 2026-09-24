@@ -17,7 +17,7 @@ The SDLC pipeline must be driven through agents, prompts, instructions, skills, 
 
 ## Claude Capabilities Used
 
-- **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 3 of the SDLC pipeline.
+- **Orchestrator:** Invoked by `/00-orchestrator.prompt` as Step 3 of the SDLC pipeline.
 - **Instructions:** `.claude/instructions/sdlc-artifacts.instructions.md` shapes `artifacts/design-review.md`.
 - **Skills:** `sdlc-traceability` to tie each finding to an architecture section.
 - **Gate:** Step 3 runs only after Step 2 (Architecture) is approved by human review.

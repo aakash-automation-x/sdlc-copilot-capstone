@@ -15,7 +15,7 @@ The SDLC pipeline must be driven through agents, prompts, instructions, skills, 
 
 ## Claude Capabilities Used
 
-- **Orchestrator:** Invoked by `/00-orchestrator` prompt as Step 6 of the SDLC pipeline.
+- **Orchestrator:** Invoked by `/00-orchestrator.prompt` as Step 6 of the SDLC pipeline.
 - **Instructions:** `.claude/instructions/code-quality.instructions.md` defines the secure, DRY, clear-code bar you review against.
 - **Skills:** `sdlc-traceability` to tie each finding to a file and `FR`/`NFR`.
 - **Security:** Verify no secrets, tokens, or credentials appear in output or logs.
