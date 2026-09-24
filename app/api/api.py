@@ -1,5 +1,5 @@
 import json
-
+from typing import List, Dict, Optional
 
 def read_user():
     with open('data/users.json') as stream:
@@ -12,8 +12,7 @@ def read_questions(position: int):
     with open('data/questions.json') as stream:
         questions = json.load(stream)
 
-    for question in questions:
-        if question['position'] == position:
+    for question in questions:        if question['position'] == position:
             return question
 
 
@@ -44,7 +43,7 @@ def create_answer(payload):
 
     with open('data/cars.json') as stream:
         cars = json.load(stream)
-
+        
     for car in cars:
         if answers[0] in car.values() and answers[1] in car.values() and answers[2] in car.values():
             result.append(car)
@@ -77,3 +76,19 @@ def read_result(user_id: int):
                     user_result.append(car)
 
     return user_result
+
+
+def read_vehicle(vehicle_id: int) -> Optional[Dict]:
+    """Retrieve vehicle details by vehicle ID. Maps to FR-001, AC-001."""
+    try:
+        with open('data/cars.json') as stream:
+            cars = json.load(stream)
+            
+        for car in cars:
+            if car['id'] == vehicle_id:
+                return car
+                
+        return None
+    except Exception as e:
+        print(f"Error reading cars.json: {e}")
+        return None
