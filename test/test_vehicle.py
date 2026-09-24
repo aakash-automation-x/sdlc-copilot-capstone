@@ -72,6 +72,6 @@ def test_get_vehicle_by_id_not_found():
 
 
 def test_get_vehicle_content_type():
-    """NFR-001 / AC-003: response Content-Type is application/json."""
+    """AC-003: response Content-Type is application/json."""
     response = client.get("/vehicles/1")
     assert response.headers["content-type"].startswith("application/json")

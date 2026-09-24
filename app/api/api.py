@@ -1,9 +1,12 @@
 import json
+from typing import Optional
+
+from sqlalchemy.orm import Session
 
 from app.db.models import Vehicle
 
 
-def get_vehicle_by_id(vehicle_id: int, db):
+def get_vehicle_by_id(vehicle_id: int, db: Session) -> Optional[Vehicle]:
     return db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()
 
 
