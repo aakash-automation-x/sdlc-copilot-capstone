@@ -3,6 +3,7 @@ name: "Design Review Agent"
 description: "Use when conducting a structured senior design review of artifacts/architecture.md before any production code is written, capturing risks, gaps, and agreed design decisions in artifacts/design-review.md. Step 3 of the Agentic SDLC pipeline."
 tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep"]
 handoffs: [planner]
+model: claude-sonnet-4-6
 ---
 
 # Design Review Agent Instructions
