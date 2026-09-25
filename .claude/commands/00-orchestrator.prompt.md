@@ -3,7 +3,7 @@ description: "Single entry point: Orchestrate the entire Agentic SDLC Pipeline e
 agent: agent
 ---
 
-# /00-orchestrator
+# /00-orchestrator.prompt
 
 **SDLC Pipeline Orchestrator** — The single entry point to run the entire 8-step Agentic SDLC Pipeline end-to-end with human-in-the-loop approval gates.
 
@@ -13,7 +13,7 @@ This is the **only prompt** you need. The orchestrator invokes all agents sequen
 
 ### Start the Full Pipeline
 ```
-/00-orchestrator
+/00-orchestrator.prompt
 ```
 Runs all 8 steps in sequence:
 1. Requirements Agent → `artifacts/requirements.md`
@@ -32,19 +32,19 @@ After each step completes:
 
 ### Resume at a Specific Step
 ```
-/00-orchestrator resume step=<N>
+/00-orchestrator.prompt resume step=<N>
 ```
 Resume the pipeline at step N (1–8), skipping earlier completed steps.
 
 Example:
 ```
-/00-orchestrator resume step=5
+/00-orchestrator.prompt resume step=5
 ```
 Resumes at Step 5 (Implementation Agent), assuming Steps 1–4 have been completed and approved.
 
 ### Check Pipeline Status
 ```
-/00-orchestrator status
+/00-orchestrator.prompt status
 ```
 Display the current `ORCHESTRATION_LOG.md`:
 - Completed steps and their artifacts
@@ -53,7 +53,7 @@ Display the current `ORCHESTRATION_LOG.md`:
 
 ### Restart the Pipeline
 ```
-/00-orchestrator restart
+/00-orchestrator.prompt restart
 ```
 Clear the orchestration log and begin from Step 1 (Requirements).
 
@@ -70,7 +70,7 @@ After each agent completes:
 2. **Your Decision:**
    - ✅ **Approve & Proceed** — Move to next step automatically
    - 🔄 **Request Changes** — Provide specific feedback; agent re-runs with your input
-   - ⏸️ **Pause** — Pipeline pauses; resume anytime with `/00-orchestrator resume step=<N>`
+   - ⏸️ **Pause** — Pipeline pauses; resume anytime with `/00-orchestrator.prompt resume step=<N>`
 
 3. **State is Tracked** in `ORCHESTRATION_LOG.md`:
    - Step number, agent name, completion status
@@ -80,7 +80,7 @@ After each agent completes:
 ## Example Flow
 
 ```
-User: /00-orchestrator
+User: /00-orchestrator.prompt
 
 Orchestrator: Pre-flight checks...
 ✅ Repository structure valid
@@ -89,7 +89,7 @@ Orchestrator: Pre-flight checks...
 
 ---
 
-Orchestrator: Invoking Requirements Agent (/01-requirements)...
+Orchestrator: Invoking Requirements Agent (subagent_type: "Requirements Agent")...
 [Requirements Agent runs...]
 ✅ artifacts/requirements.md created
 
@@ -118,7 +118,7 @@ User: ✅ Approve & Proceed
 Orchestrator: Updating ORCHESTRATION_LOG.md...
 → Moving to Step 2 (Architect Agent)
 
-Orchestrator: Invoking Architect Agent (/02-architecture)...
+Orchestrator: Invoking Architect Agent (subagent_type: "Architect Agent")...
 [Architect Agent runs...]
 ✅ artifacts/architecture.md created
 
@@ -205,10 +205,10 @@ The orchestrator maintains `ORCHESTRATION_LOG.md` in your repository:
 
 | Goal | Command |
 |------|---------|
-| Start fresh pipeline | `/00-orchestrator` |
-| Resume after pause | `/00-orchestrator resume step=3` |
-| Check current progress | `/00-orchestrator status` |
-| Restart entire pipeline | `/00-orchestrator restart` |
-| Jump to Step 5 (skip 1–4) | `/00-orchestrator resume step=5` |
+| Start fresh pipeline | `/00-orchestrator.prompt` |
+| Resume after pause | `/00-orchestrator.prompt resume step=3` |
+| Check current progress | `/00-orchestrator.prompt status` |
+| Restart entire pipeline | `/00-orchestrator.prompt restart` |
+| Jump to Step 5 (skip 1–4) | `/00-orchestrator.prompt resume step=5` |
 
-Follow `.github/agents/orchestrator.agent.md` for full orchestrator logic and error handling.
+Follow `.claude/agents/orchestrator.agent.md` for full orchestrator logic and error handling.
