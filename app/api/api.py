@@ -1,6 +1,6 @@
 import json
 
-from typing import Optional
+from typing import Dict, Optional
 
 from sqlalchemy.orm import Session
 
@@ -21,7 +21,8 @@ def read_questions(position: int):
     with open('data/questions.json') as stream:
         questions = json.load(stream)
 
-    for question in questions:        if question['position'] == position:
+    for question in questions:
+        if question['position'] == position:
             return question
 
 

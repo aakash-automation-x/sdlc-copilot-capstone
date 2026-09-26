@@ -395,6 +395,14 @@ The API will then be available at:
 http://127.0.0.1:8001
 ```
 
+### How to use
+
+1. Start the server:
+python -m uvicorn app.main:app --reload
+1. Open http://localhost:8000/ui in your browser
+2. Enter a Vehicle ID (1–10) and click Search — the card shows 5 attributes: Make, Model, Year, Fuel Type, Transmission pulled from GET /vehicles/{vehicle_id}.
+
+
 ## License
 
 No license file or licensing information is currently included in the repository.

@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ConfigDict
-from typing import List
+from typing import List, Optional
 
 from sqlalchemy import Column, Integer, String, Numeric
 
@@ -39,7 +39,7 @@ class UserAnswer(BaseModel):
     answers: List[Answer]
 
 
-class Vehicle(BaseModel):
+class VehicleDetail(BaseModel):
     """Vehicle details schema - FR-001, AC-001"""
     id: int
     name: str
@@ -51,19 +51,3 @@ class Vehicle(BaseModel):
     fuel_type: str
     category: str
     link: Optional[str] = None
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "id": 1,
-                "name": "Volkswagen ID.3",
-                "make": "Volkswagen",
-                "model": "ID.3",
-                "year": 2024,
-                "price": "low",
-                "transmission": "automatic",
-                "fuel_type": "electric",
-                "category": "compact",
-                "link": ""
-            }
-        }
