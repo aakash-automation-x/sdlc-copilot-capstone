@@ -1,6 +1,5 @@
 ---
 description: "Single entry point: Orchestrate the entire Agentic SDLC Pipeline end-to-end with human review gates at each step."
-agent: agent
 ---
 
 # /00-orchestrator.prompt
@@ -100,9 +99,9 @@ Orchestrator: Invoking Requirements Agent (subagent_type: "Requirements Agent").
 **Artifact:** artifacts/requirements.md
 
 **Summary:**
-- 12 functional requirements (FR-001 to FR-012)
-- 8 non-functional requirements (NFR-001 to NFR-008)
-- 42 acceptance criteria across all requirements
+- 1 functional requirement: FR-001 (retrieve vehicle by ID)
+- 1 acceptance criterion: AC-001 (Given a valid vehicle_id, When GET /vehicles/{vehicle_id}, Then the vehicle record is returned)
+- Out-of-scope items documented
 
 **Status:** ✅ Complete
 

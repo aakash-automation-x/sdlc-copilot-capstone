@@ -1,6 +1,11 @@
 ---
 description: "Secure, clear, DRY coding standards enforced during implementation and review."
-applyTo: "**/*.{js,jsx,ts,tsx,py,java,cs,go,rb,php}"
+paths:
+  - "**/*.py"
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.ts"
+  - "**/*.tsx"
 ---
 
 # Code Quality Standards
@@ -11,7 +16,7 @@ Applies to all production source code generated or modified in this repository.
 
 - Never hard-code, log, or return secrets, tokens, passwords, or credentials.
   Read them from environment variables or a secrets manager.
-- Validate and sanitize all external and user-supplied input at the boundary.
+- Validate and sanitise all external and user-supplied input at the boundary.
   Guard against injection (SQL, command, XSS) and broken access control.
 - Enforce authentication and authorization on every protected operation.
 - Use parameterized queries and safe, maintained libraries. Flag and avoid

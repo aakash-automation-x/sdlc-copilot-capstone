@@ -170,8 +170,8 @@ Once Step 8 (PR Agent) completes:
 
 - **Single Entry Point:** `/00-orchestrator.prompt` is the only command users invoke. It manages all 8 agent invocations sequentially.
 - **Agents:** Orchestrator invokes each pipeline agent in order via the Agent tool using their `name:` values: `Requirements Agent`, `Architect Agent`, `Design Review Agent`, `Planner Agent`, `Implementation Agent`, `Review Agent`, `Verify Agent`, `PR Agent`.
-- **Instructions:** Follow `.claude/instructions/sdlc-artifacts.instructions.md`, `.claude/instructions/code-quality.instructions.md`, and `.claude/instructions/tests.instructions.md`.
-- **Skills:** Use `sdlc-traceability` when updating logs or cross-referencing requirements IDs and `read-user-story` skill when ingesting.
+- **Rules:** `.claude/rules/code-quality.md`, `.claude/rules/tests.md`, and `.claude/rules/sdlc-artifacts.md` apply automatically to source, test, and artifact files respectively.
+- **Skills:** Use `sdlc-traceability` when updating the orchestration log or cross-referencing requirement IDs in step summaries.
 - **Artifacts:** Manage `artifacts/ORCHESTRATION_LOG.md` (primary state file) and reference all SDLC deliverables.
 
 ## Usage

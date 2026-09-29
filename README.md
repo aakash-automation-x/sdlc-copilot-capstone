@@ -17,6 +17,96 @@ The project currently uses JSON files as its data store and is intended for loca
 - Automated endpoint tests with `pytest`
 - File-based persistence using JSON documents
 
+## Agentic SDLC Pipeline
+
+This project uses a Claude Code agent pipeline to drive the full software development
+lifecycle from user story to merged pull request. Each pipeline step is handled by a
+dedicated agent that delegates its detailed workflow to one or more skills.
+
+### Pipeline overview
+
+```
+User Story
+   │
+   ▼ Step 1
+Requirements Agent ──► write-requirements
+   │
+   ▼ Step 2
+Architect Agent ──► design-architecture
+   │
+   ▼ Step 3
+Design Review Agent ──► design-review
+   │
+   ▼ Step 4
+Planner Agent ──► plan-implementation
+   │
+   ▼ Step 5
+Implementation Agent ──► implement-task
+   │
+   ▼ Step 6
+Review Agent ──► code-review
+   │
+   ▼ Step 7
+Verify Agent ──► verify-implementation
+   │
+   ▼ Step 8
+PR Agent ──► create-pr
+```
+
+### Agent → Skill mapping
+
+| Step | Agent | Skill(s) | Output artifact |
+|------|-------|----------|-----------------|
+| 1 | Requirements Agent | `write-requirements`, `read-user-story`, `sdlc-traceability` | `artifacts/requirements.md` |
+| 2 | Architect Agent | `design-architecture`, `sdlc-traceability` | `artifacts/architecture.md` |
+| 3 | Design Review Agent | `design-review`, `sdlc-traceability` | `artifacts/design-review.md` |
+| 4 | Planner Agent | `plan-implementation`, `sdlc-traceability` | `artifacts/impl-plan.md` |
+| 5 | Implementation Agent | `implement-task`, `sdlc-traceability` | production code + tests |
+| 6 | Review Agent | `code-review`, `sdlc-traceability` | review findings + fixes |
+| 7 | Verify Agent | `verify-implementation`, `sdlc-traceability` | verification report |
+| 8 | PR Agent | `create-pr`, `sdlc-traceability` | pull request + `artifacts/CHANGELOG.md` |
+
+### Skills reference
+
+| Skill | Purpose |
+|-------|---------|
+| `read-user-story` | Ingest a user story from `userstory.md`, Jira, or Confluence |
+| `sdlc-traceability` | Maintain `FR-###` / `NFR-###` / `TASK-###` IDs across all artifacts |
+| `write-requirements` | Extract one `FR-001` from a user story and write `requirements.md` |
+| `design-architecture` | Design components, data flows, and technology choices; write `architecture.md` |
+| `design-review` | Review architecture for risks; classify findings `Critical`→`Low`; write `design-review.md` |
+| `plan-implementation` | Break architecture into dependency-ordered `TASK-###` items; write `impl-plan.md` |
+| `implement-task` | Human-in-the-loop implementation with approval format, quality gates, and traceable commits |
+| `code-review` | Structured peer review across 7 areas; severity `Blocker`→`Nit`; gates PR on Blocker/Major |
+| `verify-implementation` | Unit + integration tests mapped to `FR-###`; document quality check; Pass/Fail verdict |
+| `create-pr` | Generate full PR description, changelog entry, and create PR via GitHub CLI |
+
+### Agent and skill locations
+
+```text
+.claude/
+├── agents/
+│   ├── requirements.agent.md
+│   ├── architect.agent.md
+│   ├── design-review.agent.md
+│   ├── planner.agent.md
+│   ├── implementation.agent.md
+│   ├── review.agent.md
+│   ├── verify.agent.md
+│   └── pr.agent.md
+└── skills/
+    ├── read-user-story/SKILL.md
+    ├── sdlc-traceability/SKILL.md
+    ├── write-requirements/SKILL.md
+    ├── design-architecture/SKILL.md
+    ├── design-review/SKILL.md
+    ├── plan-implementation/SKILL.md
+    ├── implement-task/SKILL.md
+    ├── code-review/SKILL.md
+    ├── verify-implementation/SKILL.md
+    └── create-pr/SKILL.md
+```
+
 ## Technology Stack
 
 - Python 3
