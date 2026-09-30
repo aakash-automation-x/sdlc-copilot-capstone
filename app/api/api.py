@@ -1,5 +1,8 @@
 import json
-from typing import List, Dict, Optional
+
+from sqlalchemy.orm import Session
+
+from app.db.models import Vehicle, VehicleResponse
 
 def read_user():
     with open('data/users.json') as stream:
@@ -12,7 +15,8 @@ def read_questions(position: int):
     with open('data/questions.json') as stream:
         questions = json.load(stream)
 
-    for question in questions:        if question['position'] == position:
+    for question in questions:
+        if question['position'] == position:
             return question
 
 
@@ -78,17 +82,13 @@ def read_result(user_id: int):
     return user_result
 
 
-def read_vehicle(vehicle_id: int) -> Optional[Dict]:
-    """Retrieve vehicle details by vehicle ID. Maps to FR-001, AC-001."""
-    try:
-        with open('data/cars.json') as stream:
-            cars = json.load(stream)
-            
-        for car in cars:
-            if car['id'] == vehicle_id:
-                return car
-                
+def get_vehicle_by_id(vehicle_id: int, db: Session) -> VehicleResponse | None:
+    """Return vehicle details from the ORM database by primary key - FR-001.
+
+    Returns VehicleResponse if found, None otherwise.
+    HTTP error handling is the router's responsibility, not this service layer.
+    """
+    vehicle = db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()
+    if vehicle is None:
         return None
-    except Exception as e:
-        print(f"Error reading cars.json: {e}")
-        return None
+    return VehicleResponse.model_validate(vehicle)
