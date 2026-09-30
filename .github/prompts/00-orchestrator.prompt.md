@@ -1,7 +1,6 @@
 ---
 name: "00-orchestrator"
 description: "Single entry point: Orchestrate the entire Agentic SDLC Pipeline end-to-end with human review gates at each step."
-mode: agent
 tools:
   - search/codebase
   - edit/editFiles
