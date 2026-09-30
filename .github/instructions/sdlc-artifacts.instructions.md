@@ -1,6 +1,6 @@
 ---
 description: "Authoring standards for the Agentic SDLC deliverable documents (requirements, architecture, design review, implementation plan, changelog)."
-applyTo: "artifacts/requirements.md,artifacts/architecture.md,artifacts/design-review.md,artifacts/impl-plan.md,artifacts/CHANGELOG.md"
+applyTo: "artifacts/*.md"
 ---
 
 # SDLC Artifact Standards

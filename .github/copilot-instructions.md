@@ -23,7 +23,7 @@ The orchestrator manages all 8 steps sequentially:
 
 | Step | Agent | Output artifact |
 | --- | --- | --- |
-| **Entry Point** | **SDLC Orchestrator** | **`ORCHESTRATION_LOG.md`** (state tracking) |
+| **Entry Point** | **SDLC Orchestrator** | **`artifacts/ORCHESTRATION_LOG.md`** (state tracking) |
 | 1 | Requirements Agent | `artifacts/requirements.md` |
 | 2 | Architect Agent | `artifacts/architecture.md` |
 | 3 | Design Review Agent | `artifacts/design-review.md` |
@@ -48,8 +48,8 @@ The orchestrator:
   - ✅ Approve & Proceed to next step
   - 🔄 Request Changes (agent re-runs with feedback)
   - ⏸️ Pause Pipeline (save state, resume later)
-- Maintains `ORCHESTRATION_LOG.md` tracking all step statuses and approvals
-- Supports resume from any step: `/00-orchestrator resume step=4`
+- Maintains `artifacts/ORCHESTRATION_LOG.md` tracking all step statuses and approvals
+- Supports resume from any step: `/00-orchestrator resume step=3`
 
 **Human approval is required at every gate.** The orchestrator never auto-proceeds.
 

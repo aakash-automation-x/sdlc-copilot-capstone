@@ -1,6 +1,11 @@
 ---
+name: "00-orchestrator"
 description: "Single entry point: Orchestrate the entire Agentic SDLC Pipeline end-to-end with human review gates at each step."
-agent: agent
+mode: agent
+tools:
+  - search/codebase
+  - edit/editFiles
+  - execute/runInTerminal
 ---
 
 # /00-orchestrator
@@ -8,6 +13,8 @@ agent: agent
 **SDLC Pipeline Orchestrator** — The single entry point to run the entire 8-step Agentic SDLC Pipeline end-to-end with human-in-the-loop approval gates.
 
 This is the **only prompt** you need. The orchestrator invokes all agents sequentially and manages the full pipeline.
+
+> For the canonical pipeline step list, artifact paths, and capability matrix see `.github/copilot-instructions.md`.
 
 ## Commands
 
@@ -38,15 +45,15 @@ Resume the pipeline at step N (1–8), skipping earlier completed steps.
 
 Example:
 ```
-/00-orchestrator resume step=5
+/00-orchestrator resume step=3
 ```
-Resumes at Step 5 (Implementation Agent), assuming Steps 1–4 have been completed and approved.
+Resumes at Step 3 (Design Review Agent), assuming Steps 1–2 have been completed and approved.
 
 ### Check Pipeline Status
 ```
 /00-orchestrator status
 ```
-Display the current `ORCHESTRATION_LOG.md`:
+Display the current `artifacts/ORCHESTRATION_LOG.md`:
 - Completed steps and their artifacts
 - Current step status
 - Option to continue, jump, or restart
@@ -72,7 +79,7 @@ After each agent completes:
    - 🔄 **Request Changes** — Provide specific feedback; agent re-runs with your input
    - ⏸️ **Pause** — Pipeline pauses; resume anytime with `/00-orchestrator resume step=<N>`
 
-3. **State is Tracked** in `ORCHESTRATION_LOG.md`:
+3. **State is Tracked** in `artifacts/ORCHESTRATION_LOG.md`:
    - Step number, agent name, completion status
    - Artifact path and timestamp
    - Reviewer notes / approval decision
@@ -89,7 +96,7 @@ Orchestrator: Pre-flight checks...
 
 ---
 
-Orchestrator: Invoking Requirements Agent (/01-requirements)...
+Orchestrator: Invoking Requirements Agent...
 [Requirements Agent runs...]
 ✅ artifacts/requirements.md created
 
@@ -100,9 +107,9 @@ Orchestrator: Invoking Requirements Agent (/01-requirements)...
 **Artifact:** artifacts/requirements.md
 
 **Summary:**
-- 12 functional requirements (FR-001 to FR-012)
-- 8 non-functional requirements (NFR-001 to NFR-008)
-- 42 acceptance criteria across all requirements
+- 1 functional requirement: FR-001 (retrieve vehicle by ID)
+- 1 acceptance criterion: AC-001 (Given a valid vehicle_id, When GET /vehicles/{vehicle_id}, Then the vehicle record is returned)
+- Out-of-scope items documented
 
 **Status:** ✅ Complete
 
@@ -115,10 +122,10 @@ Orchestrator: Invoking Requirements Agent (/01-requirements)...
 
 User: ✅ Approve & Proceed
 
-Orchestrator: Updating ORCHESTRATION_LOG.md...
+Orchestrator: Updating artifacts/ORCHESTRATION_LOG.md...
 → Moving to Step 2 (Architect Agent)
 
-Orchestrator: Invoking Architect Agent (/02-architecture)...
+Orchestrator: Invoking Architect Agent...
 [Architect Agent runs...]
 ✅ artifacts/architecture.md created
 
@@ -182,23 +189,23 @@ Orchestrator: Captured feedback. Re-invoking Architect Agent with your input...
 
 User: ✅ Approve & Proceed
 
-Orchestrator: Updating ORCHESTRATION_LOG.md...
+Orchestrator: Updating artifacts/ORCHESTRATION_LOG.md...
 → Moving to Step 3 (Design Review Agent)
 [... and so on ...]
 ```
 
 ## Pipeline State Tracking
 
-The orchestrator maintains `ORCHESTRATION_LOG.md` in your repository:
+The orchestrator maintains `artifacts/ORCHESTRATION_LOG.md` in your repository:
 
 ```markdown
 # SDLC Pipeline Orchestration Log
 
 | Step | Agent | Status | Artifact | Started | Completed | Notes |
 |------|-------|--------|----------|---------|-----------|-------|
-| 1 | Requirements | ✅ Approved | artifacts/requirements.md | 2024-01-15 10:00 | 2024-01-15 10:15 | No changes requested |
-| 2 | Architect | ✅ Approved | artifacts/architecture.md | 2024-01-15 10:16 | 2024-01-15 10:45 | Requested: add event bus; 1 revision |
-| 3 | Design Review | in-progress | artifacts/design-review.md | 2024-01-15 10:46 | — | — |
+| 1 | Requirements | ✅ Approved | artifacts/requirements.md | YYYY-MM-DD HH:MM | YYYY-MM-DD HH:MM | No changes requested |
+| 2 | Architect | ✅ Approved | artifacts/architecture.md | YYYY-MM-DD HH:MM | YYYY-MM-DD HH:MM | Requested: add event bus; 1 revision |
+| 3 | Design Review | in-progress | artifacts/design-review.md | YYYY-MM-DD HH:MM | — | — |
 ```
 
 ## When to Use Each Command

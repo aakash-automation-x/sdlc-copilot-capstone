@@ -1,6 +1,7 @@
 ---
 name: sdlc-traceability
-description: "Maintain end-to-end traceability across the SDLC artifacts using stable requirement IDs. Use whenever writing or updating requirements, architecture, plan, code, tests, review findings, or the PR."
+description: "Maintain end-to-end traceability across SDLC artifacts using stable requirement IDs (FR-###, NFR-###, TASK-###, DR-###). Use whenever writing or updating requirements, architecture, implementation plan, code commits, tests, review findings, or the PR description."
+user-invocable: true
 ---
 
 # Skill: SDLC Traceability
