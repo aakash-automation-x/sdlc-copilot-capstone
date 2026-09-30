@@ -10,8 +10,9 @@ from app.api.api import get_vehicle_by_id
 app = FastAPI()
 
 # DR-006: create all ORM-mapped tables on startup (idempotent; safe to call
-# on every restart). Vehicle must be imported above before this call so that
-# its table metadata is registered with Base.
+# on every restart). app.db.models must be imported above so that the Vehicle
+# class is defined and its table metadata is registered with Base before this
+# call.
 Base.metadata.create_all(bind=engine)
 
 
