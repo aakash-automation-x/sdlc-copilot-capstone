@@ -96,12 +96,14 @@ sequenceDiagram
 
 | Decision | Choice | Rationale | Trade-offs |
 | --- | --- | --- | --- |
-| Language | Python 3.8+ | Mandated by NFR-001; matches existing codebase | Minimum version 3.8 limits some newer typing syntax |
-| Web framework | FastAPI | Mandated by NFR-001; provides automatic OpenAPI docs, async support, Pydantic integration, and dependency injection | Smaller ecosystem than Django; async not used in current sync handlers |
-| ORM | SQLAlchemy | Mandated by NFR-001; industry standard Python ORM; portable across DB backends | Adds abstraction overhead; requires migration tooling (e.g. Alembic) for schema changes |
+| Language | Python 3.8+ (runtime: 3.11+ recommended) | Mandated by NFR-001; matches existing codebase. Python 3.8 reached EOL October 2024; 3.11+ is required for security support. See DR-009. | NFR-001 cannot be changed without a requirements update; minimum version constraint will be revisited in a future pipeline run |
+| Web framework | FastAPI `>=0.100.0` | Mandated by NFR-001; provides automatic OpenAPI docs, async support, Pydantic v2 integration, and dependency injection. `fastapi==0.46.0` (previously pinned) uses Pydantic v1 and is incompatible with `from_attributes=True`; see DR-002. | Smaller ecosystem than Django; async not used in current sync handlers |
+| ORM | SQLAlchemy `>=2.0.0` | Mandated by NFR-001; industry standard Python ORM; portable across DB backends. Must be added to `requirements.txt` — was absent (DR-001). | Adds abstraction overhead; Alembic for schema migrations deferred to a follow-on task (DR-006) |
+| Pydantic | `pydantic>=2.0.0` | Provides `from_attributes=True` on `VehicleResponse` for ORM-to-schema serialisation. Pydantic v1 (bundled with `fastapi==0.46.0`) does not support this syntax; see DR-002. | Breaking changes from v1; existing Pydantic models in `models.py` must use v2-compatible syntax |
+| PostgreSQL driver | `psycopg2-binary>=2.9.0` | Required for SQLAlchemy to connect to PostgreSQL. Was absent from `requirements.txt` (DR-001). | `psycopg2-binary` bundles the C extension; use `psycopg2` for production builds where system libraries are available |
 | Production database | PostgreSQL | Mandated by NFR-001; ACID-compliant, production-grade, supported by SQLAlchemy | Requires a running PostgreSQL instance; not bundled with the app |
 | Test database | SQLite (in-memory) | No server required; fast; isolated per test via dependency override; matches existing project test pattern | SQLite dialect differences may hide PostgreSQL-specific bugs |
-| Response schema | Pydantic `VehicleResponse` with `from_attributes=True` | Decouples ORM internals from API surface; enables field-level validation and OpenAPI schema generation | Must stay in sync with ORM model column names |
+| Response schema | Pydantic `VehicleResponse` with `from_attributes=True` | Decouples ORM internals from API surface; enables field-level validation and OpenAPI schema generation. Requires `pydantic>=2.0.0`. | Must stay in sync with ORM model column names |
 | Configuration | `DATABASE_URL` environment variable | Follows 12-factor app; avoids hard-coded credentials | Requires correct env var setup in every deployment environment |
 
 ## SDLC Pipeline Components
@@ -158,18 +160,33 @@ sequenceDiagram
   process managers to handle concurrent requests.
 - No caching, pagination, or rate-limiting is required by FR-001 or NFR-001 and is
   explicitly out of scope.
-- The bottleneck under load is the PostgreSQL connection pool. SQLAlchemy's default pool
-  size should be tuned to match the deployment environment's database connection limits.
+- The bottleneck under load is the PostgreSQL connection pool. SQLAlchemy's `QueuePool`
+  defaults to `pool_size=5` and `max_overflow=10` (15 total connections maximum). These
+  values should be tuned to match the deployment environment's database connection limits
+  before production traffic ramps up. See DR-012.
 
 ## Deployment
 
-- **Runtime:** Python 3.8+ with dependencies listed in `requirements.txt`.
+- **Runtime:** Python 3.11+ recommended (Python 3.8 is the NFR-001 minimum but reached
+  EOL in October 2024; see DR-009). Dependencies listed in `requirements.txt`.
+- **Dependency update required (DR-001, DR-002):** Before deploying, update
+  `requirements.txt` to include `sqlalchemy>=2.0.0`, `psycopg2-binary>=2.9.0`,
+  `pydantic>=2.0.0`, `fastapi>=0.100.0`, `uvicorn>=0.20.0`, `pytest>=7.4.0`,
+  `requests>=2.28.0`. The previously pinned `fastapi==0.46.0` is incompatible with
+  Pydantic v2 and must be replaced.
 - **Server:** `uvicorn app.main:app --reload` for development; a production deployment
   should use `gunicorn -k uvicorn.workers.UvicornWorker` with multiple workers.
+- **TLS:** Production deployments must terminate TLS at the load-balancer or reverse-proxy
+  layer (e.g., Nginx, AWS ALB). Plain HTTP must not be exposed externally (OWASP A02).
 - **Database:** Set `DATABASE_URL` to the PostgreSQL connection string before starting
   the server. Example: `postgresql://user:password@host:5432/carportal`.
-- **Schema management:** Run `Base.metadata.create_all(bind=engine)` at startup (current
-  approach) or use Alembic migrations (recommended for production schema evolution).
+- **Schema management (DR-006):** Use `Base.metadata.create_all(bind=engine)` at startup
+  for this feature. Alembic migrations are deferred to a follow-on task when schema
+  evolution is first required.
+- **Seed data (DR-007):** The `vehicles` table will be empty after `create_all`. For local
+  development, insert a test row with:
+  `INSERT INTO vehicles (make, model, year, price, transmission, fuel_type) VALUES ('Toyota', 'Corolla', 2022, '25000', 'automatic', 'petrol');`
+  Populating the production database is an operational concern outside FR-001 scope.
 - **CI/CD:** The pipeline gates deployment on `pytest test/test_vehicle.py -v` passing.
   The `DATABASE_URL` is not required for the test suite because the test overrides `get_db`
   with an in-memory SQLite engine.
@@ -182,11 +199,23 @@ sequenceDiagram
   `Base.metadata.create_all(bind=engine)` on first startup.
 - The `id` column is an integer primary key auto-assigned by the database.
 - All six required fields (make, model, year, price, transmission, fuel_type) are stored
-  as non-nullable columns in the `vehicles` table; the existing Pydantic-only `Vehicle`
-  class in `models.py` with optional fields is not the live response schema.
+  as non-nullable columns in the `vehicles` table.
+- `app/db/database.py` does not currently exist in the source tree and must be created as
+  a new file during implementation (DR-005). A compiled `.pyc` confirms prior existence
+  but the source was not committed.
+- `test/test_vehicle.py` does not currently exist in the source tree and must be created
+  as a new file during implementation (DR-004). A compiled `.pyc` confirms prior existence
+  but the source was not committed.
+- The existing Pydantic `Vehicle` class in `models.py` (`name`, `category`, `link` fields)
+  is not the live response schema and must be deleted before the SQLAlchemy ORM `Vehicle`
+  class is added to resolve the naming collision (DR-003, closed decision).
+- `get_vehicle_by_id(vehicle_id, db)` does not yet exist in `app/api/api.py` and must be
+  added as a new function during implementation (DR-005).
 - The existing dead-code `read_vehicle` function in `api.py` (JSON flat-file path) is not
-  wired to any route and will not be activated as part of this feature. It may be removed
-  in a follow-on cleanup task.
+  wired to any route and must be removed as a tracked implementation task (DR-010).
+- Seed data for the `vehicles` table is out of scope for FR-001; the table will be empty
+  after `create_all`. Automated tests use fixtures; a one-line SQL insert example is
+  provided in the Deployment section for local development use (DR-007).
 - The three existing legacy endpoints (`/user`, `/question`, `/alternatives`, `/answer`,
   `/result`) that read from `data/*.json` files are not modified by this feature.
 - Authentication and authorisation are out of scope for this endpoint (confirmed in
@@ -196,20 +225,27 @@ sequenceDiagram
 
 ## Risks and Mitigations
 
-| Risk | Likelihood | Impact | Mitigation |
-| --- | --- | --- | --- |
-| `models.py` naming collision: a second Pydantic class named `Vehicle` shadows the SQLAlchemy ORM `Vehicle` at module scope | High (already present) | High — ORM queries fail if the wrong class is imported | Rename the existing Pydantic `Vehicle` class or remove it; keep only the SQLAlchemy ORM `Vehicle` and the `VehicleResponse` Pydantic schema |
-| `DATABASE_URL` not set in production environment | Medium | High — application fails to start or connects to wrong DB | Document required env vars; fail fast at startup with a clear error if `DATABASE_URL` is missing |
-| Schema drift between ORM model and actual DB table | Low | Medium — column mismatches cause runtime errors | Introduce Alembic migrations before production deployment |
-| SQLite/PostgreSQL dialect differences mask bugs in tests | Low | Medium — tests pass but production fails on PostgreSQL-specific behaviour | Add an integration test stage that runs against a real PostgreSQL instance in CI |
-| `read_vehicle` dead code reactivated accidentally | Low | Medium — inconsistent data source for vehicle lookups | Remove dead code as a tracked clean-up task in `impl-plan.md` |
+| Risk | Likelihood | Impact | Mitigation | Status |
+| --- | --- | --- | --- | --- |
+| `models.py` naming collision: existing Pydantic `Vehicle` class shadows the SQLAlchemy ORM `Vehicle` | High | High — ORM queries fail if the wrong class is resolved | **Resolved (DR-003):** Delete the Pydantic `Vehicle` class from `models.py` before adding the ORM class | Closed |
+| `requirements.txt` missing `sqlalchemy` and `psycopg2-binary`; `fastapi==0.46.0` incompatible with Pydantic v2 | High (confirmed) | Critical — clean install cannot run ORM code; `from_attributes=True` silently broken | **Resolved (DR-001, DR-002):** Update `requirements.txt` as specified in Deployment section | Closed |
+| `app/db/database.py` and `test/test_vehicle.py` source files absent | High (confirmed) | High — app fails to start; CI gate fails | **Resolved (DR-004, DR-005):** Both files must be created as new artefacts during implementation | Closed |
+| `DATABASE_URL` not set in production environment | Medium | High — application fails to start or connects to wrong DB | Document required env vars; fail fast at startup with a clear error if `DATABASE_URL` is missing | Open |
+| Schema drift between ORM model and actual DB table | Low | Medium — column mismatches cause runtime errors | Alembic migrations deferred (DR-006); `create_all` acceptable for FR-001 scope | Open |
+| SQLite/PostgreSQL dialect differences mask bugs in tests | Low | Medium — tests pass but production fails on PostgreSQL-specific behaviour | Add an integration test stage that runs against a real PostgreSQL instance in CI (future iteration) | Open |
+| `read_vehicle` dead code reactivated accidentally | Low | Medium — inconsistent data source for vehicle lookups | Remove dead code as a tracked implementation task (DR-010) | Open |
 
 ## Open Questions
 
-- Should `Base.metadata.create_all` be kept for production startup, or should Alembic
-  migrations be introduced now? (Alembic is safer but adds tooling complexity.)
-- Should the `vehicles` table be pre-populated with seed data, and if so, by what
-  mechanism (migration script, fixture, or manual insert)?
 - Is a `Dockerfile` or container specification required before the first deployment?
-- Should the existing Pydantic `Vehicle` class in `models.py` be deleted or retained for
-  any other purpose? (Current assessment: delete it to resolve the naming collision.)
+  (No container requirement exists in approved requirements; deferred unless user requests.)
+- Should Alembic migrations be introduced when the first schema change is needed after
+  FR-001 ships, or proactively as a separate follow-on task? (`create_all` is used for
+  this feature per DR-006 decision.)
+- Should a `GET /health` endpoint be added to support container orchestration probes?
+  (DR-011, deferred to a future pipeline iteration.)
+
+The following questions from the prior draft are now closed:
+- `Base.metadata.create_all` vs Alembic for this feature: **closed — use `create_all`** (DR-006).
+- Pydantic `Vehicle` class deletion: **closed — delete it** (DR-003).
+- Seed data strategy: **closed — out of scope; SQL insert example provided** (DR-007).
