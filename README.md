@@ -209,6 +209,67 @@ Example:
 GET /result/1
 ```
 
+### Retrieve a vehicle by ID
+
+```http
+GET /vehicles/{vehicle_id}
+```
+
+Retrieves detailed information about a vehicle by its unique integer ID. This endpoint supports the vehicle retrieval feature (FR-001) with full attribute returns (AC-001) and proper error handling (AC-002).
+
+**Path Parameters:**
+- `vehicle_id` (integer, required): Vehicle ID to retrieve. Must be greater than 0. Invalid values (≤0, non-integer) return HTTP 422 validation error.
+
+**Success Response (HTTP 200) — AC-001:**
+Returns the vehicle with all 6 required attributes:
+
+```json
+{
+  "id": 1,
+  "make": "Volkswagen",
+  "model": "ID.3",
+  "year": 2023,
+  "price": 35000.0,
+  "transmission": "automatic",
+  "fuel_type": "electric"
+}
+```
+
+**Error Response (HTTP 404) — AC-002:**
+When vehicle_id does not exist in the database:
+
+```json
+{
+  "detail": "Vehicle not found"
+}
+```
+
+**Validation Error Response (HTTP 422):**
+When path parameter validation fails (e.g., vehicle_id ≤ 0 or non-integer):
+
+```json
+{
+  "detail": [
+    {
+      "type": "greater_than",
+      "loc": ["path", "vehicle_id"],
+      "msg": "ensure this value is greater than 0",
+      "input": 0
+    }
+  ]
+}
+```
+
+**Examples:**
+
+```http
+GET /vehicles/1
+```
+
+```http
+GET /vehicles/5
+```
+
 ## Data Files
 
 Application data is stored in the `data/` directory:
@@ -220,24 +281,81 @@ Application data is stored in the `data/` directory:
 | `alternatives.json` | Available answers for each question |
 | `answers.json` | Answer-related data |
 | `cars.json` | Vehicle catalog and vehicle attributes |
+| `vehicles.json` | Vehicle details with all 6 attributes (id, make, model, year, price, transmission, fuel_type) |
 | `results.json` | Saved user-to-vehicle results |
 
 The application reads these files directly at runtime using Python's built-in `json` module. There is no SQL or NoSQL database configured.
 
 Run the application from the repository root so the relative paths under `data/` resolve correctly.
 
+## Requirements Traceability Matrix
+
+This section maps functional requirements (FR), acceptance criteria (AC), and implementation tasks (TASK) to code locations and tests.
+
+### FR-001: Vehicle Retrieval
+
+**Requirement:** System shall retrieve vehicle details by ID.
+
+**Acceptance Criteria:**
+
+| AC | Description | Status | Code Location | Test Location |
+|---|---|---|---|---|
+| AC-001 | HTTP 200 success response includes all 6 vehicle attributes (id, make, model, year, price, transmission, fuel_type) | ✅ Implemented | [app/main.py](app/main.py#L46), [app/api/api.py](app/api/api.py#L32), [app/db/models.py](app/db/models.py#L36) | [test/test.py](test/test.py#L98), [test/test.py](test/test.py#L193) |
+| AC-002 | HTTP 404 error response with "Vehicle not found" message when vehicle ID does not exist in database | ✅ Implemented | [app/api/api.py](app/api/api.py#L42) | [test/test.py](test/test.py#L154), [test/test.py](test/test.py#L231) |
+
+**Implementation Tasks:**
+
+| Task | Description | Status |
+|---|---|---|
+| TASK-001 | Update Vehicle Pydantic model with all 6 required attributes | ✅ Complete |
+| TASK-002 | Implement data layer fetch_vehicle() function | ✅ Complete |
+| TASK-003 | Implement service layer get_vehicle() with 404 handling | ✅ Complete |
+| TASK-004 | Implement GET /vehicles/{vehicle_id} FastAPI endpoint | ✅ Complete |
+| TASK-005 | Add Path validation (gt=0) | ✅ Complete |
+| TASK-006 | Update requirements.txt with current dependency versions | ✅ Complete |
+| TASK-007 | Verify logging is in place | ✅ Complete |
+| TASK-008 | Add unit tests for service & data layers | ✅ Complete |
+| TASK-009 | Add integration tests for endpoint | ✅ Complete |
+| TASK-010 | Add documentation and inline code comments | ✅ Complete |
+
+**Architecture Layer Mapping:**
+
+```
+GET /vehicles/{vehicle_id}  (Router, app/main.py)
+         ↓
+api.get_vehicle(id)         (Service, app/api/api.py)
+         ↓
+fetch_vehicle(id)           (Data, app/db/models.py)
+         ↓
+data/vehicles.json          (JSON file)
+```
+
 ## Project Structure
+
+App structure with layer responsibilities:
 
 ```text
 .
-├── .github/
-│   ├── copilot-instructions.md       # Global pipeline instructions
-│   ├── agents/                       # One agent per SDLC step
-│   ├── prompts/                      # /00-orchestrator entry point
-│   ├── instructions/                 # Path-scoped coding and artifact standards
-│   └── skills/                       # On-demand domain knowledge
 ├── app/
-│   ├── __init__.py
+│   ├── main.py              # Router Layer (FastAPI endpoints, HTTP handling)
+│   ├── api/
+│   │   └── api.py           # Service Layer (business logic, error conversion)
+│   └── db/
+│       └── models.py        # Data Layer (Pydantic models, JSON I/O)
+├── data/
+│   ├── vehicles.json        # Vehicle data (6 attributes per AC-001)
+│   ├── users.json
+│   ├── questions.json
+│   ├── alternatives.json
+│   ├── cars.json
+│   ├── answers.json
+│   └── results.json
+├── test/
+│   └── test.py              # Test suite (unit + integration tests)
+└── requirements.txt         # Python dependencies
+```
+
+
 │   ├── main.py
 │   ├── api/
 │   │   └── api.py

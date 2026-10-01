@@ -1,3 +1,26 @@
+"""
+Service Layer - Business Logic & HTTP Error Handling
+
+This module implements the business logic layer for the Car Portal API.
+It acts as a bridge between the router layer (app/main.py) and the data layer
+(app/db/models.py), handling:
+
+- Vehicle retrieval orchestration (calls data layer fetch_vehicle)
+- HTTP error handling (converts None → HTTPException 404)
+- Structured logging for retrieval attempts and errors
+- Pydantic model return types for FastAPI serialization
+
+Architecture:
+  Router (FastAPI endpoint) 
+    → Service (get_vehicle, read_user, etc.)
+    → Data (fetch_vehicle, JSON I/O)
+
+This implements FR-001: System shall retrieve vehicle details by ID.
+Supports AC-001 (HTTP 200 + all attributes) and AC-002 (HTTP 404 handling).
+
+See also: app/main.py (Router), app/db/models.py (Data)
+"""
+
 import json
 import logging
 from typing import List, Dict, Optional

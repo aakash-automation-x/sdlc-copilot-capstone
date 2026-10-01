@@ -1,3 +1,30 @@
+"""
+Data Layer - Pydantic Models & JSON Persistence
+
+This module implements the data layer for the Car Portal API, providing:
+
+- Pydantic models for request/response validation (Answer, UserAnswer, Vehicle)
+- JSON file I/O operations (fetch_vehicle, implicit via api.py)
+- Data schema definitions with field types and examples
+
+Architecture:
+  Router (FastAPI endpoint, app/main.py)
+    → Service (business logic, app/api/api.py)
+    → Data (JSON I/O & models, this module)
+
+Key responsibilities:
+  - Vehicle model: Defines schema with all 6 attributes (id, make, model, year, 
+    price, transmission, fuel_type) per AC-001
+  - fetch_vehicle(): Loads data/vehicles.json and retrieves by integer ID, 
+    returns Vehicle or None per AC-002
+  - JSON error handling: Catches parse/file errors and logs
+
+This implements FR-001: System shall retrieve vehicle details by ID.
+Supports AC-001 (complete Vehicle schema) and AC-002 (None on not found).
+
+See also: app/main.py (Router), app/api/api.py (Service)
+"""
+
 from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 import json
