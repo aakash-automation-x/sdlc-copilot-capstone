@@ -1,5 +1,33 @@
 import json
+import logging
 from typing import List, Dict, Optional
+from fastapi import HTTPException
+
+from app.db.models import Vehicle, fetch_vehicle
+
+logger = logging.getLogger(__name__)
+
+def get_vehicle(vehicle_id: int) -> Vehicle:
+    """Retrieve vehicle by ID, raise 404 if not found.
+    
+    Maps to FR-001 (System retrieves vehicle details by ID) and AC-002 (handles not found).
+    
+    Args:
+        vehicle_id: Integer vehicle ID to retrieve
+        
+    Returns:
+        Vehicle model instance with all required attributes (AC-001)
+        
+    Raises:
+        HTTPException(404): If vehicle not found (AC-002)
+    """
+    logger.info(f"Retrieving vehicle with ID: {vehicle_id}")
+    vehicle = fetch_vehicle(vehicle_id)
+    if vehicle is None:
+        logger.warning(f"Vehicle not found: {vehicle_id}")
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    logger.info(f"Vehicle retrieved successfully: {vehicle_id}")
+    return vehicle
 
 def read_user():
     with open('data/users.json') as stream:
@@ -12,7 +40,8 @@ def read_questions(position: int):
     with open('data/questions.json') as stream:
         questions = json.load(stream)
 
-    for question in questions:        if question['position'] == position:
+    for question in questions:
+        if question['position'] == position:
             return question
 
 
