@@ -77,7 +77,24 @@ results, or behavior.
 
 ## Step 4 — Create the pull request
 
-1. Create the PR from the source branch to the target branch using the GitHub CLI:
+### Pre-PR Security Verification
+Before creating the PR, **always** perform this security check:
+```bash
+# Review all staged changes for secrets
+git status
+git diff --staged
+
+# Verify .gitignore has all secret patterns
+git check-ignore -v mcp.json .mcp.json .env .secrets *.key *.pem
+```
+
+If any secrets are found:
+- **Stop immediately.** Do not create or push the PR.
+- Add the secret pattern to `.gitignore`.
+- If the secret is already in git history, escalate to the user for rotation and remediation.
+
+### PR Creation
+1. After security verification passes, create the PR using the GitHub CLI:
    ```bash
    gh pr create \
      --title "<descriptive title under 70 chars>" \

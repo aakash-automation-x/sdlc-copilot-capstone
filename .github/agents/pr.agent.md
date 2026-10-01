@@ -27,10 +27,26 @@ the final URL and traceability matrix.
 Do not duplicate the PR template, changelog rules, or checklist here — the skill
 file is the single source of truth for how the PR is assembled and created.
 
-## Security reminder
+## Security gate — pre-commit verification
 
-Verify that no secrets, tokens, or credentials appear in the PR description,
-changelog entry, or any committed code before the PR is created.
+**Before creating the PR, perform a final security audit:**
+
+1. Run `git status` and review all staged and unstaged changes for secrets:
+   - API keys, tokens, auth credentials (GitHub, Jira, Confluence, MCP, AWS, etc.)
+   - MCP configuration (`mcp.json`, `.mcp.json` — must be in `.gitignore`)
+   - Environment files (`.env*`) — must be in `.gitignore`
+   - Private keys, certificates (`.pem`, `.key`, `.pfx`, `.p12`) — must be in `.gitignore`
+   - Database credentials or connection strings — must be in `.gitignore`
+   - Bearer tokens, session IDs — must be in `.gitignore`
+
+2. If any secret pattern is found in tracked files:
+   - Stop immediately. Do **not** create the PR.
+   - Add the pattern to `.gitignore` with a clear comment.
+   - If the file is already committed, escalate to user for secrets rotation and
+     remediation advice (e.g., GitHub secret scanning, credentials reset).
+   - Never attempt to remove a secret from git history without explicit user approval.
+
+3. Verify no secrets appear in the PR description, changelog entry, or test output.
 
 ## Gate
 

@@ -96,6 +96,8 @@ Co-Authored-By: GitHub Copilot <noreply@github.com>"
 | --- | --- |
 | Scope | Only changes approved by the human in the loop are included |
 | Tests | All existing and new tests pass |
-| Security | No secrets, tokens, or credentials in code or output |
+| Security | No secrets, tokens, or credentials in code, output, or commit message |
+| Secrets Check | Run `git diff --staged` and `git status` — verify no API keys, tokens, `.env`, `.mcp.json`, private keys, or credentials appear in staged files |
+| Gitignore Audit | Confirm all secret patterns (mcp.json, .env*, *.key, *.pem, etc.) are in `.gitignore` with clear comments |
 | Conventions | Existing project structure, naming, and style are followed |
 | Traceability | Commit message references `TASK-###` |

@@ -83,7 +83,13 @@ The orchestrator:
 - **Gate before you proceed.** Each step reads the previous step's committed
   artifact. Do not start a step whose upstream artifact is missing.
 - **Secure by default.** Follow the OWASP Top 10. Never print, log, or commit
-  secrets, tokens, or credentials.
+  secrets, tokens, or credentials. Specifically:
+  - MCP configuration files: `mcp.json`, `.mcp.json` (add to `.gitignore`)
+  - Environment secrets: `.env`, `.env.local`, `.env.*.local` (add to `.gitignore`)
+  - Private keys and certs: `*.key`, `*.pem`, `*.pfx`, `*.p12` (add to `.gitignore`)
+  - API keys, tokens, bearer tokens (never hardcode; use env vars or secrets manager)
+  - Before every commit, run `git status` and `git diff --staged` to verify no secrets
+    are staged. Use `git check-ignore -v <filename>` to confirm `.gitignore` patterns.
 - **No speculative scope.** Implement only what an approved artifact requires.
 - **Repository facts over plans.** When an artifact, memory note, or user story conflicts with the current code, call out the discrepancy and ask for a decision before introducing a new persistence or deployment stack.
 
