@@ -9,10 +9,10 @@
       "args": ["mcp-atlassian"],
       "env": {
         "JIRA_URL": "https://aakashsingh2711.atlassian.net/jira/",
-        "JIRA_PERSONAL_TOKEN": "ATATT3xFfGF0f7q9PxSpqvhJhnUkMyrTVEn9z-yvrriiO3ksaOsyRSgZAG48UbVeHSPCETtt4VdAFYXOFB_WkSzZXVSRcT-z7x0KpKAICWM0z-H-nWO3O7pe-JST-oGDjiwrUgeheXQ4LiztMCocoJ3ztJpcso6tWqCQkyXSZQTXAcsgfDocm94=9F11477E",
+        "JIRA_PERSONAL_TOKEN": "",
         "CONFLUENCE_URL": "https://aakashsingh2711.atlassian.net/wiki/",
         "CONFLUENCE_USERNAME": "aakash.singh2711@gmail.com",
-        "CONFLUENCE_API_TOKEN": "ATATT3xFfGF0f7q9PxSpqvhJhnUkMyrTVEn9z-yvrriiO3ksaOsyRSgZAG48UbVeHSPCETtt4VdAFYXOFB_WkSzZXVSRcT-z7x0KpKAICWM0z-H-nWO3O7pe-JST-oGDjiwrUgeheXQ4LiztMCocoJ3ztJpcso6tWqCQkyXSZQTXAcsgfDocm94=9F11477E"
+        "CONFLUENCE_API_TOKEN": ""
       }
     }
 

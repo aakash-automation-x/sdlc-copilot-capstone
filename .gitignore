@@ -133,6 +133,26 @@ fabric.properties
 .idea/**/markdown-navigator.xml
 .idea/**/markdown-navigator/
 
+### Secrets and Credentials (SECURITY)
+# MCP configuration and secrets
+mcp.json
+.mcp.json
+*.mcp.json
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+.secrets
+*.key
+*.pem
+*.pfx
+*.p12
+
+# API keys, tokens, passwords in config
+.github/secrets/*
+!.github/secrets/.gitkeep
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
