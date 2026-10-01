@@ -1,4 +1,4 @@
-# Architecture — Vehicle Retrieval Endpoint (FR-001)
+# Architecture ï¿½ Vehicle Retrieval Endpoint (FR-001)
 
 ## Overview
 
@@ -36,46 +36,46 @@ This structure preserves the current codebase organization (routes in \pp/main.
 
 \\\
 +-----------------------------------------------------------------+
-¦                     FastAPI Application                         ¦
+ï¿½                     FastAPI Application                         ï¿½
 +-----------------------------------------------------------------+
-                              ¦
-                              ¦ HTTP GET /vehicles/{vehicle_id}
+                              ï¿½
+                              ï¿½ HTTP GET /vehicles/{vehicle_id}
                               ?
 +-----------------------------------------------------------------+
-¦                   Router Layer (Endpoint)                        ¦
-¦  +----------------------------------------------------------+   ¦
-¦  ¦ @app.get("/vehicles/{vehicle_id}")                       ¦   ¦
-¦  ¦  • Validate vehicle_id path parameter                    ¦   ¦
-¦  ¦  • Call service.get_vehicle(vehicle_id)                  ¦   ¦
-¦  ¦  • Return 200/404 response                               ¦   ¦
-¦  +----------------------------------------------------------+   ¦
-¦                   File: app/main.py                             ¦
+ï¿½                   Router Layer (Endpoint)                        ï¿½
+ï¿½  +----------------------------------------------------------+   ï¿½
+ï¿½  ï¿½ @app.get("/vehicles/{vehicle_id}")                       ï¿½   ï¿½
+ï¿½  ï¿½  ï¿½ Validate vehicle_id path parameter                    ï¿½   ï¿½
+ï¿½  ï¿½  ï¿½ Call service.get_vehicle(vehicle_id)                  ï¿½   ï¿½
+ï¿½  ï¿½  ï¿½ Return 200/404 response                               ï¿½   ï¿½
+ï¿½  +----------------------------------------------------------+   ï¿½
+ï¿½                   File: app/main.py                             ï¿½
 +-----------------------------------------------------------------+
-                              ¦
-                              ¦ Call service.get_vehicle(vehicle_id)
+                              ï¿½
+                              ï¿½ Call service.get_vehicle(vehicle_id)
                               ?
 +-----------------------------------------------------------------+
-¦              Service Layer (Business Logic)                      ¦
-¦  +----------------------------------------------------------+   ¦
-¦  ¦ def get_vehicle(vehicle_id):                             ¦   ¦
-¦  ¦  • Call data_layer.fetch_vehicle(vehicle_id)             ¦   ¦
-¦  ¦  • Handle None ? raise 404 error                         ¦   ¦
-¦  ¦  • Return Vehicle model instance                         ¦   ¦
-¦  +----------------------------------------------------------+   ¦
-¦                   File: app/api/api.py                          ¦
+ï¿½              Service Layer (Business Logic)                      ï¿½
+ï¿½  +----------------------------------------------------------+   ï¿½
+ï¿½  ï¿½ def get_vehicle(vehicle_id):                             ï¿½   ï¿½
+ï¿½  ï¿½  ï¿½ Call data_layer.fetch_vehicle(vehicle_id)             ï¿½   ï¿½
+ï¿½  ï¿½  ï¿½ Handle None ? raise 404 error                         ï¿½   ï¿½
+ï¿½  ï¿½  ï¿½ Return Vehicle model instance                         ï¿½   ï¿½
+ï¿½  +----------------------------------------------------------+   ï¿½
+ï¿½                   File: app/api/api.py                          ï¿½
 +-----------------------------------------------------------------+
-                              ¦
-                              ¦ Call data_layer.fetch_vehicle(vehicle_id)
+                              ï¿½
+                              ï¿½ Call data_layer.fetch_vehicle(vehicle_id)
                               ?
 +-----------------------------------------------------------------+
-¦               Data Layer (JSON File I/O)                         ¦
-¦  +----------------------------------------------------------+   ¦
-¦  ¦ def fetch_vehicle(vehicle_id):                           ¦   ¦
-¦  ¦  • Load data/vehicles.json                               ¦   ¦
-¦  ¦  • Search for record by vehicle_id                       ¦   ¦
-¦  ¦  • Return Vehicle | None                                 ¦   ¦
-¦  +----------------------------------------------------------+   ¦
-¦                   File: app/db/models.py + data/vehicles.json   ¦
+ï¿½               Data Layer (JSON File I/O)                         ï¿½
+ï¿½  +----------------------------------------------------------+   ï¿½
+ï¿½  ï¿½ def fetch_vehicle(vehicle_id):                           ï¿½   ï¿½
+ï¿½  ï¿½  ï¿½ Load data/vehicles.json                               ï¿½   ï¿½
+ï¿½  ï¿½  ï¿½ Search for record by vehicle_id                       ï¿½   ï¿½
+ï¿½  ï¿½  ï¿½ Return Vehicle | None                                 ï¿½   ï¿½
+ï¿½  +----------------------------------------------------------+   ï¿½
+ï¿½                   File: app/db/models.py + data/vehicles.json   ï¿½
 +-----------------------------------------------------------------+
 \\\
 
@@ -83,10 +83,10 @@ This structure preserves the current codebase organization (routes in \pp/main.
 
 | Component | Responsibility | Input | Output | Traces To |
 |---|---|---|---|---|
-| **Router (Endpoint)** | Accept HTTP GET request, validate path param, delegate to service | \ehicle_id: str\ (path param) | HTTP Response (200/404) | FR-001, AC-001, AC-002 |
-| **Service (Business Logic)** | Retrieve vehicle by ID, handle not-found, return model | \ehicle_id: str\ | \Vehicle\ model or exception | FR-001 |
-| **Data Layer (JSON I/O)** | Load vehicles.json, search by ID, return structured data | \ehicle_id: str\ | \Vehicle dict\ or \None\ | AC-001, AC-002 |
-| **Vehicle Model** | Define schema for vehicle attributes | N/A | Pydantic model with make, model, year, price, transmission, fuel_type | AC-001 |
+| **Router (Endpoint)** | Accept HTTP GET request, validate path param as integer, delegate to service | `vehicle_id: int` (path param) | HTTP Response (200/404) | FR-001, AC-001, AC-002 |
+| **Service (Business Logic)** | Retrieve vehicle by ID, handle not-found, return model | `vehicle_id: int` | `Vehicle` model or HTTPException(404) | FR-001 |
+| **Data Layer (JSON I/O)** | Load data/vehicles.json, search by integer ID, return structured data | `vehicle_id: int` | `Vehicle dict` or `None` | AC-001, AC-002 |
+| **Vehicle Model** | Define schema for vehicle attributes (make, model, year, price, transmission, fuel_type) | N/A | Pydantic model with all 6 required attributes | AC-001 |
 
 ## Data Flow
 
@@ -94,41 +94,41 @@ This structure preserves the current codebase organization (routes in \pp/main.
 
 \\\
 +----------+
-¦  Client  ¦
+ï¿½  Client  ï¿½
 +----------+
-     ¦ GET /vehicles/v123
+     ï¿½ GET /vehicles/v123
      ?
 +----------------------------------------------+
-¦ Router: Validate vehicle_id = "v123"         ¦
+ï¿½ Router: Validate vehicle_id = "v123"         ï¿½
 +----------------------------------------------+
-     ¦ Call service.get_vehicle("v123")
+     ï¿½ Call service.get_vehicle("v123")
      ?
 +----------------------------------------------+
-¦ Service: Delegate to data layer              ¦
+ï¿½ Service: Delegate to data layer              ï¿½
 +----------------------------------------------+
-     ¦ Call data_layer.fetch_vehicle("v123")
+     ï¿½ Call data_layer.fetch_vehicle("v123")
      ?
 +----------------------------------------------+
-¦ Data Layer: Load vehicles.json               ¦
-¦ Search: vehicles[].id == "v123" ? FOUND     ¦
-¦ Return: {"id": "v123", "make": "Toyota", ..}¦
+ï¿½ Data Layer: Load vehicles.json               ï¿½
+ï¿½ Search: vehicles[].id == "v123" ? FOUND     ï¿½
+ï¿½ Return: {"id": "v123", "make": "Toyota", ..}ï¿½
 +----------------------------------------------+
-     ¦ Construct Vehicle model
+     ï¿½ Construct Vehicle model
      ?
 +----------------------------------------------+
-¦ Service: Return Vehicle instance             ¦
+ï¿½ Service: Return Vehicle instance             ï¿½
 +----------------------------------------------+
-     ¦ Serialize to JSON response
+     ï¿½ Serialize to JSON response
      ?
 +----------------------------------------------+
-¦ Router: HTTP 200 OK                          ¦
-¦ {"id": "v123", "make": "Toyota",             ¦
-¦  "model": "Camry", "year": 2023, ...}        ¦
+ï¿½ Router: HTTP 200 OK                          ï¿½
+ï¿½ {"id": "v123", "make": "Toyota",             ï¿½
+ï¿½  "model": "Camry", "year": 2023, ...}        ï¿½
 +----------------------------------------------+
-     ¦ Send to client
+     ï¿½ Send to client
      ?
 +----------+
-¦  Client  ¦
+ï¿½  Client  ï¿½
 +----------+
 \\\
 
@@ -136,40 +136,40 @@ This structure preserves the current codebase organization (routes in \pp/main.
 
 \\\
 +----------+
-¦  Client  ¦
+ï¿½  Client  ï¿½
 +----------+
-     ¦ GET /vehicles/v999 (does not exist)
+     ï¿½ GET /vehicles/v999 (does not exist)
      ?
 +----------------------------------------------+
-¦ Router: Validate vehicle_id = "v999"         ¦
+ï¿½ Router: Validate vehicle_id = "v999"         ï¿½
 +----------------------------------------------+
-     ¦ Call service.get_vehicle("v999")
+     ï¿½ Call service.get_vehicle("v999")
      ?
 +----------------------------------------------+
-¦ Service: Delegate to data layer              ¦
+ï¿½ Service: Delegate to data layer              ï¿½
 +----------------------------------------------+
-     ¦ Call data_layer.fetch_vehicle("v999")
+     ï¿½ Call data_layer.fetch_vehicle("v999")
      ?
 +----------------------------------------------+
-¦ Data Layer: Load vehicles.json               ¦
-¦ Search: vehicles[].id == "v999" ? NOT FOUND  ¦
-¦ Return: None                                 ¦
+ï¿½ Data Layer: Load vehicles.json               ï¿½
+ï¿½ Search: vehicles[].id == "v999" ? NOT FOUND  ï¿½
+ï¿½ Return: None                                 ï¿½
 +----------------------------------------------+
-     ¦ Catch None, raise HTTPException(404)
+     ï¿½ Catch None, raise HTTPException(404)
      ?
 +----------------------------------------------+
-¦ Service: Propagate exception                 ¦
+ï¿½ Service: Propagate exception                 ï¿½
 +----------------------------------------------+
-     ¦ Exception caught by FastAPI
+     ï¿½ Exception caught by FastAPI
      ?
 +----------------------------------------------+
-¦ Router: HTTP 404 Not Found                   ¦
-¦ {"detail": "Vehicle not found"}              ¦
+ï¿½ Router: HTTP 404 Not Found                   ï¿½
+ï¿½ {"detail": "Vehicle not found"}              ï¿½
 +----------------------------------------------+
-     ¦ Send to client
+     ï¿½ Send to client
      ?
 +----------+
-¦  Client  ¦
+ï¿½  Client  ï¿½
 +----------+
 \\\
 
@@ -213,10 +213,11 @@ This structure preserves the current codebase organization (routes in \pp/main.
 - **No sensitive data in logs:** Do not log full vehicle records or stack traces to stdout.
 
 ### OWASP Top 10 Mitigations
-- **A01:2021 – Broken Access Control:** No authentication/authorization required for this release (out of scope). Future versions should add API key or JWT validation.
-- **A03:2021 – Injection:** JSON file format and Pydantic validation prevent injection attacks.
-- **A04:2021 – Insecure Design:** Data layer is isolated; no direct JSON file writes from untrusted input.
-- **A09:2021 – Using Components with Known Vulnerabilities:** Dependency versions pinned in \equirements.txt\; security updates checked via \pip audit\.
+- **A01:2021 ï¿½ Broken Access Control:** No authentication/authorization required for this release (out of scope). Future versions should add API key or JWT validation.
+- **A03:2021 ï¿½ Injection:** JSON file format and Pydantic validation prevent injection attacks.
+- **A04:2021 ï¿½ Insecure Design:** Data layer is isolated; no direct JSON file writes from untrusted input.
+- **A09:2021 ï¿½ Using Components with Known Vulnerabilities:** Dependency versions pinned in \
+equirements.txt\; security updates checked via \pip audit\.
 
 ## Reliability and Observability
 
@@ -270,9 +271,9 @@ This structure preserves the current codebase organization (routes in \pp/main.
 
 ## Assumptions and Constraints
 
-- **Assumption:** \data/vehicles.json\ exists and is readable at startup.
-- **Assumption:** Vehicle records have a stable unique identifier (id field).
-- **Assumption:** The vehicle_id path parameter is a simple string (no special characters requiring encoding).
+- **Assumption:** `data/vehicles.json` exists and is readable at startup. âœ… **RESOLVED:** File migrated from cars.json with complete schema.
+- **Assumption:** Vehicle records have a stable unique identifier (`id` field). âœ… **RESOLVED:** Integer IDs (1â€“10) confirmed.
+- **Assumption:** The `vehicle_id` path parameter is an integer. âœ… **RESOLVED:** Path parameter type is `int`.
 - **Constraint:** JSON file persistence limits concurrency; no simultaneous writes supported.
 - **Constraint:** No authentication/authorization for vehicle retrieval (this release).
 - **Constraint:** No pagination or filtering; must retrieve complete vehicle record by exact ID match.
@@ -288,13 +289,21 @@ This structure preserves the current codebase organization (routes in \pp/main.
 | **Path traversal attack (vehicle_id)** | Very Low | Medium (depends on file structure) | FastAPI validates path param as string; no \../\ or special chars interpreted as file paths |
 | **Malformed JSON in vehicles.json** | Low | High (500 errors on every request) | Pre-validate JSON structure; add test that loads vehicles.json on startup |
 
-## Open Questions
+## Resolved Design Decisions (Design Review Approval - 2026-10-01)
 
-1. **Caching strategy:** Should we cache vehicle records in-memory to reduce file I/O? If yes, when should the cache be invalidated (on app startup, periodic refresh, file watcher)?
-2. **Concurrent write safety:** If multiple processes write to \data/vehicles.json\, should we add a write lock or accept data inconsistency?
-3. **Future authentication:** When authentication is added (future release), should it be at the Router layer (middleware) or Service layer?
-4. **Error response format:** Should 404 responses include extended error details (e.g., "Vehicle v999 not found in database") or remain minimal?
-5. **Observability baseline:** What logging level and format (JSON, plain text) is expected for this service in the current environment?
+âœ… **DR-001 Resolved:** Data file location confirmed as `data/vehicles.json` with complete schema (id: int, make, model, year, price, transmission, fuel_type). All 10 vehicle records migrated from cars.json.
+
+âœ… **DR-003 Resolved:** Vehicle ID type confirmed as `int`. Router layer accepts integer path parameters; Service layer compares integer IDs; Data layer searches vehicles.json by integer ID.
+
+âœ… **Three-layer architecture approved:** Router â†’ Service â†’ Data separation of concerns validated and ready for implementation.
+
+## Open Questions (Deferred to Future Releases)
+
+1. **Caching strategy:** Should we cache vehicle records in-memory to reduce file I/O? If yes, cache invalidation strategy?
+2. **Concurrent write safety:** How to enforce single-writer constraint on data/vehicles.json?
+3. **Future authentication:** Router middleware or Service layer when authentication is added?
+4. **Error response format:** Include extended error details in 404 responses?
+5. **Observability baseline:** Logging level and format (JSON, plain text) expected?
 
 ---
 
@@ -313,6 +322,6 @@ This structure preserves the current codebase organization (routes in \pp/main.
 ---
 
 **Document Version:** 1.0  
-**Status:** Ready for Design Review Agent (Step 3)  
+**Status:** âœ… Approved by Design Review Agent (Step 3) â€” Ready for Implementation Planning (Step 4)  
 **Generated:** 2026-10-01  
-**Architecture Type:** Layered (Router ? Service ? Data)
+**Architecture Type:** Layered (Router â†’ Service â†’ Data)
