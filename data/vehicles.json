@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "make": "Volkswagen",
+    "model": "ID.3",
+    "year": 2023,
+    "price": 35000,
+    "transmission": "automatic",
+    "fuel_type": "electric"
+  },
+  {
+    "id": 2,
+    "make": "Porsche",
+    "model": "Taycan",
+    "year": 2023,
+    "price": 79900,
+    "transmission": "automatic",
+    "fuel_type": "electric"
+  },
+  {
+    "id": 3,
+    "make": "Tesla",
+    "model": "Model 3",
+    "year": 2023,
+    "price": 42990,
+    "transmission": "automatic",
+    "fuel_type": "electric"
+  },
+  {
+    "id": 4,
+    "make": "Vauxhall",
+    "model": "e-Corsa",
+    "year": 2023,
+    "price": 29995,
+    "transmission": "automatic",
+    "fuel_type": "electric"
+  },
+  {
+    "id": 5,
+    "make": "Mini",
+    "model": "Electric",
+    "year": 2023,
+    "price": 30750,
+    "transmission": "automatic",
+    "fuel_type": "electric"
+  },
+  {
+    "id": 6,
+    "make": "Chevrolet",
+    "model": "Onix",
+    "year": 2023,
+    "price": 18500,
+    "transmission": "manual",
+    "fuel_type": "gasoline"
+  },
+  {
+    "id": 7,
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2023,
+    "price": 28000,
+    "transmission": "automatic",
+    "fuel_type": "gasoline"
+  },
+  {
+    "id": 8,
+    "make": "BMW",
+    "model": "i4",
+    "year": 2023,
+    "price": 59900,
+    "transmission": "automatic",
+    "fuel_type": "electric"
+  },
+  {
+    "id": 9,
+    "make": "Ford",
+    "model": "Mustang",
+    "year": 2023,
+    "price": 47995,
+    "transmission": "automatic",
+    "fuel_type": "gasoline"
+  },
+  {
+    "id": 10,
+    "make": "Toyota",
+    "model": "Prius",
+    "year": 2023,
+    "price": 32500,
+    "transmission": "automatic",
+    "fuel_type": "hybrid"
+  }
+]
