@@ -3,6 +3,25 @@
 **Project:** Car Portal Recommendation System  
 **Purpose:** A Python FastAPI-based application that helps users discover and get recommendations for vehicles based on their preferences, answers, and search criteria.
 
+## Repository implementation reality
+
+- The current implementation is a small FastAPI service backed by JSON files under `data/`; it does not currently use PostgreSQL, SQLAlchemy, Docker, or a separate service process.
+- HTTP routes are defined in `app/main.py`, application logic and JSON I/O are in `app/api/api.py`, and Pydantic models are in `app/db/models.py`.
+- Relative data paths assume commands are run from the repository root. Preserve this constraint or make path handling explicit before changing it.
+- The primary endpoint tests are in `test/test.py`. Run `pytest test/test.py` after Python changes.
+- Install dependencies with `pip install -r requirements.txt` and start locally with `uvicorn app.main:app --reload`.
+- Treat `README.md` as the source for setup and endpoint details and `userstory.md` as the current local story input; link to them instead of duplicating their content. If Jira or Confluence access is unavailable, use the local story and report the limitation rather than inventing requirements.
+
+## Agent working loop
+
+- Before changing production code, read the applicable scoped instruction file under `.github/instructions/` and the relevant upstream SDLC artifact under `artifacts/`.
+- For Python changes, preserve the route/service/data responsibility split and avoid adding database or infrastructure assumptions that are not approved in the artifacts.
+- For behavior changes, add or update focused tests in `test/` and run the narrowest relevant pytest command before broader validation.
+- Treat explicit user scope constraints such as one functional requirement, one acceptance criterion, or minimal artifacts as binding across requirements, architecture, design review, and implementation planning. Do not add requirements or non-functional scope to fill out a template.
+- If a user story, requirement, or approved artifact changes after a pipeline stage has completed, pause downstream work, identify stale artifacts, and request approval before continuing.
+- For external story sources, distinguish successful retrieval from tool or connector availability. Record the retrieval result, use `userstory.md` when access fails, and never infer story content from a configured skill or tool name.
+- Do not silently repair unrelated defects or rewrite existing user changes. Surface missing artifacts, ambiguous requirements, and architecture mismatches for human approval.
+
 This repository implements an **Agentic SDLC Pipeline** driven entirely by GitHub
 Copilot. Every phase of the software delivery lifecycle — from requirements to a
 merged pull request — is orchestrated through Copilot **Agents, Prompts,
@@ -66,6 +85,7 @@ The orchestrator:
 - **Secure by default.** Follow the OWASP Top 10. Never print, log, or commit
   secrets, tokens, or credentials.
 - **No speculative scope.** Implement only what an approved artifact requires.
+- **Repository facts over plans.** When an artifact, memory note, or user story conflicts with the current code, call out the discrepancy and ask for a decision before introducing a new persistence or deployment stack.
 
 ## Working agreements
 
@@ -75,3 +95,11 @@ The orchestrator:
 - Prefer small, reviewable commits with messages that reference the task or
   requirement ID.
 - Escalate ambiguous or high-impact decisions to the user instead of guessing.
+
+## Related documentation
+
+- [Project setup and API reference](../README.md)
+- [Current user story](../userstory.md)
+- [Python code-quality standards](instructions/code-quality.instructions.md)
+- [Test conventions](instructions/tests.instructions.md)
+- [SDLC artifact standards](instructions/sdlc-artifacts.instructions.md)

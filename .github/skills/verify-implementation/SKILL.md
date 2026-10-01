@@ -1,6 +1,6 @@
 ---
 name: verify-implementation
-description: "Generate and run a comprehensive verification suite (unit + integration tests) and a content quality check of the final output document against artifacts/requirements.md. Use in Step 7 of the SDLC pipeline (Verify Agent) after the code review has approved the implementation."
+description: "Verify the Car Portal implementation with pytest test/test.py, FastAPI API behavior checks, requirement traceability, and final document quality. Use in Step 7 of the Agentic SDLC pipeline after code review approval."
 user-invocable: true
 ---
 
@@ -66,17 +66,23 @@ Work through every area below before reporting results:
 
 ## Step 5 — Run the suite and triage
 
-1. Run the full test suite and capture results and coverage:
+1. From the repository root, run the project's primary verification command and capture results:
    ```bash
-   # Project-specific — update for your test runner and test files
-   pytest test/test_vehicle.py -v
-   pytest --tb=short
+   pytest test/test.py -v
    ```
-2. For each failure, determine whether the defect is in the code or in the test.
-3. Fix the root cause and re-run until the suite is green.
-4. **Never** weaken assertions, delete coverage, or mask a real defect to make a
+2. Confirm the FastAPI behavior covered by `test/test.py`:
+   - `GET /` returns HTTP 200 and the expected service message.
+   - `GET /user` returns stored users.
+   - `GET /question/1` returns question position 1, while an unknown position returns HTTP 400.
+   - `GET /alternatives/1` returns alternatives for question 1.
+   - `POST /answer` accepts a valid `UserAnswer` payload and returns HTTP 201.
+   - `GET /result/1` returns the saved-result response.
+3. If a behavior is not covered by the existing test file, add a focused deterministic test under `test/` before declaring verification complete. Use fixtures or isolated test data for new file-boundary tests; do not modify production JSON data during verification.
+4. For each failure, determine whether the defect is in the code or in the test.
+5. Fix the root cause and re-run the same command until the suite is green.
+6. **Never** weaken assertions, delete coverage, or mask a real defect to make a
    test pass — fix the underlying issue.
-5. Report coverage against each acceptance criterion and flag any requirement
+7. Report coverage against each acceptance criterion and flag any requirement
    without a passing test.
 
 ## Step 6 — Verify the output document
