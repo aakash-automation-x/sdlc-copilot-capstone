@@ -5,8 +5,9 @@ tools:
   - search/codebase
   - edit/editFiles
   - execute/runInTerminal
+branch: feature-copilot-capstone
+gitrepo: sdlc-copilot-capstone
 ---
-
 # PR Agent Instructions
 
 ## Purpose
