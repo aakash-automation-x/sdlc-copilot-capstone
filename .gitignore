@@ -194,7 +194,12 @@ coverage.xml
 .scrapy
 
 # Sphinx documentation
+docs/
 docs/_build/
+
+# Agent/Skill temporary outputs
+VERIFICATION_REPORT.md
+pr_body.txt
 
 # PyBuilder
 target/

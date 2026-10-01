@@ -25,19 +25,21 @@ tests and a document quality check. Follow these steps exactly.
 
 Before generating any test, list:
 
-- **Unit tests** — individual functions and modules (logic, boundaries, error
-  branches, tested in isolation)
-- **Integration tests** — interactions between components, external services,
-  files, and end-to-end flows (using fixtures or a controlled environment, not
-  production resources)
-- **Edge cases** — `Not Found`, missing fields, empty inputs, invalid states,
-  timeouts, and concurrent access
+- **Unit tests** — Maximum 3 tests for individual functions and modules (logic,
+  boundaries, error branches, tested in isolation). Prioritize critical paths.
+- **Integration tests** — Maximum 3 tests for interactions between components,
+  external services, files, and end-to-end flows (using fixtures or a controlled
+  environment, not production resources)
+- **Edge cases** — Cover `Not Found`, missing fields, empty inputs, invalid states
+  within the 3 unit + 3 integration test budget
 - **Document quality checks** — structure, completeness, accuracy, and formatting
   of the final output document
 
 Every `FR-###` and `NFR-###` must map to at least one planned test case.
 
 ## Step 3 — Generate the tests
+
+**Test Budget:** Maximum 3 unit tests + maximum 3 integration tests (6 total)
 
 For each test:
 
@@ -48,6 +50,7 @@ For each test:
 - Reference the requirement ID in the test name or a one-line comment
 - Mock or stub external dependencies in unit tests; use real boundaries in
   integration tests
+- Prioritize critical acceptance criteria and happy path scenarios within the 6-test limit
 
 ## Step 4 — Verification checklist
 
