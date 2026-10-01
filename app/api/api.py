@@ -1,5 +1,14 @@
 import json
-from typing import List, Dict, Optional
+
+from typing import Dict, Optional
+
+from sqlalchemy.orm import Session
+
+from app.db.models import Vehicle
+
+
+def get_vehicle_by_id(vehicle_id: int, db: Session) -> Optional[Vehicle]:
+    return db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()
 
 def read_user():
     with open('data/users.json') as stream:
@@ -12,7 +21,8 @@ def read_questions(position: int):
     with open('data/questions.json') as stream:
         questions = json.load(stream)
 
-    for question in questions:        if question['position'] == position:
+    for question in questions:
+        if question['position'] == position:
             return question
 
 

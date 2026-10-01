@@ -1,0 +1,1295 @@
+================================================================================
+AGENTIC SDLC PIPELINE — FULL EXECUTION LOG
+Project: Car Portal — Get Vehicle Details (FR-001)
+Branch:  feature-claude-capstone → main
+PR:      https://github.com/aakash-automation-x/sdlc-copilot-capstone/pull/7
+Exported: 2026-09-24 20:47:47
+================================================================================
+
+================================================================================
+SECTION 0 — GIT COMMIT HISTORY
+================================================================================
+3c55792  2026-09-24  docs: mark Step 8 complete in orchestration log â€” PR #7 created  [aakash.singh]
+f3e4ba3  2026-09-24  chore: fix agent tool names and remove Copilot references in .claude/agents  [aakash.singh]
+9813543  2026-09-24  docs: add pipeline orchestration log and verification report  [aakash.singh]
+91fec53  2026-09-24  docs: add CHANGELOG for car-portal get-vehicle-details  [aakash.singh]
+7cc80b8  2026-09-24  feat: implement car-portal get-vehicle-details (TASK-001 through TASK-009)  [aakash.singh]
+deeaba0  2026-09-24  docs: add implementation plan for car-portal get-vehicle-details  [aakash.singh]
+eb0e581  2026-09-24  docs: capture architecture design review for car-portal  [aakash.singh]
+0585e36  2026-09-24  docs: define architecture for car-portal get-vehicle-details  [aakash.singh]
+3d269da  2026-09-24  docs: capture requirements for car-portal get-vehicle-details  [aakash.singh]
+aa8decf  2026-09-24  agent implementation for claude  [aakash.singh]
+c4f7566  2026-09-24  agent implementation for claude  [aakash.singh]
+f96ddcd  2026-09-24  docs: address DR-001 (422 contract) and DR-002 (Decimal->float) in architecture  [aakash.singh]
+f6a00cb  2026-09-24  test: add AC-003 content-type assertion (NFR-001)  [aakash.singh]
+4cdbc95  2026-09-23  docs: finalize orchestration log â€” all 8 steps complete  [aakash.singh]
+e8e2f2c  2026-09-23  docs: add CHANGELOG and finalize orchestration log for PR (FR-001)  [aakash.singh]
+c53b2ec  2026-09-23  test: add missing price assertion and FR-001 traceability comments (VER-001)  [aakash.singh]
+9527f1a  2026-09-23  fix: resolve review findings RV-001 and RV-002  [aakash.singh]
+ae88689  2026-09-23  feat: implement GET /vehicles/{vehicle_id} endpoint (FR-001)  [aakash.singh]
+562839d  2026-09-23  docs: add implementation plan for Car Portal Get Vehicle Details (FR-001)  [aakash.singh]
+abcbea6  2026-09-23  docs: capture architecture design review for Car Portal Get Vehicle Details  [aakash.singh]
+4bdc7d3  2026-09-23  docs: define architecture for Car Portal Get Vehicle Details (FR-001)  [aakash.singh]
+5d2e3df  2026-09-23  docs: capture requirements for Car Portal Get Vehicle Details (FR-001)  [aakash.singh]
+33d9919  2026-09-19  Merge pull request #6 from aakash-automation-x/feature-capstone-2  [Aakash Singh]
+ee96b57  2026-09-19  Merge branch 'main' of https://github.com/aakash-automation-x/sdlc-copilot-capstone into feature-capstone-2  [aakash.singh]
+59c3825  2026-09-19  updated readme  [aakash.singh]
+494d7b7  2026-09-19  Merge pull request #5 from aakash-automation-x/feature-capstone-2  [Aakash Singh]
+9ead459  2026-09-19  changes  [aakash.singh]
+30893a3  2026-09-19  Merge pull request #4 from aakash-automation-x/feature-capstone-2  [Aakash Singh]
+7f9244a  2026-09-19  Delete ORCHESTRATION_LOG.md  [Aakash Singh]
+fdff2a4  2026-09-19  Delete artifacts/requirements.md  [Aakash Singh]
+a276966  2026-09-19  Delete artifacts/impl-plan.md  [Aakash Singh]
+e99880e  2026-09-19  Delete artifacts/design-review.md  [Aakash Singh]
+09b4e86  2026-09-19  Delete artifacts/architecture.md  [Aakash Singh]
+25536c6  2026-09-19  Merge branch 'main' of https://github.com/aakash-automation-x/sdlc-copilot-capstone into feature-capstone-2  [aakash.singh]
+db6e81f  2026-09-19  delete docker files  [aakash.singh]
+3fac6a7  2026-09-19  Delete userstory.docx  [Aakash Singh]
+04b7e8f  2026-09-19  Merge branch 'main' of https://github.com/aakash-automation-x/sdlc-copilot-capstone into feature-copilot-capstone  [aakash.singh]
+73105b3  2026-09-19  updates  [aakash.singh]
+97ca507  2026-09-19  Merge pull request #2 from aakash-automation-x/feature-copilot-capstone  [Aakash Singh]
+a1d7a65  2026-09-19  Merge branch 'feature-copilot-capstone' of https://github.com/aakash-automation-x/sdlc-copilot-capstone into feature-copilot-capstone  [aakash.singh]
+1a36628  2026-09-19  Merge branch 'main' of https://github.com/aakash-automation-x/sdlc-copilot-capstone into feature-copilot-capstone  [aakash.singh]
+97add41  2026-09-19  Delete artifacts/requirements.md  [Aakash Singh]
+4f72ac6  2026-09-19  Delete artifacts/impl-plan.md  [Aakash Singh]
+db62f12  2026-09-19  Delete artifacts/design-review.md  [Aakash Singh]
+1fde308  2026-09-19  Delete artifacts/architecture.md  [Aakash Singh]
+45eedda  2026-09-19  updates  [aakash.singh]
+5596ed0  2026-09-19  docs: Step 4 Implementation Plan - Phase 1 (FR-001) Task Breakdown  [aakash.singh]
+28afd0e  2026-09-19  docs: Step 3 Design Review - Architecture validated with conditions  [aakash.singh]
+2e1e5cb  2026-09-19  docs: define architecture for agentic sdlc pipeline - FR-001 vehicle details retrieval  [aakash.singh]
+a6ee3dc  2026-09-19  docs: capture comprehensive requirements for Vehicle Comparison feature (FR-001 to FR-004, NFR-001 to NFR-015)  [aakash.singh]
+cf56434  2026-09-19  docs: define architecture for 2-vehicle comparison API (Step 2)  [aakash.singh]
+d4dce31  2026-09-19  Merge pull request #1 from aakash-automation-x/feature-copilot-capstone  [Aakash Singh]
+10daccd  2026-09-19  first commit  [aakash.singh]
+a80729a  2026-09-17  add readme  [aakash.singh]
+36158ac  2026-09-15  SDLC CapStone First Commit  [aakash.singh]
+64393f8  2026-09-15  SDLC CapStone First Commit  [aakash.singh]
+71db603  2026-09-15  feat: implement TASK-003 secrets management and config  [aakash.singh]
+8710938  2026-09-15  feat: implement TASK-004 database schema and migrations  [aakash.singh]
+e38abfd  2026-09-15  feat: implement TASK-001 monorepo scaffolding  [aakash.singh]
+8a09a77  2026-09-15  docs: capture SDLC artifacts for customer login (US-LOGIN-001)  [aakash.singh]
+fc6f506  2026-09-15  SDLC CapStone First Commit  [aakash.singh]
+e937941  2026-09-04  added agents for capstone project  [aakash.singh]
+
+================================================================================
+SECTION 1 — ORCHESTRATION LOG
+File: artifacts/ORCHESTRATION_LOG.md
+================================================================================
+# SDLC Pipeline Orchestration Log
+
+| Step | Agent | Status | Artifact | Started | Completed | Reviewer Notes |
+|------|-------|--------|----------|---------|-----------|----------------|
+| 1 | Requirements | ✅ Approved | artifacts/requirements.md | 2026-09-24 | 2026-09-24 | Approved by user |
+| 2 | Architect | ✅ Approved | artifacts/architecture.md | 2026-09-24 | 2026-09-24 | Approved by user |
+| 3 | Design Review | ✅ Approved | artifacts/design-review.md | 2026-09-24 | 2026-09-24 | Approved by user |
+| 4 | Planner | ✅ Approved | artifacts/impl-plan.md | 2026-09-24 | 2026-09-24 | Approved by user |
+| 5 | Implementation | ✅ Approved | requirements.txt, app/api/api.py, app/main.py, test/test_vehicle.py | 2026-09-24 | 2026-09-24 | Approved by user — 3/3 tests passing |
+| 6 | Review | ✅ Approved | review notes — Approve, 0 Blocker/Major, 1 Minor, 2 Nits | 2026-09-24 | 2026-09-24 | Approved by user |
+| 7 | Verify | ✅ Approved | artifacts/verification-report.md — PASS, 3/3 tests | 2026-09-24 | 2026-09-24 | Approved by user |
+| 8 | PR | ✅ Approved | [PR #7](https://github.com/aakash-automation-x/sdlc-copilot-capstone/pull/7) + artifacts/CHANGELOG.md | 2026-09-24 | 2026-09-24 | PR updated via GitHub REST API; full SDLC description applied |
+
+
+================================================================================
+SECTION 2 — REQUIREMENTS
+File: artifacts/requirements.md
+================================================================================
+# Requirements — Car Portal: Get Vehicle Details
+
+## User Story Reference
+
+**Story:** As a car shopper, I want to retrieve vehicle details by ID to view specifications and pricing.
+
+**Business Objective:** Enable users to fetch vehicle information by vehicle ID.
+
+**Source:** `userstory.md` v1.0 (2026-09-19)
+
+---
+
+## Functional Requirement
+
+| ID | Requirement |
+|---|---|
+| FR-001 | The system shall retrieve vehicle details by vehicle ID and return all vehicle attributes: make, model, year, price, transmission, and fuel_type. |
+
+---
+
+## Acceptance Criteria
+
+**AC-001 (FR-001):** When a valid vehicle ID is provided, the response includes all six attributes — make, model, year, price, transmission, and fuel_type — for that vehicle.
+
+**AC-002 (FR-001):** When a vehicle ID that does not exist in the system is provided, the system shall return HTTP 404 with body `{"detail": "Vehicle not found"}`.
+
+**AC-003 (FR-001):** The response `Content-Type` shall be `application/json` for all successful and not-found responses.
+
+---
+
+## Requirement Traceability
+
+| Requirement | Source |
+|---|---|
+| FR-001 | `userstory.md` — Functional Requirements table, row FR-001; Acceptance Criteria bullet 1 |
+| AC-001 | `userstory.md` — Acceptance Criteria bullet 1 |
+| AC-002 | `artifacts/design-review.md` DR-004 / DD-003 — implied by retrieve-by-ID REST contract |
+| AC-003 | `artifacts/design-review.md` DR-009 / DD-003 — standard REST/HTTP contract |
+
+---
+
+## Out of Scope
+
+The following are explicitly excluded from this requirement:
+
+- Non-functional requirements (performance, availability, scalability)
+- Authentication and authorisation
+- Integration requirements (third-party APIs, external systems)
+- Security and privacy controls
+- Error handling beyond the 404 not-found response (AC-002) — e.g., server errors, database unavailability
+- Create, update, or delete vehicle operations
+- Listing or searching vehicles
+
+
+================================================================================
+SECTION 3 — ARCHITECTURE
+File: artifacts/architecture.md
+================================================================================
+# Architecture — Car Portal: Get Vehicle Details
+
+## Architecture Overview
+
+The Car Portal get-vehicle-details feature is a single REST endpoint implemented as a lightweight **three-layer FastAPI application** backed by a relational database. The layers are:
+
+1. **Router layer** — FastAPI route handler, HTTP error mapping, Pydantic response serialisation
+2. **Service layer** — business query functions against the ORM
+3. **Data layer** — SQLAlchemy ORM models, Pydantic schemas, database session management
+
+Everything below traces to FR-001: retrieve vehicle details by ID and return all six attributes.
+
+---
+
+## Architectural Goals and Drivers
+
+| Goal | Driver | FR Trace |
+|---|---|---|
+| Return six vehicle attributes for a given ID | Core user story requirement | FR-001 |
+| Return HTTP 404 when the ID does not exist | Correct REST contract, implied by FR-001 | FR-001 |
+| Serialise price as a numeric value (float) | API consumers expect a number, not a string | FR-001 (price attribute) |
+| Exclude internal `id` from the response | Clean external contract; ID is already a path param | FR-001 (attribute list is exhaustive) |
+| Support SQLite in dev/test, PostgreSQL in production | Testability without a running Postgres instance | FR-001 (system must be testable) |
+
+---
+
+## Recommended Architecture
+
+A **layered monolith** is appropriate for this single-endpoint MVP. No microservices, message queues, or caching layers are warranted at this scope. The three layers map directly onto the existing source tree.
+
+```
+app/
+  main.py          ← Router layer (FastAPI routes + HTTP error mapping)
+  api/
+    api.py         ← Service layer (ORM query functions)
+  db/
+    models.py      ← ORM model (Vehicle) + Pydantic schema (VehicleResponse)
+    database.py    ← Engine, SessionLocal, get_db dependency provider
+```
+
+---
+
+## Component Diagram
+
+```mermaid
+graph TD
+    Client["HTTP Client<br/>(browser / API consumer)"]
+    Router["Router Layer<br/>app/main.py<br/>FastAPI GET /vehicles/{vehicle_id}"]
+    Service["Service Layer<br/>app/api/api.py<br/>get_vehicle_by_id()"]
+    ORM["Data Layer<br/>app/db/models.py<br/>Vehicle (SQLAlchemy)<br/>VehicleResponse (Pydantic)"]
+    DB["Database<br/>PostgreSQL (prod)<br/>SQLite (dev/test)<br/>vehicles table"]
+    DBConn["DB Session Provider<br/>app/db/database.py<br/>get_db() dependency"]
+
+    Client -->|"GET /vehicles/{vehicle_id}"| Router
+    Router -->|"vehicle_id, db session"| Service
+    Service -->|"SQLAlchemy query"| ORM
+    ORM -->|"SELECT from vehicles"| DB
+    DB -->|"Vehicle row or None"| ORM
+    ORM -->|"Vehicle ORM instance or None"| Service
+    Service -->|"Vehicle ORM instance or None"| Router
+    Router -->|"200 VehicleResponse JSON<br/>or 404 HTTPException"| Client
+    DBConn -.->|"Session injected via Depends"| Router
+```
+
+---
+
+## Key Components and Responsibilities
+
+### Router Layer — `app/main.py`
+
+| Responsibility | Detail |
+|---|---|
+| Route definition | `GET /vehicles/{vehicle_id}` with `response_model=VehicleResponse` |
+| Dependency injection | Injects a SQLAlchemy `Session` via `Depends(get_db)` |
+| 404 handling | Raises `HTTPException(status_code=404)` when service returns `None` |
+| Serialisation | FastAPI uses `VehicleResponse` Pydantic model to shape and validate the JSON output |
+
+**Traces to FR-001:** This layer is the entry point for the retrieve-by-ID operation and enforces the HTTP contract.
+
+### Service Layer — `app/api/api.py`
+
+| Responsibility | Detail |
+|---|---|
+| Query execution | `db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()` |
+| Return contract | Returns a `Vehicle` ORM instance, or `None` if not found |
+| No business transformation | Raw ORM object passed up; Pydantic handles serialisation at the router |
+
+**Traces to FR-001:** Implements the data retrieval that satisfies the six-attribute lookup.
+
+### Data Layer — `app/db/models.py`
+
+| Class | Role |
+|---|---|
+| `Vehicle` (SQLAlchemy) | Maps to the `vehicles` table; defines `id`, `make`, `model`, `year`, `price` (Numeric 12,2), `transmission`, `fuel_type` |
+| `VehicleResponse` (Pydantic v2) | Outbound schema; exposes `make`, `model`, `year`, `price` (float), `transmission`, `fuel_type` — no `id` |
+
+**Traces to FR-001:** `VehicleResponse` is the authoritative definition of the six required attributes.
+
+### DB Session Provider — `app/db/database.py`
+
+| Responsibility | Detail |
+|---|---|
+| Engine creation | Reads `DATABASE_URL` env var; defaults to `sqlite:///./carportal.db` |
+| Session lifecycle | `get_db()` generator: opens, yields, and closes a session per request |
+| Driver compatibility | Sets `check_same_thread=False` for SQLite only |
+
+**Traces to FR-001:** Provides the database connectivity that all reads depend on.
+
+---
+
+## Data Flow — GET /vehicles/{vehicle_id}
+
+```mermaid
+sequenceDiagram
+    participant C as HTTP Client
+    participant R as Router (main.py)
+    participant S as Service (api.py)
+    participant DB as Database (vehicles table)
+
+    C->>R: GET /vehicles/42
+    R->>R: Resolve DB session via get_db()
+    R->>S: get_vehicle_by_id(vehicle_id=42, db=session)
+    S->>DB: SELECT * FROM vehicles WHERE id = 42 LIMIT 1
+    alt Vehicle found
+        DB-->>S: vehicles row
+        S-->>R: Vehicle ORM instance
+        R-->>C: HTTP 200, VehicleResponse JSON<br/>{make, model, year, price, transmission, fuel_type}
+    else Not found
+        DB-->>S: (empty result)
+        S-->>R: None
+        R-->>C: HTTP 404, {"detail": "Vehicle not found"}
+    end
+    R->>R: DB session closed (finally block)
+```
+
+---
+
+## Technology Choices and Rationale
+
+| Technology | Version constraint | Rationale |
+|---|---|---|
+| **Python** | >=3.10 | Active runtime is Python 3.14 (confirmed by `__pycache__` bytecode); all dependencies must support Python 3.10+. |
+| **FastAPI** | 0.115.0 (pinned) | Updated from 0.46.0 to the first fully stable Pydantic v2-compatible release line (DD-001); provides automatic OpenAPI docs, Pydantic integration, and ASGI request handling. |
+| **Uvicorn** | >=0.24.0 | Updated from 0.11.1 to a version compatible with FastAPI 0.115.x and Python 3.14 (DD-001). |
+| **SQLAlchemy** | >=1.4.0,<2.0.0 | Lower bound raised from 1.3.0 to 1.4.0 (DD-002) to guarantee `from sqlalchemy.orm import declarative_base` is available; upper bound retained to avoid SQLAlchemy 2.0 API changes. |
+| **PostgreSQL** | Production target | Specified in user story; psycopg2-binary driver included. |
+| **SQLite** | Dev/test only | Zero-config alternative enabled by `DATABASE_URL` defaulting to SQLite; test suite uses in-memory SQLite. |
+| **Pydantic** | >=2.0.0,<3.0.0 (explicit) | `VehicleResponse` uses `ConfigDict(from_attributes=True)` — Pydantic v2 syntax. Now pinned explicitly rather than implied. Resolves R-001 (DD-001). |
+| **pytest** | >=7.0.0 | Updated from 5.3.2 to a version compatible with Python 3.14 (DD-001). |
+| **requests** | >=2.28.0 | Updated from 2.22.0 for Python 3.14 compatibility. |
+
+**Note on dependency modernisation (DD-001, DD-002):** The original pinned versions (FastAPI 0.46.0, uvicorn 0.11.1, pytest 5.3.2) were released in 2019–2020 and are incompatible with the active Python 3.14 runtime and with Pydantic v2 syntax used in the codebase. Risk R-001 is resolved by upgrading FastAPI to 0.115.0 and adding an explicit Pydantic v2 pin.
+
+---
+
+## Security Considerations
+
+Authentication and authorisation are **explicitly out of scope** per requirements. For this MVP:
+
+- The endpoint is publicly accessible by design.
+- No sensitive data beyond vehicle specifications is returned.
+- The `id` primary key is intentionally excluded from the response to avoid leaking internal identifiers.
+
+If auth is added in a future iteration it should be applied at the router layer via FastAPI dependency injection (e.g., `Depends(verify_token)`), with no changes required to the service or data layers.
+
+---
+
+## Reliability Considerations
+
+- Database session lifecycle is managed in a `try/finally` block in `get_db()`, ensuring sessions are always closed even on error.
+- The 404 path is handled explicitly; no unhandled exceptions should surface for a missing ID.
+- The `LIMIT 1` implicit in `.first()` prevents multiple-row anomalies if the primary key constraint were ever violated.
+
+---
+
+## Observability Considerations
+
+FastAPI's built-in Uvicorn access logging provides per-request method, path, status code, and latency at no extra cost. For this MVP that is sufficient. Structured logging or tracing would be a future enhancement.
+
+---
+
+## Deployment Considerations
+
+- The application is environment-agnostic: set `DATABASE_URL` to a PostgreSQL connection string for production; omit it for local development (SQLite fallback).
+- There is no migration tooling in scope. The `vehicles` table schema must be created externally (e.g., by running `Base.metadata.create_all(bind=engine)` once, or via a separate migration script).
+- The application is stateless; horizontal scaling (multiple Uvicorn workers or containers) is straightforward.
+
+---
+
+## Assumptions
+
+| ID | Assumption |
+|---|---|
+| A-001 | The `vehicles` table exists and is pre-populated before the application starts. No seeding mechanism is in scope. |
+| A-002 | FastAPI path parameter parsing enforces that `vehicle_id` is an integer; it does not reject zero or negative values. Non-positive IDs (e.g., 0, -1) will reach the service layer and return HTTP 404 via a DB miss. Adding a `Path(..., gt=0)` constraint is deferred as a future hardening item (see DR-005). |
+| A-003 | The `price` field returning as `float` (Python) rather than `Decimal` is acceptable for display consumers. |
+| A-004 | A single Uvicorn worker process is sufficient for MVP deployment. |
+
+---
+
+## Constraints
+
+| ID | Constraint |
+|---|---|
+| C-001 | Technology stack (FastAPI, SQLAlchemy, PostgreSQL, Python 3.8+) is fixed by the user story. |
+| C-002 | Only the GET by ID operation is in scope — no list, create, update, or delete. |
+| C-003 | No authentication or authorisation. |
+| C-004 | No non-functional requirements (performance targets, SLAs) have been specified. |
+
+---
+
+## Risks
+
+| ID | Risk | Likelihood | Impact | Mitigation |
+|---|---|---|---|---|
+| R-001 | ~~FastAPI 0.46.0 was built for Pydantic v1; `ConfigDict(from_attributes=True)` is Pydantic v2 syntax.~~ **RESOLVED (DR-001 / DD-001):** FastAPI upgraded to 0.115.0 with explicit `pydantic>=2.0.0,<3.0.0` dependency; Pydantic v2 syntax in `VehicleResponse` is now fully compatible. | ~~High~~ Resolved | ~~High~~ n/a | Applied: FastAPI 0.115.0 + Pydantic v2 explicit pin. See design-review.md DR-001. |
+| R-002 | SQLAlchemy `<2.0.0` constraint combined with Pydantic v2 and a newer Python environment may produce deprecation warnings or subtle compatibility issues. | Medium | Low | Run `pytest` before delivery to confirm no import-time errors. |
+| R-003 | No database migration tooling means schema drift is possible if the `vehicles` table definition changes. | Low | Medium | Out of scope for this MVP; document as a future concern. |
+
+---
+
+## Open Questions
+
+| ID | Question | Owner |
+|---|---|---|
+| OQ-001 | ~~Which Pydantic version is installed?~~ **RESOLVED:** Pydantic v2 is the required version; FastAPI has been upgraded to 0.115.0 to match. See DR-001 / DD-001 in `artifacts/design-review.md`. | Design Review Agent |
+| OQ-002 | Is there an Alembic migration or a seeding script for the `vehicles` table, or must it be created manually? | Planner Agent |
+| OQ-003 | Should the `id` field ever be exposed (e.g., for client-side navigation)? Current design omits it. | Product / Requirements Agent |
+
+---
+
+## Requirement Traceability
+
+| Architecture Element | FR-001 |
+|---|---|
+| `GET /vehicles/{vehicle_id}` route | Direct |
+| `get_vehicle_by_id()` service function | Direct |
+| `Vehicle` ORM model (six columns) | Direct |
+| `VehicleResponse` Pydantic schema (six fields) | Direct |
+| `get_db()` session provider | Indirect (enables DB access) |
+| HTTP 404 on missing ID | Direct (implied by "retrieve by ID" — invalid ID must not return garbage) |
+
+
+================================================================================
+SECTION 4 — DESIGN REVIEW
+File: artifacts/design-review.md
+================================================================================
+# Design Review — Car Portal: Get Vehicle Details
+
+**Review date:** 2026-09-24
+**Reviewer:** Design Review Agent (Step 3 of 8)
+**Status:** Complete — see readiness recommendation at the end.
+
+---
+
+## Review Summary
+
+The architecture for `GET /vehicles/{vehicle_id}` is sound in its layered structure, data flow, and HTTP contract. All six required attributes are accounted for, the 404 path is correctly designed, and the three-layer separation is appropriate for the scope. However, **three High findings block a clean production implementation**:
+
+1. The pinned `fastapi==0.46.0` is incompatible with the Pydantic v2 syntax already used in the code.
+2. The SQLAlchemy version constraint (`>=1.3.0`) permits an install of 1.3.x, where the `declarative_base` import path used in the code does not exist.
+3. The active Python runtime (Python 3.14, inferred from `__pycache__` bytecode naming) is incompatible with every 2020-era pinned dependency in `requirements.txt`.
+
+These three findings share a common fix: modernise the dependency pins. Two Medium findings — the 404 path missing from requirements.md and an incorrect architecture assumption about input validation — require documentation updates rather than code changes.
+
+All findings, decisions, and required file updates are documented below.
+
+---
+
+## Review Inputs
+
+| Artifact | Path | Commit |
+|---|---|---|
+| Architecture under review | `artifacts/architecture.md` | `0585e36` (updated `f96ddcd`) |
+| Approved requirements | `artifacts/requirements.md` | `3d269da` |
+| Router layer | `app/main.py` | working tree |
+| Service layer | `app/api/api.py` | working tree |
+| Data / ORM layer | `app/db/models.py` | working tree |
+| DB session provider | `app/db/database.py` | working tree |
+| Tests | `test/test_vehicle.py` | working tree |
+| Dependency manifest | `requirements.txt` | working tree |
+
+---
+
+## Findings
+
+### Findings Table
+
+| ID | Severity | Area | Finding | Impact | Recommendation | Decision | Status |
+|---|---|---|---|---|---|---|---|
+| DR-001 | High | Dependency Compatibility | `fastapi==0.46.0` (Jan 2020) requires Pydantic v1. The code uses Pydantic v2 syntax (`ConfigDict`, `from_attributes=True`). Pydantic is absent from `requirements.txt` — pip will install whatever FastAPI 0.46.0 requests (Pydantic v1), and the application will fail at startup with `ImportError: cannot import name 'ConfigDict' from 'pydantic'`. Risk R-001 from the architecture is confirmed live and unresolved. | App fails to start on a clean install. | Upgrade FastAPI to `>=0.100.0` (first version with Pydantic v2 support) and add `pydantic>=2.0.0,<3.0.0` explicitly to `requirements.txt`. Update architecture Technology Choices table accordingly. | **Accepted — upgrade to FastAPI 0.115.0 (stable, widely used) with Pydantic v2.** Update `requirements.txt` and `architecture.md`. | Open |
+| DR-002 | High | Dependency Compatibility | `app/db/database.py` uses `from sqlalchemy.orm import declarative_base`. This import path was introduced in SQLAlchemy 1.4. The `requirements.txt` constraint `>=1.3.0,<2.0.0` permits resolution to SQLAlchemy 1.3.x where this import does not exist. | App fails to start if SQLAlchemy 1.3.x is installed. | Tighten to `sqlalchemy>=1.4.0,<2.0.0`. | **Accepted — update lower bound to 1.4.0. Update `requirements.txt` and architecture.** | Open |
+| DR-003 | High | Runtime Compatibility | `__pycache__` bytecode files show `cpython-314`, confirming Python 3.14 as the active interpreter. FastAPI 0.46.0, uvicorn 0.11.1, pytest 5.3.2, and requests 2.22.0 all predate Python 3.12 and have no confirmed Python 3.14 support. `pip install -r requirements.txt` is expected to fail on Python 3.14. | Blocks install and CI on the active runtime. Shares a common fix with DR-001. | Modernise all dependency pins to versions known to support Python 3.14 (aligns with DR-001 fix). Also add a `python_requires` note or a `.python-version` file. | **Accepted — dependency upgrade for DR-001 implicitly resolves this. Add minimum Python version note to architecture.** | Open |
+| DR-004 | Medium | Requirements Completeness | `requirements.md` explicitly scopes out "Error handling beyond the happy path." The architecture adds a 404 response for missing IDs, and `test_vehicle.py` tests `AC-002` (404) and `AC-003` (content-type). Neither AC-002 nor AC-003 is defined in `requirements.md`. | Traceability gap: the tests verify acceptance criteria that are not formally in scope. | Add AC-002 ("When a vehicle ID that does not exist is provided, the system shall return HTTP 404 with `{"detail": "Vehicle not found"}`.") and AC-003 ("The response Content-Type shall be `application/json`.") to `requirements.md`. | **Accepted — 404 for a missing resource is an implied requirement of any retrieve-by-ID operation. AC-002 and AC-003 are added to `requirements.md`.** | Open |
+| DR-005 | Medium | API Contract Accuracy | Architecture assumption A-002 states "`vehicle_id` is always a positive integer; FastAPI path parameter parsing enforces this." FastAPI type coercion only guarantees an integer; it does not reject zero or negative values. A request for `GET /vehicles/0` or `GET /vehicles/-5` passes validation and reaches the service, returning a 404 (no row found). The assumption misrepresents what is enforced. | Misleading documentation; may cause confusion during testing. | Either add a `Path(..., gt=0)` constraint to the route, or update A-002 to accurately state that only integer type is enforced and non-positive IDs receive a 404. | **Accepted — update A-002 to state that FastAPI enforces integer type only; non-positive IDs return 404 via DB miss. Adding `gt=0` is deferred as a future hardening item.** | Open |
+| DR-006 | Medium | Data Integrity | `VehicleResponse` declares `price: float`. SQLAlchemy returns PostgreSQL `Numeric(12,2)` as `decimal.Decimal`. Pydantic v2 coerces `Decimal` to `float`. IEEE-754 float can introduce rounding error on some values. The test uses `pytest.approx`, which masks this. The architecture documents this as A-003 but without formal product acceptance. | Prices may display extra decimal places in some consumers. Low risk for a read-only display feature. | Formally accept A-003. If precision becomes a consumer issue, the fix is confined to `VehicleResponse` (change `price: float` to `price: Decimal` and add `from decimal import Decimal` import). | **Accepted — A-003 formally accepted. Float precision is adequate for display. Fix path documented.** | Accepted |
+| DR-007 | Low | Code Quality | `get_vehicle_by_id(vehicle_id: int, db)` in `app/api/api.py` lacks a type hint for `db` and has no return type annotation. | Reduces static analysis and IDE support. | Add `db: Session` and `-> Optional[Vehicle]` annotations. | **Accepted — implement during coding step.** | Note for implementation |
+| DR-008 | Low | Code Quality | `app/main.py` line 40 calls `payload.dict()`, the Pydantic v1 method deprecated in v2 (replaced by `model_dump()`). Not in the vehicle feature, but in the same module. | Generates `PydanticDeprecatedSince20` deprecation warnings after the v2 upgrade. | Replace with `payload.model_dump()` when upgrading to Pydantic v2. | **Accepted — fix during the same implementation pass as DR-001.** | Note for implementation |
+| DR-009 | Low | Traceability | `test_vehicle.py` references `AC-002` and `NFR-001` in docstrings. AC-002 is resolved by DR-004. `NFR-001` (content-type check) is not defined anywhere in requirements. | Minor traceability gap in the test docstring. | Accept AC-003 added via DR-004 as the formal home for the content-type check; update the test docstring from `NFR-001` to `AC-003`. | **Accepted — update test docstring during implementation.** | Note for implementation |
+
+---
+
+## Agreed Design Decisions
+
+| Decision ID | Decision | Rationale | Affected Artifacts |
+|---|---|---|---|
+| DD-001 | Upgrade FastAPI to `0.115.0` and add `pydantic>=2.0.0,<3.0.0` to `requirements.txt` | Resolves the Pydantic v1/v2 conflict (DR-001) and the Python 3.14 incompatibility (DR-003). FastAPI 0.115.x is a stable, widely deployed release with full Pydantic v2 support. | `requirements.txt`, `artifacts/architecture.md` |
+| DD-002 | Tighten SQLAlchemy lower bound to `>=1.4.0,<2.0.0` | Guarantees `from sqlalchemy.orm import declarative_base` is always available (DR-002). | `requirements.txt`, `artifacts/architecture.md` |
+| DD-003 | Formally add AC-002 (404 not-found) and AC-003 (JSON content-type) to `requirements.md` | Makes the 404 contract and content-type expectation first-class, traceable requirements rather than undocumented behaviour (DR-004). | `artifacts/requirements.md` |
+| DD-004 | Update A-002 to reflect that FastAPI enforces integer type only; non-positive IDs return 404 | Corrects a misleading architecture assumption (DR-005) without introducing a scope-creep constraint. | `artifacts/architecture.md` |
+| DD-005 | Formally accept A-003 (float price serialisation) | Price precision adequate for display consumers; fix path documented for future if needed (DR-006). | `artifacts/architecture.md` |
+
+---
+
+## Deferred / Rejected Findings
+
+| Finding | Disposition | Rationale |
+|---|---|---|
+| Positive-integer `Path(gt=0)` constraint | Deferred | Not in scope for MVP; the 404 response for non-positive IDs is acceptable. Document A-002 accurately instead. |
+| Alembic migration tooling | Deferred | Captured as R-003 in architecture; out of scope for this story. |
+| Structured logging / tracing | Deferred | Uvicorn access logs sufficient for MVP per architecture Observability section. |
+| Auth/authorisation | Deferred | Explicitly out of scope per FR-001 and C-003. |
+
+---
+
+## Required Updates to Architecture.md
+
+The following changes are applied immediately:
+
+1. **Technology Choices table** — Update FastAPI version from `0.46.0 (pinned)` to `0.115.0 (pinned, Pydantic v2-compatible)`; add explicit Pydantic v2 row; update SQLAlchemy lower bound from `1.3.0` to `1.4.0`; add Python ≥ 3.10 requirement note.
+2. **Risk R-001** — Mark as resolved; record the decision (FastAPI upgrade to 0.115.0 + explicit Pydantic v2).
+3. **Assumption A-002** — Correct wording: FastAPI enforces integer type only; non-positive IDs return 404 via DB miss.
+4. **Open Question OQ-001** — Mark resolved: Pydantic v2 is used; FastAPI must be upgraded to match.
+
+---
+
+## Required Updates to Requirements.md
+
+1. Add **AC-002**: "When a vehicle ID that does not exist is provided, the system shall return HTTP 404 with body `{"detail": "Vehicle not found"}`."
+2. Add **AC-003**: "The response Content-Type shall be `application/json`."
+3. Remove "Error handling beyond the happy path" from the Out of Scope list, or qualify it to clarify that the 404 contract is now in scope.
+
+---
+
+## Open Questions and Follow-up Actions
+
+| ID | Question / Action | Owner | Priority |
+|---|---|---|---|
+| FA-001 | Update `requirements.txt`: `fastapi==0.115.0`, `pydantic>=2.0.0,<3.0.0`, `uvicorn>=0.24.0`, `sqlalchemy>=1.4.0,<2.0.0`, `pytest>=7.0.0`, `requests>=2.28.0`. | Implementation Agent | High |
+| FA-002 | Add type annotations to `get_vehicle_by_id` per DR-007. | Implementation Agent | Low |
+| FA-003 | Replace `payload.dict()` with `payload.model_dump()` per DR-008. | Implementation Agent | Low |
+| FA-004 | Update `test_vehicle.py` docstring: `NFR-001 / AC-003` → `AC-003`. | Implementation Agent | Low |
+| OQ-002 | Is there an Alembic migration or seeding script for the `vehicles` table? (Carried from architecture OQ-002.) | Planner Agent | Medium |
+| OQ-003 | Should `vehicle_id` ever be returned in the response? (Carried from architecture OQ-003.) | Product | Low |
+
+---
+
+## Readiness Recommendation
+
+**Ready to proceed to planning and implementation with conditions.**
+
+The three High findings (DR-001, DR-002, DR-003) share a single fix: modernise the dependency pins (see DD-001 and DD-002). The architecture updates and requirements additions (DR-004, DR-005) are documentation-only changes applied in this review. No architectural redesign is required.
+
+The Planner Agent and Implementation Agent must ensure `requirements.txt` is updated per FA-001 before any test run, as the current pins will cause an import-time failure on the active Python 3.14 runtime.
+
+All structural design decisions (three-layer architecture, single endpoint, SQLite/PostgreSQL duality, 404 contract, six-attribute response model, `id` exclusion) are sound and approved.
+
+
+================================================================================
+SECTION 5 — IMPLEMENTATION PLAN
+File: artifacts/impl-plan.md
+================================================================================
+# Implementation Plan — Car Portal: Get Vehicle Details
+
+**Prepared by:** Planner Agent (Step 4 of 8)
+**Date:** 2026-09-24
+**Status:** Ready for Implementation
+
+---
+
+## Overview
+
+This plan breaks the approved architecture into a nine-task, dependency-ordered implementation list for the Implementation Agent. The feature under delivery is a single REST endpoint:
+
+```
+GET /vehicles/{vehicle_id}  →  200 VehicleResponse | 404 {"detail": "Vehicle not found"}
+```
+
+The three-layer FastAPI architecture (Router → Service → Data) is already correctly structured in the working tree. Four targeted changes are required; the remainder of the tasks are verification passes to confirm the existing code matches the approved design before the test suite runs.
+
+---
+
+## Source Artifact References
+
+| Artifact | Path | Key Content |
+|---|---|---|
+| Requirements | `artifacts/requirements.md` | FR-001, AC-001, AC-002, AC-003 |
+| Architecture | `artifacts/architecture.md` | Three-layer design, DD-001 through DD-005 |
+| Design Review | `artifacts/design-review.md` | DR-001 through DR-009, FA-001 through FA-004 |
+| Router layer | `app/main.py` | `GET /vehicles/{vehicle_id}` route (line 49–54) |
+| Service layer | `app/api/api.py` | `get_vehicle_by_id()` (line 6–7) |
+| Data layer | `app/db/models.py` | `Vehicle` ORM + `VehicleResponse` Pydantic schema |
+| DB session provider | `app/db/database.py` | `get_db()` generator, SQLite/PostgreSQL dual support |
+| Test suite | `test/test_vehicle.py` | Three test functions covering AC-001, AC-002, AC-003 |
+| Dependencies | `requirements.txt` | Currently outdated; FA-001 fixes this |
+
+---
+
+## Planning Assumptions and Constraints
+
+| ID | Assumption / Constraint |
+|---|---|
+| PA-001 | **TASK-001 is a hard prerequisite for all other tasks.** The current `requirements.txt` pins (fastapi==0.46.0, uvicorn==0.11.1, pytest==5.3.2, requests==2.22.0) are incompatible with Python 3.14 and with the Pydantic v2 syntax already used in the codebase. No install, import, or test run will succeed until TASK-001 is complete. |
+| PA-002 | The three-layer architecture (router `app/main.py`, service `app/api/api.py`, data `app/db/models.py` + `app/db/database.py`) is already correctly structured. Verification tasks (TASK-002 through TASK-005) confirm conformance; they require a code fix only if a gap is discovered. |
+| PA-003 | The `vehicles` table must exist and be pre-populated before the application is started in any non-test environment (architecture A-001). No seeding script is in scope for this story. The test suite creates an in-memory SQLite database automatically via `Base.metadata.create_all`. |
+| PA-004 | No database migration tooling (Alembic) is in scope. See OQ-002. |
+| PA-005 | Python >=3.10 is required. The active interpreter is Python 3.14 (confirmed from `__pycache__` bytecode naming). |
+| PA-006 | No changes to authentication, authorisation, listing, or any CRUD operation other than GET by ID are in scope (C-002, C-003). |
+
+---
+
+## Task List
+
+### TASK-001: Update requirements.txt to modern, Python 3.14-compatible pins
+
+- **Priority:** High
+- **Depends on:** None
+- **Blocked by:** None
+- **FR/NFR trace:** DR-001, DR-002, DR-003, DD-001, DD-002, FA-001
+- **Description:** Replace the outdated dependency pins in `requirements.txt` with versions that support Python 3.14 and Pydantic v2. The exact target versions are:
+  - `fastapi==0.115.0`
+  - `pydantic>=2.0.0,<3.0.0`
+  - `uvicorn>=0.24.0`
+  - `sqlalchemy>=1.4.0,<2.0.0`
+  - `pytest>=7.0.0`
+  - `requests>=2.28.0`
+  - Retain: `psycopg2-binary` (no version change required)
+- **Expected output:** `requirements.txt` updated; old pins removed.
+- **Validation:** Run `pip install -r requirements.txt --dry-run` (or equivalent) and confirm no dependency conflict errors. The file should contain exactly the seven entries above.
+
+---
+
+### TASK-002: Verify router layer — FR-001, AC-002, AC-003
+
+- **Priority:** Medium
+- **Depends on:** TASK-001
+- **Blocked by:** None
+- **FR/NFR trace:** FR-001, AC-001, AC-002, AC-003
+- **Description:** Inspect `app/main.py` and confirm the following, applying fixes only if a gap is found:
+  1. `GET /vehicles/{vehicle_id}` route is defined with `response_model=VehicleResponse`.
+  2. `db: Session = Depends(get_db)` is injected correctly.
+  3. `api.get_vehicle_by_id(vehicle_id, db)` is called and the result checked against `None`.
+  4. `HTTPException(status_code=404, detail="Vehicle not found")` is raised when the vehicle is not found (AC-002).
+  5. FastAPI's automatic JSON serialisation via `VehicleResponse` ensures `Content-Type: application/json` (AC-003).
+  6. No `id` field is present in the response (architecture goal — ID excluded).
+- **Expected output:** `app/main.py` confirmed correct; no changes required unless a gap is found.
+- **Validation:** Code review against architecture Router Layer table. Covered by TASK-009 integration tests.
+
+---
+
+### TASK-003: Verify service layer — FR-001
+
+- **Priority:** Medium
+- **Depends on:** TASK-001
+- **Blocked by:** None
+- **FR/NFR trace:** FR-001, DD-001
+- **Description:** Inspect `app/api/api.py` and confirm that `get_vehicle_by_id` issues the correct ORM query:
+  ```python
+  db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()
+  ```
+  Confirm the function returns the `Vehicle` ORM instance or `None` — no business transformation applied at this layer. Apply fixes only if the query deviates from the specification.
+- **Expected output:** `app/api/api.py` confirmed correct; no changes required unless a gap is found.
+- **Validation:** Code review against architecture Service Layer table. Covered by TASK-009 integration tests.
+
+---
+
+### TASK-004: Verify data layer — Vehicle ORM model and VehicleResponse schema
+
+- **Priority:** Medium
+- **Depends on:** TASK-001
+- **Blocked by:** None
+- **FR/NFR trace:** FR-001, AC-001, DD-001, DD-005
+- **Description:** Inspect `app/db/models.py` and confirm:
+  1. `Vehicle` SQLAlchemy model maps to the `vehicles` table with all seven columns: `id` (PK), `make`, `model`, `year`, `price` (Numeric 12,2), `transmission`, `fuel_type`.
+  2. `VehicleResponse` Pydantic v2 model exposes exactly the six required attributes — `make`, `model`, `year`, `price` (float), `transmission`, `fuel_type` — and does **not** expose `id`.
+  3. `model_config = ConfigDict(from_attributes=True)` is present (required for ORM-to-Pydantic coercion).
+  Apply fixes only if a gap is found.
+- **Expected output:** `app/db/models.py` confirmed correct; no changes required unless a gap is found.
+- **Validation:** Code review against architecture Data Layer table. Covered by TASK-009 integration tests (AC-001 verifies all six fields are returned; also asserts `"id" not in data`).
+
+---
+
+### TASK-005: Verify DB session provider
+
+- **Priority:** Medium
+- **Depends on:** TASK-001
+- **Blocked by:** None
+- **FR/NFR trace:** FR-001, DD-002
+- **Description:** Inspect `app/db/database.py` and confirm:
+  1. `DATABASE_URL` is read from the environment variable, defaulting to `sqlite:///./carportal.db`.
+  2. `check_same_thread=False` connect arg is applied only when the URL starts with `sqlite`.
+  3. `get_db()` opens a session, yields it, and closes it in a `finally` block.
+  4. `from sqlalchemy.orm import declarative_base` is used (requires SQLAlchemy >=1.4.0 — guaranteed by TASK-001).
+  Apply fixes only if a gap is found.
+- **Expected output:** `app/db/database.py` confirmed correct; no changes required unless a gap is found.
+- **Validation:** Code review against architecture DB Session Provider table. Covered by TASK-009 integration tests.
+
+---
+
+### TASK-006: Add type annotations to get_vehicle_by_id (FA-002)
+
+- **Priority:** Low
+- **Depends on:** TASK-001
+- **Blocked by:** None
+- **FR/NFR trace:** DR-007, FA-002
+- **Description:** In `app/api/api.py`, update the signature of `get_vehicle_by_id` to include:
+  - Parameter annotation: `db: Session` (import `Session` from `sqlalchemy.orm` if not already imported)
+  - Return annotation: `-> Optional[Vehicle]` (import `Optional` from `typing` if not already imported)
+
+  Before (line 6):
+  ```python
+  def get_vehicle_by_id(vehicle_id: int, db):
+  ```
+  After:
+  ```python
+  from typing import Optional
+  from sqlalchemy.orm import Session
+
+  def get_vehicle_by_id(vehicle_id: int, db: Session) -> Optional[Vehicle]:
+  ```
+- **Expected output:** `app/api/api.py` updated with complete type annotations on `get_vehicle_by_id`.
+- **Validation:** Function signature visible in code review. Covered by TASK-009 test run (no regression).
+
+---
+
+### TASK-007: Replace payload.dict() with payload.model_dump() (FA-003)
+
+- **Priority:** Low
+- **Depends on:** TASK-001
+- **Blocked by:** None
+- **FR/NFR trace:** DR-008, FA-003
+- **Description:** In `app/main.py` line 39, replace the deprecated Pydantic v1 method call with the Pydantic v2 equivalent:
+
+  Before:
+  ```python
+  payload = payload.dict()
+  ```
+  After:
+  ```python
+  payload = payload.model_dump()
+  ```
+
+  This is in the `/answer` route (`create_answer`), not in the vehicle route, but it lives in the same module and will generate `PydanticDeprecatedSince20` warnings once Pydantic v2 is installed via TASK-001.
+- **Expected output:** `app/main.py` line 39 updated to `payload.model_dump()`.
+- **Validation:** No `PydanticDeprecatedSince20` warnings during the TASK-009 test run. No regression on the vehicle endpoint.
+
+---
+
+### TASK-008: Update test docstring NFR-001 → AC-003 (FA-004)
+
+- **Priority:** Low
+- **Depends on:** TASK-001
+- **Blocked by:** None
+- **FR/NFR trace:** DR-009, FA-004, AC-003
+- **Description:** In `test/test_vehicle.py`, update the docstring of `test_get_vehicle_content_type` to replace the undefined `NFR-001` reference with the now-formal `AC-003` identifier.
+
+  Before (line 75):
+  ```python
+  """NFR-001 / AC-003: response Content-Type is application/json."""
+  ```
+  After:
+  ```python
+  """AC-003: response Content-Type is application/json."""
+  ```
+- **Expected output:** `test/test_vehicle.py` docstring updated; traceability reference is correct.
+- **Validation:** Docstring visible in code review. No regression in TASK-009 test run.
+
+---
+
+### TASK-009: Run the full test suite and confirm all tests pass
+
+- **Priority:** High
+- **Depends on:** TASK-001, TASK-002, TASK-003, TASK-004, TASK-005, TASK-006, TASK-007, TASK-008
+- **Blocked by:** None
+- **FR/NFR trace:** FR-001, AC-001, AC-002, AC-003
+- **Description:** From the project root, run:
+  ```
+  pytest test/test_vehicle.py -v
+  ```
+  All three tests must pass:
+  - `test_get_vehicle_by_id_success` — verifies FR-001 / AC-001 (all six attributes, no `id`)
+  - `test_get_vehicle_by_id_not_found` — verifies AC-002 (HTTP 404 + correct body)
+  - `test_get_vehicle_content_type` — verifies AC-003 (Content-Type: application/json)
+
+  If any test fails, diagnose and fix the root cause before proceeding. Do not mark this task complete until the output shows `3 passed`.
+- **Expected output:** `pytest` output showing `3 passed, 0 failed, 0 errors`.
+- **Validation:** Green test suite output. This is the final gate before the Review Agent (Step 6).
+
+---
+
+## Parallelization Opportunities
+
+TASK-001 must complete first. Once it is done, **TASK-002 through TASK-008 are fully independent of each other** and can be executed in parallel (or in any order) by the Implementation Agent. TASK-009 depends on all seven and must run last.
+
+```
+TASK-001 (blocker)
+     │
+     ├── TASK-002  ─┐
+     ├── TASK-003  ─┤
+     ├── TASK-004  ─┤
+     ├── TASK-005  ─┼──→  TASK-009 (final gate)
+     ├── TASK-006  ─┤
+     ├── TASK-007  ─┤
+     └── TASK-008  ─┘
+```
+
+Recommended execution order if running serially: TASK-001 → TASK-006 → TASK-007 → TASK-008 → TASK-002 → TASK-003 → TASK-004 → TASK-005 → TASK-009 (code changes first, then verification, then tests).
+
+---
+
+## Risks
+
+| ID | Risk | Likelihood | Impact | Mitigation |
+|---|---|---|---|---|
+| RI-001 | Installing FastAPI 0.115.0 may pull a transitively incompatible version of a sub-dependency (e.g. `starlette`, `anyio`) that breaks `from starlette.testclient import TestClient`. | Low | Medium | If import errors appear after TASK-001, inspect `pip install -r requirements.txt` output for conflicting sub-dependency pins and add explicit pins as needed. |
+| RI-002 | SQLAlchemy 1.4.x plus Python 3.14 may emit deprecation warnings (SQLAlchemy 1.4 is the legacy series). These are warnings only and will not fail the tests, but they could obscure other output. | Medium | Low | Acceptable for MVP. If noise is excessive, add `-W ignore::DeprecationWarning` to the pytest invocation. Upgrading to SQLAlchemy 2.x is a future story. |
+| RI-003 | No seeding mechanism is in scope (A-001). Running the app against a fresh PostgreSQL database will return 404 for every vehicle ID until the `vehicles` table is populated externally. | Low | Medium | Document this clearly in deployment notes. The test suite uses an in-memory SQLite fixture and is unaffected. |
+
+---
+
+## Open Questions
+
+| ID | Question | Owner | Priority | Carried From |
+|---|---|---|---|---|
+| OQ-002 | Is there an Alembic migration or a seeding script for the `vehicles` table, or must it be created and populated manually before the application is run in production? No migration tooling was found in the working tree. | Product / DevOps | Medium | `artifacts/architecture.md` OQ-002 |
+| OQ-003 | Should the `id` field ever be exposed in the response (e.g., for client-side navigation)? Current design deliberately excludes it from `VehicleResponse`. | Product / Requirements Agent | Low | `artifacts/architecture.md` OQ-003 |
+
+---
+
+## Requirement Traceability Summary
+
+| Task | FR-001 | AC-001 | AC-002 | AC-003 | DR / FA Reference |
+|---|---|---|---|---|---|
+| TASK-001 | Indirect (enables all) | — | — | — | DR-001, DR-002, DR-003, FA-001 |
+| TASK-002 | Direct | Direct | Direct | Direct | — |
+| TASK-003 | Direct | — | — | — | — |
+| TASK-004 | Direct | Direct | — | — | — |
+| TASK-005 | Indirect | — | — | — | DD-002 |
+| TASK-006 | Indirect | — | — | — | DR-007, FA-002 |
+| TASK-007 | Indirect | — | — | — | DR-008, FA-003 |
+| TASK-008 | — | — | — | Direct | DR-009, FA-004 |
+| TASK-009 | Direct | Direct | Direct | Direct | All |
+
+
+================================================================================
+SECTION 6 — VERIFICATION REPORT
+File: artifacts/verification-report.md
+================================================================================
+# Verification Report — Car Portal: Get Vehicle Details
+
+**Prepared by:** Verify Agent (Step 7 of 8)
+**Date:** 2026-09-24
+**Status:** PASS — all gates satisfied
+
+---
+
+## 1. Test Suite Results
+
+**Command run:**
+```
+python -m pytest test/test_vehicle.py -v
+```
+
+**Full output:**
+```
+============================= test session starts =============================
+platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0 -- python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\AakashSingh\OneDrive - EPAM\Documents\workspace\carportal-app-capstone
+plugins: anyio-4.15.1
+collecting ... collected 3 items
+
+test/test_vehicle.py::test_get_vehicle_by_id_success PASSED              [ 33%]
+test/test_vehicle.py::test_get_vehicle_by_id_not_found PASSED            [ 66%]
+test/test_vehicle.py::test_get_vehicle_content_type PASSED               [100%]
+
+============================== warnings summary ===============================
+test\test_vehicle.py:5
+  StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+
+  DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+
+test/test_vehicle.py::test_get_vehicle_by_id_success
+  SAWarning: Dialect sqlite+pysqlite does *not* support Decimal objects natively, and SQLAlchemy must convert from floating point ...
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 3 passed, 3 warnings in 0.53s ========================
+```
+
+**Summary:** 3 passed, 0 failed, 0 errors, 3 warnings (non-blocking; see Section 5).
+
+---
+
+## 2. Requirement Coverage Table
+
+| AC | Requirement Text | Test Function | Result |
+|---|---|---|---|
+| AC-001 (FR-001) | Valid ID returns all 6 attributes: make, model, year, price, transmission, fuel_type — no `id` field | `test_get_vehicle_by_id_success` | PASS |
+| AC-002 (FR-001) | Missing ID returns HTTP 404 with body `{"detail": "Vehicle not found"}` | `test_get_vehicle_by_id_not_found` | PASS |
+| AC-003 (FR-001) | Response Content-Type is `application/json` | `test_get_vehicle_content_type` | PASS |
+
+All three acceptance criteria are covered by dedicated test functions. Coverage is 100%.
+
+---
+
+## 3. Content Quality Check — `artifacts/requirements.md`
+
+| Criterion | Check | Result |
+|---|---|---|
+| **Completeness — FR-001 present** | FR-001 table row present with correct requirement text | PASS |
+| **Completeness — AC-001 present** | AC-001 defined with "(FR-001)" trace notation | PASS |
+| **Completeness — AC-002 present** | AC-002 defined (added by Design Review Agent per DD-003) | PASS |
+| **Completeness — AC-003 present** | AC-003 defined (added by Design Review Agent per DD-003) | PASS |
+| **Accuracy — AC-001 all 6 attributes** | Lists make, model, year, price, transmission, fuel_type — exact match | PASS |
+| **Accuracy — AC-002 exact 404 body** | States `{"detail": "Vehicle not found"}` verbatim | PASS |
+| **Accuracy — AC-003 correct content-type** | States `application/json` | PASS |
+| **Traceability — FR-001 to userstory.md** | Traceability table row: `FR-001 → userstory.md row FR-001 + AC bullet 1` | PASS |
+| **Traceability — AC-001 to FR-001** | "(FR-001)" in heading + traceability table row present | PASS |
+| **Traceability — AC-002 to FR-001 + design-review.md** | "(FR-001)" in heading; table row: `AC-002 → design-review.md DR-004 / DD-003` | PASS |
+| **Traceability — AC-003 to FR-001 + design-review.md** | "(FR-001)" in heading; table row: `AC-003 → design-review.md DR-009 / DD-003` | PASS |
+| **Formatting — Markdown tables** | FR table and Traceability table use correct Markdown pipe syntax | PASS |
+| **Formatting — section headers** | All sections use `##` headers; ACs use `**AC-NNN (FR-NNN):**` bold notation | PASS |
+| **Out-of-scope section present** | Section "Out of Scope" present with 7 explicit exclusions | PASS |
+| **Out-of-scope consistent with implementation** | Error handling limited to AC-002 (404) in scope; all other CRUD ops, auth, NFRs excluded — consistent with single GET endpoint delivered | PASS |
+
+All 15 content quality criteria: PASS.
+
+---
+
+## 4. Implementation File Spot-Check
+
+A code review of each implementation file confirms conformance with the approved design:
+
+| File | Check | Result |
+|---|---|---|
+| `requirements.txt` | 7 entries with correct modern pins per DD-001/DD-002 (fastapi 0.115.0, pydantic>=2, uvicorn>=0.24, sqlalchemy>=1.4,<2, pytest>=7, requests>=2.28, psycopg2-binary) | PASS |
+| `app/main.py` | `GET /vehicles/{vehicle_id}` with `response_model=VehicleResponse`, `Depends(get_db)`, 404 raise on None | PASS |
+| `app/api/api.py` | `get_vehicle_by_id(vehicle_id: int, db: Session) -> Optional[Vehicle]` — full type annotations (FA-002); correct ORM query | PASS |
+| `app/db/models.py` | `Vehicle` ORM with 7 columns including `id` PK; `VehicleResponse` with exactly 6 fields, no `id`, `ConfigDict(from_attributes=True)` (Pydantic v2) | PASS |
+| `app/db/database.py` | `DATABASE_URL` from env with SQLite default; `check_same_thread` guard; `get_db()` with `finally` close; `from sqlalchemy.orm import declarative_base` | PASS |
+| `app/main.py` line 39 | `payload.model_dump()` (FA-003 — deprecated `.dict()` replaced) | PASS |
+| `test/test_vehicle.py` docstring | `"""AC-003: response Content-Type is application/json."""` (FA-004 — `NFR-001` reference removed) | PASS |
+
+---
+
+## 5. Open Gaps and Deferred Items
+
+### Warnings (non-blocking)
+
+| Warning | Classification | Action |
+|---|---|---|
+| `StarletteDeprecationWarning`: `starlette.testclient` with httpx deprecated; use `httpx2` | Low — test-only; does not affect production code | Deferred: upgrade `httpx` → `httpx2` in a future story |
+| `DeprecationWarning`: `anyio.abc.BlockingPortal` alias deprecated | Low — internal anyio detail | Deferred: resolves when anyio is upgraded |
+| `SAWarning`: SQLite does not support Decimal natively; SQLAlchemy converts from float | Low — test-only (production uses PostgreSQL with native Decimal support); accepted as A-003 in design review | No action; `pytest.approx` in test handles float tolerance correctly |
+
+None of the warnings indicate a correctness defect or block the PR gate.
+
+### Carried Open Questions
+
+| ID | Question | Status |
+|---|---|---|
+| OQ-002 | Alembic migration / seeding script for `vehicles` table in production | Open — out of scope for this story |
+| OQ-003 | Should `vehicle_id` be exposed in the response? | Open — product decision deferred |
+
+---
+
+## 6. Final Verification Outcome
+
+| Gate | Result |
+|---|---|
+| Test suite: 3 passed, 0 failed | PASS |
+| AC-001 covered by tests | PASS |
+| AC-002 covered by tests | PASS |
+| AC-003 covered by tests | PASS |
+| `requirements.md` completeness (all ACs present) | PASS |
+| `requirements.md` accuracy (exact texts correct) | PASS |
+| `requirements.md` traceability (FR-001 → userstory; ACs → FR-001) | PASS |
+| `requirements.md` formatting and out-of-scope | PASS |
+
+**Final outcome: PASS**
+
+The implementation is ready to proceed to the PR Agent (Step 8). No blockers identified. Test evidence above may be quoted directly in the PR description.
+
+
+================================================================================
+SECTION 7 — CHANGELOG
+File: artifacts/CHANGELOG.md
+================================================================================
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+---
+
+## [Unreleased]
+
+### Added
+- GET /vehicles/{vehicle_id} endpoint returns all six vehicle attributes (make, model, year, price, transmission, fuel_type) — FR-001
+- HTTP 404 response with {"detail": "Vehicle not found"} for missing vehicle IDs — AC-002
+- Content-Type: application/json response header — AC-003
+
+### Changed
+- Updated requirements.txt to Python 3.14-compatible dependency pins: fastapi==0.115.0, pydantic>=2.0.0,<3.0.0, sqlalchemy>=1.4.0,<2.0.0, uvicorn>=0.24.0, pytest>=7.0.0, requests>=2.28.0 — DD-001, DD-002
+- Added type annotations to get_vehicle_by_id() — DR-007
+- Replaced deprecated payload.dict() with payload.model_dump() — DR-008
+- Updated test docstring traceability reference NFR-001 → AC-003 — DR-009
+
+
+================================================================================
+SECTION 8 — IMPLEMENTATION SOURCE FILES
+================================================================================
+--------------------------------------------------------------------------------
+FILE: requirements.txt
+--------------------------------------------------------------------------------
+fastapi==0.115.0
+pydantic>=2.0.0,<3.0.0
+uvicorn>=0.24.0
+sqlalchemy>=1.4.0,<2.0.0
+pytest>=7.0.0
+requests>=2.28.0
+psycopg2-binary
+
+
+--------------------------------------------------------------------------------
+FILE: app/api/api.py
+--------------------------------------------------------------------------------
+import json
+from typing import Optional
+
+from sqlalchemy.orm import Session
+
+from app.db.models import Vehicle
+
+
+def get_vehicle_by_id(vehicle_id: int, db: Session) -> Optional[Vehicle]:
+    return db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()
+
+
+def read_user():
+    with open('data/users.json') as stream:
+        users = json.load(stream)
+
+    return users
+
+
+def read_questions(position: int):
+    with open('data/questions.json') as stream:
+        questions = json.load(stream)
+
+    for question in questions:
+        if question['position'] == position:
+            return question
+
+
+def read_alternatives(question_id: int):
+    alternatives_question = []
+    with open('data/alternatives.json') as stream:
+        alternatives = json.load(stream)
+
+    for alternative in alternatives:
+        if alternative['question_id'] == question_id:
+            alternatives_question.append(alternative)
+
+    return alternatives_question
+
+
+def create_answer(payload):
+    answers = []
+    result = []
+
+    with open('data/alternatives.json') as stream:
+        alternatives = json.load(stream)
+
+    for question in payload['answers']:
+        for alternative in alternatives:
+            if alternative['question_id'] == question['question_id']:
+                answers.append(alternative['alternative'])
+                break
+
+    with open('data/cars.json') as stream:
+        cars = json.load(stream)
+
+    for car in cars:
+        if answers[0] in car.values() and answers[1] in car.values() and answers[2] in car.values():
+            result.append(car)
+
+    return result
+
+
+def read_result(user_id: int):
+    user_result = []
+
+    with open('data/results.json') as stream:
+        results = json.load(stream)
+
+    with open('data/users.json') as stream:
+        users = json.load(stream)
+
+    with open('data/cars.json') as stream:
+        cars = json.load(stream)
+
+    for result in results:
+        if result['user_id'] == user_id:
+            for user in users:
+                if user['id'] == result['user_id']:
+                    user_result.append({'user': user})
+                    break
+
+        for car_id in result['cars']:
+            for car in cars:
+                if car_id == car['id']:
+                    user_result.append(car)
+
+    return user_result
+
+
+--------------------------------------------------------------------------------
+FILE: app/main.py
+--------------------------------------------------------------------------------
+from fastapi import FastAPI, HTTPException, Depends
+from sqlalchemy.orm import Session
+from starlette.responses import Response
+
+from app.db.database import get_db
+from app.db.models import UserAnswer, VehicleResponse
+from app.api import api
+
+app = FastAPI()
+
+
+@app.get("/")
+def root():
+    return {"message": "Fast API in Python"}
+
+
+@app.get("/user")
+def read_user():
+    return api.read_user()
+
+
+@app.get("/question/{position}", status_code=200)
+def read_questions(position: int, response: Response):
+    question = api.read_questions(position)
+
+    if not question:
+        raise HTTPException(status_code=400, detail="Error")
+
+    return question
+
+
+@app.get("/alternatives/{question_id}")
+def read_alternatives(question_id: int):
+    return api.read_alternatives(question_id)
+
+
+@app.post("/answer", status_code=201)
+def create_answer(payload: UserAnswer):
+    payload = payload.model_dump()
+
+    return api.create_answer(payload)
+
+
+@app.get("/result/{user_id}")
+def read_result(user_id: int):
+    return api.read_result(user_id)
+
+
+@app.get("/vehicles/{vehicle_id}", response_model=VehicleResponse)
+def get_vehicle(vehicle_id: int, db: Session = Depends(get_db)):
+    vehicle = api.get_vehicle_by_id(vehicle_id, db)
+    if vehicle is None:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    return vehicle
+
+
+--------------------------------------------------------------------------------
+FILE: app/db/models.py
+--------------------------------------------------------------------------------
+from pydantic import BaseModel, ConfigDict
+from typing import List
+
+from sqlalchemy import Column, Integer, String, Numeric
+
+from app.db.database import Base
+
+
+class Vehicle(Base):
+    __tablename__ = "vehicles"
+
+    id = Column(Integer, primary_key=True, index=True)
+    make = Column(String(100), nullable=False)
+    model = Column(String(100), nullable=False)
+    year = Column(Integer, nullable=False)
+    price = Column(Numeric(12, 2), nullable=False)
+    transmission = Column(String(50), nullable=False)
+    fuel_type = Column(String(50), nullable=False)
+
+
+class VehicleResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    make: str
+    model: str
+    year: int
+    price: float
+    transmission: str
+    fuel_type: str
+
+
+class Answer(BaseModel):
+    question_id: int
+    alternative_id: int
+
+
+class UserAnswer(BaseModel):
+    user_id: int
+    answers: List[Answer]
+
+
+--------------------------------------------------------------------------------
+FILE: app/db/database.py
+--------------------------------------------------------------------------------
+import os
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./carportal.db")
+
+connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+
+engine = create_engine(DATABASE_URL, connect_args=connect_args)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+--------------------------------------------------------------------------------
+FILE: test/test_vehicle.py
+--------------------------------------------------------------------------------
+import pytest
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
+from starlette.testclient import TestClient
+
+from app.main import app
+from app.db.database import get_db, Base
+from app.db.models import Vehicle
+
+SQLALCHEMY_TEST_URL = "sqlite:///:memory:"
+
+engine = create_engine(
+    SQLALCHEMY_TEST_URL,
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool,
+)
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+def override_get_db():
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+app.dependency_overrides[get_db] = override_get_db
+client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def setup_database():
+    Base.metadata.create_all(bind=engine)
+    db = TestingSessionLocal()
+    vehicle = Vehicle(
+        id=1,
+        make="Toyota",
+        model="Corolla",
+        year=2022,
+        price=24999.99,
+        transmission="automatic",
+        fuel_type="petrol",
+    )
+    db.add(vehicle)
+    db.commit()
+    db.close()
+    yield
+    Base.metadata.drop_all(bind=engine)
+
+
+def test_get_vehicle_by_id_success():
+    """FR-001 / AC-001: all six attributes returned for a valid vehicle ID."""
+    response = client.get("/vehicles/1")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["make"] == "Toyota"
+    assert data["model"] == "Corolla"
+    assert data["year"] == 2022
+    assert data["price"] == pytest.approx(24999.99)
+    assert data["transmission"] == "automatic"
+    assert data["fuel_type"] == "petrol"
+    assert "id" not in data
+
+
+def test_get_vehicle_by_id_not_found():
+    """FR-001 / AC-002: 404 returned when vehicle ID does not exist."""
+    response = client.get("/vehicles/9999")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Vehicle not found"}
+
+
+def test_get_vehicle_content_type():
+    """AC-003: response Content-Type is application/json."""
+    response = client.get("/vehicles/1")
+    assert response.headers["content-type"].startswith("application/json")
+
+
+================================================================================
+END OF EXECUTION LOG
+================================================================================

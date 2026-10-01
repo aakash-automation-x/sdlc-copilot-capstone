@@ -395,6 +395,82 @@ The API will then be available at:
 http://127.0.0.1:8001
 ```
 
+### How to use
+
+1. Start the server:
+python -m uvicorn app.main:app --reload
+1. Open http://localhost:8000/ui in your browser
+2. Enter a Vehicle ID (1–10) and click Search — the card shows 5 attributes: Make, Model, Year, Fuel Type, Transmission pulled from GET /vehicles/{vehicle_id}.
+
+
+## Build
+
+Generate a deployable artifact using the included build scripts. Run from the repository root.
+
+**Windows (PowerShell):**
+```powershell
+.\build.ps1
+```
+
+**Linux / macOS / Git Bash:**
+```bash
+bash build.sh
+```
+
+The script will:
+1. Create a `.venv` virtual environment (reused on subsequent runs)
+2. Install all dependencies from `requirements.txt`
+3. Run `pytest test/test_vehicle.py -v` — build fails here if any test fails
+4. Package `app/`, `static/`, `data/`, `requirements.txt`, and `README.md` into a timestamped zip
+
+Output artifact: `dist/carportal-<YYYYMMDD-HHmmss>.zip`
+
+---
+
+## Deploy (Local)
+
+### Option A — Run directly from source
+
+```powershell
+# 1. Create and activate virtual environment
+python -m venv .venv
+.venv\Scripts\Activate.ps1          # Windows
+# source .venv/bin/activate          # Linux / macOS
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Start the server (DB is auto-created and seeded on first run)
+uvicorn app.main:app --reload
+```
+
+### Option B — Deploy from build artifact
+
+```bash
+# 1. Extract the artifact
+unzip dist/carportal-<timestamp>.zip -d carportal/
+cd carportal/
+
+# 2. Install dependencies
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+
+# 3. Start the server
+uvicorn app.main:app --reload
+```
+
+### Access the application
+
+| URL | Description |
+|-----|-------------|
+| http://127.0.0.1:8000/ui | Vehicle search UI (IDs 1–10) |
+| http://127.0.0.1:8000/vehicles/{id} | Vehicle REST endpoint |
+| http://127.0.0.1:8000/docs | Swagger API docs |
+
+Stop the server with `Ctrl+C`. The SQLite database (`carportal.db`) persists between runs.
+
+---
+
 ## License
 
 No license file or licensing information is currently included in the repository.

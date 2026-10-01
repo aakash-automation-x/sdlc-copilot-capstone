@@ -1,5 +1,32 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
+
+from sqlalchemy import Column, Integer, String, Numeric
+
+from app.db.database import Base
+
+
+class Vehicle(Base):
+    __tablename__ = "vehicles"
+
+    id = Column(Integer, primary_key=True, index=True)
+    make = Column(String(100), nullable=False)
+    model = Column(String(100), nullable=False)
+    year = Column(Integer, nullable=False)
+    price = Column(Numeric(12, 2), nullable=False)
+    transmission = Column(String(50), nullable=False)
+    fuel_type = Column(String(50), nullable=False)
+
+
+class VehicleResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    make: str
+    model: str
+    year: int
+    price: float
+    transmission: str
+    fuel_type: str
 
 
 class Answer(BaseModel):
@@ -12,7 +39,7 @@ class UserAnswer(BaseModel):
     answers: List[Answer]
 
 
-class Vehicle(BaseModel):
+class VehicleDetail(BaseModel):
     """Vehicle details schema - FR-001, AC-001"""
     id: int
     name: str
@@ -24,19 +51,3 @@ class Vehicle(BaseModel):
     fuel_type: str
     category: str
     link: Optional[str] = None
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "id": 1,
-                "name": "Volkswagen ID.3",
-                "make": "Volkswagen",
-                "model": "ID.3",
-                "year": 2024,
-                "price": "low",
-                "transmission": "automatic",
-                "fuel_type": "electric",
-                "category": "compact",
-                "link": ""
-            }
-        }
