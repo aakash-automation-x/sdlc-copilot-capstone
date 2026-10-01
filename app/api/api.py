@@ -128,19 +128,3 @@ def read_result(user_id: int):
                     user_result.append(car)
 
     return user_result
-
-
-def read_vehicle(vehicle_id: int) -> Optional[Dict]:
-    """Retrieve vehicle details by vehicle ID. Maps to FR-001, AC-001."""
-    try:
-        with open('data/cars.json') as stream:
-            cars = json.load(stream)
-            
-        for car in cars:
-            if car['id'] == vehicle_id:
-                return car
-                
-        return None
-    except Exception as e:
-        print(f"Error reading cars.json: {e}")
-        return None
