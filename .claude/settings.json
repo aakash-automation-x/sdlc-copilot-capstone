@@ -1,0 +1,81 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pytest*)",
+      "Bash(python*)",
+      "Bash(pip*)",
+      "Bash(uvicorn*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git branch*)",
+      "Bash(git checkout*)",
+      "Bash(gh pr*)",
+      "Bash(gh issue*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "attribution": {
+    "commit": "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+    "pr": "\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
+  },
+  "includeGitInstructions": false,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f '.claude/hooks/scripts/hook_pre_edit.py' ] && python '.claude/hooks/scripts/hook_pre_edit.py'"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f '.claude/hooks/scripts/hook_scan_secrets.py' ] && python '.claude/hooks/scripts/hook_scan_secrets.py'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f '.claude/hooks/scripts/hook_autoformat.py' ] && python '.claude/hooks/scripts/hook_autoformat.py'"
+          },
+          {
+            "type": "command",
+            "command": "[ -f '.claude/hooks/scripts/hook_post_edit.py' ] && python '.claude/hooks/scripts/hook_post_edit.py'"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f '.claude/hooks/scripts/hook_log_commands.py' ] && python '.claude/hooks/scripts/hook_log_commands.py'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f '.claude/hooks/scripts/hook_test_summary.py' ] && python '.claude/hooks/scripts/hook_test_summary.py'"
+          }
+        ]
+      }
+    ]
+  }
+}

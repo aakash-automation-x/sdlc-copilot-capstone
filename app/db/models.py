@@ -1,5 +1,9 @@
-from pydantic import BaseModel
-from typing import List, Optional
+from typing import List
+
+from sqlalchemy import Column, Integer, String
+from pydantic import BaseModel, ConfigDict
+
+from app.db.database import Base  # FR-001, DR-004
 
 
 class Answer(BaseModel):
@@ -12,31 +16,29 @@ class UserAnswer(BaseModel):
     answers: List[Answer]
 
 
-class Vehicle(BaseModel):
-    """Vehicle details schema - FR-001, AC-001"""
-    id: int
-    name: str
-    make: Optional[str] = None
-    model: Optional[str] = None
-    year: Optional[int] = None
-    price: str
-    transmission: Optional[str] = None
-    fuel_type: str
-    category: str
-    link: Optional[str] = None
+class Vehicle(Base):
+    """SQLAlchemy ORM model for the vehicles table - FR-001, DR-003."""
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "id": 1,
-                "name": "Volkswagen ID.3",
-                "make": "Volkswagen",
-                "model": "ID.3",
-                "year": 2024,
-                "price": "low",
-                "transmission": "automatic",
-                "fuel_type": "electric",
-                "category": "compact",
-                "link": ""
-            }
-        }
+    __tablename__ = "vehicles"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    make = Column(String, nullable=False)
+    model = Column(String, nullable=False)
+    year = Column(Integer, nullable=False)
+    price = Column(String, nullable=False)
+    transmission = Column(String, nullable=False)
+    fuel_type = Column(String, nullable=False)
+
+
+class VehicleResponse(BaseModel):
+    """Pydantic v2 response schema for the Vehicle ORM model - FR-001, DR-002."""
+
+    id: int
+    make: str
+    model: str
+    year: int
+    price: str
+    transmission: str
+    fuel_type: str
+
+    model_config = ConfigDict(from_attributes=True)

@@ -19,21 +19,21 @@ The project currently uses JSON files as its data store and is intended for loca
 
 ## Technology Stack
 
-- Python 3
-- FastAPI `0.46.0`
-- Uvicorn `0.11.1`
-- Pydantic, provided through the FastAPI dependency
-- Pytest `5.3.2`
-- Requests `2.22.0`
-- JSON files for application data
+- Python 3.8+
+- FastAPI `>=0.100.0`
+- Uvicorn `>=0.20.0`
+- Pydantic v2
+- SQLAlchemy `>=2.0.0`
+- Pytest `>=7.4.0`
+- httpx (Starlette TestClient transport)
+- SQLite (default) / PostgreSQL (via `DATABASE_URL` env var)
+- JSON files for legacy data endpoints
 
 ## Requirements
 
-- Python 3
+- Python 3.8 or higher (`VehicleResponse | None` syntax requires 3.10+ — Python 3.10 recommended)
 - `pip`
 - A virtual-environment tool recommended for local development
-
-The exact Python 3 minor version is not pinned in the repository.
 
 ## Installation
 
@@ -134,11 +134,11 @@ Example:
 GET /question/1
 ```
 
-If no question is found, the endpoint returns HTTP `400` with:
+If no question is found, the endpoint returns HTTP `404` with:
 
 ```json
 {
-  "detail": "Error"
+  "detail": "Not found"
 }
 ```
 
@@ -209,6 +209,36 @@ Example:
 GET /result/1
 ```
 
+### Retrieve a vehicle by ID
+
+```http
+GET /vehicles/{vehicle_id}
+```
+
+Returns a single vehicle record from the SQLite database by its primary key.
+
+Example:
+
+```http
+GET /vehicles/1
+```
+
+Example response:
+
+```json
+{
+  "id": 1,
+  "make": "Toyota",
+  "model": "Corolla",
+  "year": 2022,
+  "price": "25000",
+  "transmission": "automatic",
+  "fuel_type": "petrol"
+}
+```
+
+Returns HTTP `404` if the vehicle ID does not exist.
+
 ## Data Files
 
 Application data is stored in the `data/` directory:
@@ -222,7 +252,9 @@ Application data is stored in the `data/` directory:
 | `cars.json` | Vehicle catalog and vehicle attributes |
 | `results.json` | Saved user-to-vehicle results |
 
-The application reads these files directly at runtime using Python's built-in `json` module. There is no SQL or NoSQL database configured.
+The legacy endpoints (`/user`, `/question`, `/alternatives`, `/answer`, `/result`) read these files directly at runtime using Python's built-in `json` module.
+
+The `/vehicles/{vehicle_id}` endpoint uses a SQLite database (`carportal.db`) managed by SQLAlchemy. Override the database with the `DATABASE_URL` environment variable for PostgreSQL in production.
 
 Run the application from the repository root so the relative paths under `data/` resolve correctly.
 
@@ -236,6 +268,7 @@ Run the application from the repository root so the relative paths under `data/`
 │   ├── api/
 │   │   └── api.py
 │   └── db/
+│       ├── database.py
 │       └── models.py
 ├── data/
 │   ├── alternatives.json
@@ -246,7 +279,8 @@ Run the application from the repository root so the relative paths under `data/`
 │   └── users.json
 ├── test/
 │   ├── __init__.py
-│   └── test.py
+│   ├── test.py
+│   └── test_vehicle.py
 ├── requirements.txt
 ├── README.md
 └── userstory.md
@@ -278,12 +312,18 @@ Contains the application logic for:
 - Generating vehicle recommendations
 - Reading saved results
 
+#### `app/db/database.py`
+
+Creates the SQLAlchemy engine, `SessionLocal` factory, and `Base` declarative base. Exposes the `get_db` FastAPI dependency used by ORM-backed routes.
+
 #### `app/db/models.py`
 
-Defines the Pydantic request models:
+Defines all data models:
 
-- `Answer`
-- `UserAnswer`
+- `Answer` (Pydantic) — a single question-answer pair
+- `UserAnswer` (Pydantic) — `POST /answer` request body
+- `Vehicle` (SQLAlchemy ORM) — maps to the `vehicles` table in SQLite
+- `VehicleResponse` (Pydantic) — response schema for `GET /vehicles/{vehicle_id}`
 
 #### `test/test.py`
 
@@ -320,8 +360,8 @@ The application uses synchronous functions and synchronous file I/O. Routes are 
 The current implementation is intentionally simple:
 
 - There is no authentication or authorization.
-- There is no database layer.
-- There is no environment-based configuration.
+- The `/vehicles` endpoint uses SQLite via SQLAlchemy; legacy endpoints use JSON files directly.
+- There is no environment-based configuration beyond `DATABASE_URL`.
 - There is no custom middleware.
 - There are no custom exception handlers.
 - There are no API version prefixes.

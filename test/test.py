@@ -1,6 +1,5 @@
 from starlette.testclient import TestClient
 from app.main import app
-import json
 
 client = TestClient(app)
 
@@ -25,8 +24,8 @@ def test_read_question():
 
 def test_read_question_invalid():
     response = client.get('/question/0')
-    assert response.status_code == 400
-    assert response.json() == {'detail': 'Error'}
+    assert response.status_code == 404
+    assert response.json() == {'detail': 'Not found'}
 
 
 def test_read_alternatives():
@@ -36,11 +35,16 @@ def test_read_alternatives():
 
 
 def test_create_answer():
-    body = {"user_id": 1, "answers": [{"question_id": 1, "alternative_id": 2}, {
-        "question_id": 2, "alternative_id": 2}, {"question_id": 2, "alternative_id": 2}]}
-    body = json.dumps(body)
-    response = client.post('/answer', data=body)
+    # Selects compact category (alt 1), low price (alt 5), electric fuel (alt 8)
+    # Expected match: Volkswagen ID.3 and Vauxhall e-Corsa
+    body = {"user_id": 1, "answers": [
+        {"question_id": 1, "alternative_id": 1},
+        {"question_id": 2, "alternative_id": 5},
+        {"question_id": 3, "alternative_id": 8}
+    ]}
+    response = client.post('/answer', json=body)
     assert response.status_code == 201
+    assert len(response.json()) > 0
 
 
 def test_read_result():
