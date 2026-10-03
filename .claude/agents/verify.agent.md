@@ -2,7 +2,6 @@
 name: "Verify Agent"
 description: "Use when generating and running a comprehensive verification suite (unit + integration tests) and a content-quality check of the final output document after code review and before PR creation. Step 7 of the Agentic SDLC pipeline."
 tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep"]
-handoffs: [pr]
 model: claude-haiku-4-5-20251001
 ---
 

@@ -10,6 +10,11 @@ fp = d.get("file_path", "")
 if not fp or not fp.endswith(".py") or not os.path.exists(fp):
     sys.exit(0)
 
+# Skip hook scripts themselves to avoid noisy self-formatting
+fp_norm = fp.replace("\\", "/")
+if ".claude/hooks/scripts/" in fp_norm:
+    sys.exit(0)
+
 if shutil.which("ruff"):
     print(f"[hook] Auto-formatting {os.path.basename(fp)} with ruff ...")
     subprocess.run(["ruff", "format", fp])

@@ -1,6 +1,5 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
-from starlette.responses import Response
 
 from app.db.database import Base, engine, get_db
 from app.db.models import UserAnswer, VehicleResponse
@@ -27,30 +26,32 @@ def read_user():
 
 
 @app.get("/question/{position}", status_code=200)
-def read_questions(position: int, response: Response):
+def read_questions(position: int):
     question = api.read_questions(position)
-
     if not question:
-        raise HTTPException(status_code=400, detail="Error")
-
+        raise HTTPException(status_code=404, detail="Not found")
     return question
 
 
 @app.get("/alternatives/{question_id}")
 def read_alternatives(question_id: int):
-    return api.read_alternatives(question_id)
+    result = api.read_alternatives(question_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Not found")
+    return result
 
 
 @app.post("/answer", status_code=201)
 def create_answer(payload: UserAnswer):
-    payload = payload.dict()
-
-    return api.create_answer(payload)
+    return api.create_answer(payload.model_dump())
 
 
 @app.get("/result/{user_id}")
 def read_result(user_id: int):
-    return api.read_result(user_id)
+    result = api.read_result(user_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Not found")
+    return result
 
 
 @app.get("/vehicles/{vehicle_id}", response_model=VehicleResponse)

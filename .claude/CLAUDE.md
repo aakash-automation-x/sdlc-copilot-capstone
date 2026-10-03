@@ -62,6 +62,23 @@ Each step produces a human review gate (Approve / Request Changes / Pause) befor
 
 ---
 
+## Hooks
+
+Automated checks live in `.claude/hooks/scripts/` and are wired in `.claude/settings.json`. They run via bash on every relevant tool event.
+
+| Event | Matcher | Script | What it does |
+|-------|---------|--------|--------------|
+| `PreToolUse` | `Edit\|Write` | `hook_pre_edit.py` | Blocks edits to existing test files |
+| `PreToolUse` | `Bash(git commit*)` | `hook_scan_secrets.py` | Blocks commit if staged diff contains credential keywords (`password=`, `api_key=`, etc.) |
+| `PostToolUse` | `Edit\|Write` | `hook_autoformat.py` | Auto-formats `.py` files with `ruff format` or `black` (skips if neither installed) |
+| `PostToolUse` | `Edit\|Write` | `hook_post_edit.py` | Validates `data/*.json`, lints with ruff, runs `pytest test/test_vehicle.py` after any `app/` edit |
+| `PostToolUse` | `Bash` | `hook_log_commands.py` | Appends every executed command to `logs/commands.log` |
+| `Stop` | *(session end)* | `hook_test_summary.py` | Runs `pytest -q` and prints pass/fail summary |
+
+Hook commands use `[ -f '<script>' ] && python '<script>'` so they skip gracefully on a fresh clone before `git pull`.
+
+---
+
 ## Application architecture
 
 The app is a **three-layer FastAPI monolith**:
@@ -83,9 +100,13 @@ data/               ← JSON flat-file store (users, questions, alternatives, ca
 
 `app/db/database.py:get_db` yields a `SessionLocal` instance → injected into the route handler in `app/main.py` via `Depends(get_db)` → passed down to `app/api/api.py:get_vehicle_by_id`.
 
-### models.py naming collision
+### `models.py` class inventory
 
-`app/db/models.py` defines **two classes named `Vehicle`**: an SQLAlchemy ORM model (with `__tablename__ = "vehicles"`) and a Pydantic `BaseModel`. The Pydantic one is defined second and shadows the ORM model at module scope. The ORM `Vehicle` is used by the working `GET /vehicles/{vehicle_id}` endpoint via an import that resolves before the shadowing definition. Be careful when modifying this file.
+`app/db/models.py` defines four classes:
+- `Answer` (Pydantic) — a single question-answer pair used in `UserAnswer`.
+- `UserAnswer` (Pydantic) — the `POST /answer` request body.
+- `Vehicle` (SQLAlchemy ORM) — `__tablename__ = "vehicles"`, fields: `id`, `make`, `model`, `year`, `price`, `transmission`, `fuel_type`.
+- `VehicleResponse` (Pydantic) — response schema for `GET /vehicles/{vehicle_id}`, built from the ORM model via `from_attributes=True`.
 
 ### Test isolation for ORM tests
 
@@ -103,14 +124,9 @@ Do not add a second route for `read_vehicle` without first deciding which data s
 
 `create_answer` in `api.py` matches vehicles by checking whether all three selected answer strings appear *anywhere* in `car.values()` — a loose value-set intersection, not a keyed field lookup. Changing alternative labels in `alternatives.json` must stay in sync with the exact string values in `data/cars.json` or recommendations will silently return zero results.
 
-### `VehicleResponse` vs second `Vehicle` Pydantic class
+### Dead code: `read_vehicle` note removed
 
-`app/db/models.py` defines three vehicle-related classes:
-- `Vehicle` (SQLAlchemy ORM, defined first) — `__tablename__ = "vehicles"`, fields: `id`, `make`, `model`, `year`, `price`, `transmission`, `fuel_type`.
-- `VehicleResponse` (Pydantic) — response schema for `GET /vehicles/{vehicle_id}`, built from the ORM model via `from_attributes=True`. This is the live response schema.
-- `Vehicle` (Pydantic, defined second, shadows the ORM class) — fields `name`, `category`, `link` that match the JSON flat-file schema in `data/cars.json`. Not wired to any route — effectively unused.
-
-When modifying `models.py`, the live response schema is `VehicleResponse`, not the shadowing Pydantic `Vehicle`.
+The `read_vehicle` JSON-based function was removed. The sole vehicle lookup path is `get_vehicle_by_id(vehicle_id, db)` — ORM-based, wired to `GET /vehicles/{vehicle_id}`.
 
 ---
 
