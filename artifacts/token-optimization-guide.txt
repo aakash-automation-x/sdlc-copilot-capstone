@@ -1,0 +1,224 @@
+================================================================================
+TOKEN OPTIMIZATION GUIDE — AGENTIC SDLC PIPELINE
+Project: Car Portal (carportal-app-capstone)
+Generated: 2026-09-24
+================================================================================
+
+BASELINE TOKEN USAGE (this session)
+----------------------------------------------------------------------
+  Input tokens (non-cached):               427
+  Cache write (new context created):  2,151,422
+  Cache read (reused context):       23,261,712
+  Output tokens:                        228,384
+  Effective input total:             25,413,561
+  Grand total:                       ~25.6 million tokens
+  Estimated cost:                          ~$18.48
+  Model:                             claude-sonnet-4-6
+  API calls:                               276 turns
+
+Root cause: Each agent step re-read the entire accumulated context from all
+prior steps. By Step 8, the PR Agent was re-reading Mermaid diagrams from Step
+2 that it had no use for. The 23M cache-read tokens are the dominant cost.
+
+================================================================================
+APPROACH 1 — SCOPED CONTEXT PER AGENT  [Biggest Win]
+================================================================================
+
+Problem:
+  Every agent received all prior artifacts. The PR Agent re-read architecture
+  diagrams, design findings, and the full implementation plan — none of which
+  it needed to write a PR description.
+
+Fix:
+  Define a context_artifacts list in each agent's frontmatter. The orchestrator
+  loads only those files into the agent prompt.
+
+  Agent            Needs (scoped)                         Currently gets
+  -----------------------------------------------------------------------
+  Requirements     userstory.md                           userstory.md
+  Architect        requirements.md                        requirements.md
+  Design Review    architecture.md + requirements.md      + orchestration log
+  Planner          design-review.md (decisions only)      full architecture +
+                   + architecture.md (tech section only)  full design-review
+  Implementation   impl-plan.md + relevant source files   everything above too
+  Review           requirements.md + changed files diff   all prior artifacts
+  Verify           requirements.md + test files           all 6 prior artifacts
+  PR               verification-report.md + CHANGELOG.md  all 7 prior artifacts
+                   + git diff
+
+Example frontmatter addition in each .claude/agents/*.agent.md:
+  ---
+  name: PR Agent
+  context_artifacts:
+    - artifacts/verification-report.md
+    - artifacts/CHANGELOG.md
+  ---
+
+Estimated reduction: 50-70% of cache reads.
+
+================================================================================
+APPROACH 2 — ARTIFACT DIGESTS FOR DOWNSTREAM STEPS  [Low Effort]
+================================================================================
+
+Problem:
+  architecture.md is ~230 lines including Mermaid sequence and component
+  diagrams. Downstream agents (Planner, Implementation) need only the decisions
+  table and tech stack — not the diagrams.
+
+Fix:
+  Each agent appends a *_digest.md alongside its full artifact — a compact
+  20-30 line summary of decisions and handoff items. Downstream agents consume
+  the digest, not the full file.
+
+  artifacts/
+    architecture.md          <- full document (for humans / PR)
+    architecture_digest.md   <- 25-line decisions summary (for agents)
+
+  Example digest content (architecture_digest.md):
+    ## Key Decisions
+    - DD-001: FastAPI 0.115.0 + Pydantic v2
+    - DD-002: SQLAlchemy >=1.4,<2.0
+    - DD-003: AC-002 (404) and AC-003 (JSON) added to requirements
+    ## Tech Stack
+    - Python >=3.10, FastAPI 0.115.0, SQLAlchemy 1.4.x, pytest >=7
+    ## Layers
+    - Router: app/main.py
+    - Service: app/api/api.py
+    - Data: app/db/models.py + app/db/database.py
+
+Pairs well with Approach 1: scoped context + digests cuts agent input to
+roughly 10% of current size.
+
+================================================================================
+APPROACH 3 — MODEL ROUTING (HAIKU FOR SIMPLER STEPS)  [Low Effort]
+================================================================================
+
+Problem:
+  All 276 API calls used claude-sonnet-4-6. Several steps are low-judgment
+  formatting or template-fill tasks that do not require Sonnet's capability.
+
+Fix:
+  Route each step to the appropriate model tier:
+
+  Step  Agent           Model          Reason
+  -----------------------------------------------------------------------
+  1     Requirements    Sonnet         Needs interpretation judgment
+  2     Architect       Sonnet/Opus    Core design decisions
+  3     Design Review   Sonnet/Opus    High-judgment risk assessment
+  4     Planner         Haiku          Reformatting architecture into tasks
+  5     Implementation  Sonnet         Code changes require precision
+  6     Review          Sonnet         Code review judgment
+  7     Verify          Haiku          Run tests + fill structured checklist
+  8     PR              Haiku          Template-fill from existing artifacts
+
+  Haiku pricing vs Sonnet: ~20x cheaper per token.
+  Steps 4, 7, 8 account for roughly 30% of total output tokens.
+
+Implementation:
+  In orchestrator.agent.md, pass the model parameter when invoking agents:
+    Agent({ subagent_type: "Planner Agent", model: "haiku", prompt: ... })
+    Agent({ subagent_type: "Verify Agent",  model: "haiku", prompt: ... })
+    Agent({ subagent_type: "PR Agent",      model: "haiku", prompt: ... })
+
+================================================================================
+APPROACH 4 — REDUCE TOOL-CALL CHURN WITHIN AGENTS  [Medium Effort]
+================================================================================
+
+Problem:
+  Each Read, Write, Bash tool call adds a round-trip API turn. The session had
+  276 total turns for 8 logical steps — roughly 34 turns per agent on average.
+  Many of these were sequential single-file reads that could be parallelised.
+
+Fixes:
+  a) Batch file reads: issue all Read calls in a single parallel tool call
+     block at the start of each agent, not one at a time.
+
+  b) Write once: draft the full artifact in one LLM turn, then write it with
+     a single Write call. Avoid partial writes followed by Edit passes.
+
+  c) Inline small files: files under ~50 lines can be embedded directly in the
+     agent prompt rather than requiring a Read call at runtime.
+
+  d) Single Bash call for multi-step shell work: combine pip install, pytest
+     run, and git diff into one Bash invocation instead of three separate turns.
+
+Target: reduce to 10-15 turns per agent (from ~34 average), saving ~50% of
+API call overhead and associated cache re-reads.
+
+================================================================================
+APPROACH 5 — INCREMENTAL HANDOFFS, NOT CUMULATIVE CONTEXT  [Medium Effort]
+================================================================================
+
+Problem:
+  The orchestrator uses a "snowball" pattern — context accumulates across all
+  steps. By Step 8, every prior artifact is in the window even though the PR
+  Agent only needed the final verification result and changelog.
+
+Fix:
+  Replace full-context passthrough with a structured handoff object. The
+  orchestrator maintains a small YAML/JSON block that carries only what the
+  next step needs:
+
+  # handoff.yaml (written by orchestrator after each step)
+  ---
+  completed_step: 4
+  next_step: 5
+  decisions:
+    - "FastAPI 0.115.0, Pydantic v2 (DD-001)"
+    - "SQLAlchemy >=1.4,<2 (DD-002)"
+  tasks:
+    - id: TASK-001
+      description: Update requirements.txt
+      priority: High
+      depends_on: []
+    - id: TASK-002
+      description: Verify router layer
+      priority: Medium
+      depends_on: [TASK-001]
+  blocking_risks: []
+  artifacts_to_read:
+    - artifacts/impl-plan.md
+
+  Each agent reads handoff.yaml + its scoped artifacts only — not the full
+  session history accumulated since Step 1.
+
+  This approach prevents the snowball entirely and keeps context O(1) relative
+  to pipeline length rather than O(n).
+
+================================================================================
+COMBINED EXPECTED IMPACT
+================================================================================
+
+  Approach                         Est. Token Reduction  Effort
+  -----------------------------------------------------------------------
+  1. Scoped context per agent      50-70% of cache reads  Medium
+  2. Artifact digests              20-30% on top of #1    Low
+  3. Model routing (Haiku)         ~60% cost on steps 4/7/8  Low
+  4. Reduce tool-call churn        ~50% of turn count     Medium
+  5. Incremental handoffs          Prevents snowball      Medium
+
+  Combined realistic target:
+    Token reduction:  40-60% fewer total tokens
+    Cost reduction:   ~$18 -> ~$7-11 per full pipeline run
+    Speed impact:     Neutral to faster (fewer turns = lower latency)
+    Quality impact:   None on steps 2, 3, 5, 6 (stay on Sonnet)
+                      Minimal on steps 4, 7, 8 (Haiku handles template tasks)
+
+================================================================================
+QUICK-WIN IMPLEMENTATION ORDER
+================================================================================
+
+  Priority  Action                                        Effort  Impact
+  -----------------------------------------------------------------------
+  1         Add context_artifacts to agent frontmatter   1 hour  High
+  2         Add model: haiku to steps 4, 7, 8 in         30 min  Medium
+            orchestrator.agent.md
+  3         Create digest templates for architecture      2 hours Medium
+            and design-review artifacts
+  4         Batch Read calls in agent prompts             2 hours Medium
+  5         Add handoff.yaml pattern to orchestrator      4 hours High
+            (eliminates snowball permanently)
+
+================================================================================
+END OF TOKEN OPTIMIZATION GUIDE
+================================================================================
