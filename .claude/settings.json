@@ -21,5 +21,61 @@
     "commit": "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
     "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
   },
-  "includeGitInstructions": false
+  "includeGitInstructions": false,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cmd /c if exist scripts\\hook_pre_edit.py python scripts\\hook_pre_edit.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cmd /c if exist scripts\\hook_scan_secrets.py python scripts\\hook_scan_secrets.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cmd /c if exist scripts\\hook_autoformat.py python scripts\\hook_autoformat.py"
+          },
+          {
+            "type": "command",
+            "command": "cmd /c if exist scripts\\hook_post_edit.py python scripts\\hook_post_edit.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cmd /c if exist scripts\\hook_log_commands.py python scripts\\hook_log_commands.py"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cmd /c if exist scripts\\hook_test_summary.py python scripts\\hook_test_summary.py"
+          }
+        ]
+      }
+    ]
+  }
 }
