@@ -170,6 +170,7 @@ No explicit invocation needed — they're part of every relevant editing session
 | `.claude/rules/code-quality.md` | `**/*.py`, `**/*.{js,ts,jsx,tsx}` | OWASP-safe, DRY, clear-code standards |
 | `.claude/rules/tests.md` | `test/**`, `tests/**`, `**/__tests__/**`, `**/*.test.py`, `**/*.spec.py` | coverage, structure, determinism |
 | `.claude/rules/sdlc-artifacts.md` | `artifacts/**/*.md` | document structure, traceability, writing quality |
+| `.claude/rules/fastapi-backend.md` | `app/**/*.py` | FastAPI route/service/persistence boundaries |
 
 ### `.claude/` layout
 

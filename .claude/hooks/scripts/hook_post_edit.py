@@ -40,4 +40,5 @@ if fp.endswith(".py") and "app/" in fp_norm and os.path.exists(fp):
     )
     if result.returncode != 0:
         print(f"[hook] Tests FAILED after edit to {basename} — review output above.")
+        sys.exit(1)
     sys.exit(0)

@@ -8,6 +8,110 @@ description: "Single entry point: Orchestrate the entire Agentic SDLC Pipeline e
 
 This is the **only prompt** you need. The orchestrator invokes all agents sequentially and manages the full pipeline.
 
+---
+
+## Execution Instructions
+
+> These are imperative directives for Claude. Follow them exactly when this command is invoked.
+
+### Phase A: Pre-Flight Check
+
+1. Verify `artifacts/` directory exists; create it if not.
+2. Check for `artifacts/ORCHESTRATION_LOG.md`:
+   - **Not found / empty:** start fresh from Step 1.
+   - **Found:** read the log, present current state, and ask the user:
+     - "Resume from Step N (last incomplete step)?"
+     - "Restart from Step 1?"
+     - "Review and modify existing artifacts?"
+3. For `status` sub-command: display the log table and stop — do not run any agent.
+4. For `restart` sub-command: clear the log and begin from Step 1.
+5. For `resume step=N`: skip Steps 1 through N-1 and begin at Step N.
+6. Initialize or update `artifacts/ORCHESTRATION_LOG.md` with a row for the starting step.
+
+### Phase B: Step Execution
+
+Invoke each step using the **Agent tool** with the exact `subagent_type` name below. Wait for completion before proceeding.
+
+| Step | subagent_type | Expected artifact |
+|------|--------------|-------------------|
+| 1 | `Requirements Agent` | `artifacts/requirements.md` |
+| 2 | `Architect Agent` | `artifacts/architecture.md` |
+| 3 | `Design Review Agent` | `artifacts/design-review.md` |
+| 4 | `Planner Agent` | `artifacts/impl-plan.md` |
+| 5 | `Implementation Agent` | source code + tests |
+| 6 | `Review Agent` | review notes / fixes applied |
+| 7 | `Verify Agent` | `artifacts/verification-report.md` |
+| 8 | `PR Agent` | Pull Request + `artifacts/CHANGELOG.md` |
+
+After each agent completes:
+
+1. **Verify** the expected artifact exists. If missing, pause the pipeline and tell the user — do not proceed automatically.
+2. **Update** `artifacts/ORCHESTRATION_LOG.md`: record step number, agent name, status, artifact path, timestamp, and reviewer notes.
+3. **Present** the review gate card (see format below).
+4. **Wait** for explicit user response — never assume approval.
+
+**Review gate card format:**
+```
+## Step X Review Gate: [Agent Name]
+
+**Artifact:** [path/to/artifact]
+
+**Summary:**
+- Key output 1
+- Key output 2
+- Key output 3
+
+**Changes from previous step:** (if applicable)
+- Item 1
+
+---
+
+What would you like to do?
+1. ✅ Approve & Proceed to Step X+1
+2. 🔄 Request Changes (provide feedback)
+3. ⏸️  Pause Pipeline
+```
+
+**Processing user responses:**
+- **Approve & Proceed:** update the log, invoke next step's agent.
+- **Request Changes:** capture the user's feedback verbatim, re-invoke the *current* step's agent passing the feedback in the prompt; loop back to output capture.
+- **Pause:** write `status: paused` and current step to the log; tell the user how to resume with `/00-orchestrator.prompt resume step=N`.
+
+### Phase C: Pipeline Completion
+
+Once Step 8 (PR Agent) is approved:
+
+1. Present a final summary table of all 8 steps (status, artifact, duration).
+2. Show the final checklist:
+   ```
+   - ✅ All artifacts present and reviewed
+   - ✅ All tests passing
+   - ✅ Code review completed
+   - ✅ Changelog updated
+   - ✅ Branch pushed (if applicable)
+   - ⚠️  PR description complete — verify before submitting
+   ```
+3. Ask: "Is the pull request ready for submission?" Confirm all review feedback has been addressed before closing.
+
+### Error Handling
+
+| Situation | Action |
+|-----------|--------|
+| Expected artifact missing after agent run | Pause; tell user; offer to retry or fix manually |
+| Agent produces no output / times out | Pause; inform user; offer to retry |
+| User feedback is unclear | Ask clarifying questions before re-running the agent |
+| `ORCHESTRATION_LOG.md` merge conflict | Preserve the most recent checkpoint; ask user to resolve |
+
+### Key Principles
+
+1. **Human-in-the-loop** — Never auto-approve any gate. Always wait for explicit user response.
+2. **State first** — Update `ORCHESTRATION_LOG.md` before invoking the next agent, not after.
+3. **Artifact gating** — Before running Step N, confirm Step N-1's artifact exists and is non-empty.
+4. **Transparent handoffs** — Tell the user which agent is being invoked and why before each `Agent` call.
+5. **Feedback fidelity** — Pass user change-request text verbatim to the re-invoked agent; document it in the log.
+
+---
+
 ## Commands
 
 ### Start the Full Pipeline
@@ -210,4 +314,3 @@ The orchestrator maintains `ORCHESTRATION_LOG.md` in your repository:
 | Restart entire pipeline | `/00-orchestrator.prompt restart` |
 | Jump to Step 5 (skip 1–4) | `/00-orchestrator.prompt resume step=5` |
 
-Follow `.claude/agents/orchestrator.agent.md` for full orchestrator logic and error handling.

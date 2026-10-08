@@ -1,6 +1,7 @@
 ---
 description: "FastAPI backend boundaries and JSON persistence conventions for route, application, and data changes."
-applyTo: "app/**/*.py"
+paths:
+  - "app/**/*.py"
 ---
 
 # FastAPI Backend Boundaries
@@ -32,4 +33,4 @@ Applies to backend production code under `app/`.
 
 - Preserve the existing `main.py` -> `api.py` -> `data/` flow for scoped changes.
 - For endpoint behavior changes, update focused tests under `test/` and run `pytest test/test.py` from the repository root.
-- Read [code-quality.instructions.md](code-quality.instructions.md) for shared security and error-handling rules and [tests.instructions.md](tests.instructions.md) for test expectations.
+- Read [code-quality.md](code-quality.md) for shared security and error-handling rules and [tests.md](tests.md) for test expectations.
