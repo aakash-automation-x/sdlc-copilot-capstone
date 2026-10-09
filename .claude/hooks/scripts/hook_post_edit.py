@@ -35,7 +35,7 @@ if fp.endswith(".py") and "app/" in fp_norm and os.path.exists(fp):
 if fp.endswith(".py") and "app/" in fp_norm and os.path.exists(fp):
     print(f"[hook] Running gated tests after edit to {basename} ...")
     result = subprocess.run(
-        ["pytest", "test/test_vehicle.py", "-q", "--tb=short"],
+        [sys.executable, "-m", "pytest", "test/test_vehicle.py", "-q", "--tb=short"],
         capture_output=False,
     )
     if result.returncode != 0:
