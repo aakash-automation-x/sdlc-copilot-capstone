@@ -6,14 +6,14 @@
   },
 
   {
-    "id": 2,
-    "position": 3,
-    "question": "How much money do you intend to invest in your new car?"
-  },
-
-  {
     "id": 3,
     "position": 2,
     "question": "What type of fuel is your ideal car?"
+  },
+
+  {
+    "id": 2,
+    "position": 3,
+    "question": "How much money do you intend to invest in your new car?"
   }
 ]

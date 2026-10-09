@@ -1,0 +1,316 @@
+---
+description: "Single entry point: Orchestrate the entire Agentic SDLC Pipeline end-to-end with human review gates at each step."
+---
+
+# /00-orchestrator.prompt
+
+**SDLC Pipeline Orchestrator** — The single entry point to run the entire 8-step Agentic SDLC Pipeline end-to-end with human-in-the-loop approval gates.
+
+This is the **only prompt** you need. The orchestrator invokes all agents sequentially and manages the full pipeline.
+
+---
+
+## Execution Instructions
+
+> These are imperative directives for Claude. Follow them exactly when this command is invoked.
+
+### Phase A: Pre-Flight Check
+
+1. Verify `artifacts/` directory exists; create it if not.
+2. Check for `artifacts/ORCHESTRATION_LOG.md`:
+   - **Not found / empty:** start fresh from Step 1.
+   - **Found:** read the log, present current state, and ask the user:
+     - "Resume from Step N (last incomplete step)?"
+     - "Restart from Step 1?"
+     - "Review and modify existing artifacts?"
+3. For `status` sub-command: display the log table and stop — do not run any agent.
+4. For `restart` sub-command: clear the log and begin from Step 1.
+5. For `resume step=N`: skip Steps 1 through N-1 and begin at Step N.
+6. Initialize or update `artifacts/ORCHESTRATION_LOG.md` with a row for the starting step.
+
+### Phase B: Step Execution
+
+Invoke each step using the **Agent tool** with the exact `subagent_type` name below. Wait for completion before proceeding.
+
+| Step | subagent_type | Expected artifact |
+|------|--------------|-------------------|
+| 1 | `Requirements Agent` | `artifacts/requirements.md` |
+| 2 | `Architect Agent` | `artifacts/architecture.md` |
+| 3 | `Design Review Agent` | `artifacts/design-review.md` |
+| 4 | `Planner Agent` | `artifacts/impl-plan.md` |
+| 5 | `Implementation Agent` | source code + tests |
+| 6 | `Review Agent` | review notes / fixes applied |
+| 7 | `Verify Agent` | `artifacts/verification-report.md` |
+| 8 | `PR Agent` | Pull Request + `artifacts/CHANGELOG.md` |
+
+After each agent completes:
+
+1. **Verify** the expected artifact exists. If missing, pause the pipeline and tell the user — do not proceed automatically.
+2. **Update** `artifacts/ORCHESTRATION_LOG.md`: record step number, agent name, status, artifact path, timestamp, and reviewer notes.
+3. **Present** the review gate card (see format below).
+4. **Wait** for explicit user response — never assume approval.
+
+**Review gate card format:**
+```
+## Step X Review Gate: [Agent Name]
+
+**Artifact:** [path/to/artifact]
+
+**Summary:**
+- Key output 1
+- Key output 2
+- Key output 3
+
+**Changes from previous step:** (if applicable)
+- Item 1
+
+---
+
+What would you like to do?
+1. ✅ Approve & Proceed to Step X+1
+2. 🔄 Request Changes (provide feedback)
+3. ⏸️  Pause Pipeline
+```
+
+**Processing user responses:**
+- **Approve & Proceed:** update the log, invoke next step's agent.
+- **Request Changes:** capture the user's feedback verbatim, re-invoke the *current* step's agent passing the feedback in the prompt; loop back to output capture.
+- **Pause:** write `status: paused` and current step to the log; tell the user how to resume with `/00-orchestrator.prompt resume step=N`.
+
+### Phase C: Pipeline Completion
+
+Once Step 8 (PR Agent) is approved:
+
+1. Present a final summary table of all 8 steps (status, artifact, duration).
+2. Show the final checklist:
+   ```
+   - ✅ All artifacts present and reviewed
+   - ✅ All tests passing
+   - ✅ Code review completed
+   - ✅ Changelog updated
+   - ✅ Branch pushed (if applicable)
+   - ⚠️  PR description complete — verify before submitting
+   ```
+3. Ask: "Is the pull request ready for submission?" Confirm all review feedback has been addressed before closing.
+
+### Error Handling
+
+| Situation | Action |
+|-----------|--------|
+| Expected artifact missing after agent run | Pause; tell user; offer to retry or fix manually |
+| Agent produces no output / times out | Pause; inform user; offer to retry |
+| User feedback is unclear | Ask clarifying questions before re-running the agent |
+| `ORCHESTRATION_LOG.md` merge conflict | Preserve the most recent checkpoint; ask user to resolve |
+
+### Key Principles
+
+1. **Human-in-the-loop** — Never auto-approve any gate. Always wait for explicit user response.
+2. **State first** — Update `ORCHESTRATION_LOG.md` before invoking the next agent, not after.
+3. **Artifact gating** — Before running Step N, confirm Step N-1's artifact exists and is non-empty.
+4. **Transparent handoffs** — Tell the user which agent is being invoked and why before each `Agent` call.
+5. **Feedback fidelity** — Pass user change-request text verbatim to the re-invoked agent; document it in the log.
+
+---
+
+## Commands
+
+### Start the Full Pipeline
+```
+/00-orchestrator.prompt
+```
+Runs all 8 steps in sequence:
+1. Requirements Agent → `artifacts/requirements.md`
+2. Architect Agent → `artifacts/architecture.md`
+3. Design Review Agent → `artifacts/design-review.md`
+4. Planner Agent → `artifacts/impl-plan.md`
+5. Implementation Agent → code + tests
+6. Review Agent → review notes / fixes
+7. Verify Agent → test suite + content check
+8. PR Agent → Pull Request + `artifacts/CHANGELOG.md`
+
+After each step completes:
+- ✅ Approve & Proceed to next step
+- 🔄 Request Changes (provide feedback to re-run current step)
+- ⏸️ Pause Pipeline (save state, resume later)
+
+### Resume at a Specific Step
+```
+/00-orchestrator.prompt resume step=<N>
+```
+Resume the pipeline at step N (1–8), skipping earlier completed steps.
+
+Example:
+```
+/00-orchestrator.prompt resume step=5
+```
+Resumes at Step 5 (Implementation Agent), assuming Steps 1–4 have been completed and approved.
+
+### Check Pipeline Status
+```
+/00-orchestrator.prompt status
+```
+Display the current `ORCHESTRATION_LOG.md`:
+- Completed steps and their artifacts
+- Current step status
+- Option to continue, jump, or restart
+
+### Restart the Pipeline
+```
+/00-orchestrator.prompt restart
+```
+Clear the orchestration log and begin from Step 1 (Requirements).
+
+## What Happens at Each Review Gate
+
+After each agent completes:
+
+1. **Summary Card** shows:
+   - Step name and agent
+   - Key artifacts produced
+   - 2–3 bullet summary of outputs
+   - Changes from the previous step (if any)
+
+2. **Your Decision:**
+   - ✅ **Approve & Proceed** — Move to next step automatically
+   - 🔄 **Request Changes** — Provide specific feedback; agent re-runs with your input
+   - ⏸️ **Pause** — Pipeline pauses; resume anytime with `/00-orchestrator.prompt resume step=<N>`
+
+3. **State is Tracked** in `ORCHESTRATION_LOG.md`:
+   - Step number, agent name, completion status
+   - Artifact path and timestamp
+   - Reviewer notes / approval decision
+
+## Example Flow
+
+```
+User: /00-orchestrator.prompt
+
+Orchestrator: Pre-flight checks...
+✅ Repository structure valid
+ℹ️ No existing artifacts found
+→ Starting fresh from Step 1
+
+---
+
+Orchestrator: Invoking Requirements Agent (subagent_type: "Requirements Agent")...
+[Requirements Agent runs...]
+✅ artifacts/requirements.md created
+
+---
+
+## Step 1 Review Gate: Requirements Agent
+
+**Artifact:** artifacts/requirements.md
+
+**Summary:**
+- 1 functional requirement: FR-001 (retrieve vehicle by ID)
+- 1 acceptance criterion: AC-001 (Given a valid vehicle_id, When GET /vehicles/{vehicle_id}, Then the vehicle record is returned)
+- Out-of-scope items documented
+
+**Status:** ✅ Complete
+
+---
+
+**What would you like to do?**
+1. ✅ Approve & Proceed to Step 2
+2. 🔄 Request Changes
+3. ⏸️ Pause Pipeline
+
+User: ✅ Approve & Proceed
+
+Orchestrator: Updating ORCHESTRATION_LOG.md...
+→ Moving to Step 2 (Architect Agent)
+
+Orchestrator: Invoking Architect Agent (subagent_type: "Architect Agent")...
+[Architect Agent runs...]
+✅ artifacts/architecture.md created
+
+---
+
+## Step 2 Review Gate: Architect Agent
+
+**Artifact:** artifacts/architecture.md
+
+**Summary:**
+- Microservices architecture (4 primary services)
+- PostgreSQL for persistent data, Redis for caching
+- REST API with OpenAPI 3.0 spec
+
+**Changes from Step 1:**
+- Architecture supports all 12 functional requirements
+- Addresses all 8 non-functional requirements
+
+**Status:** ✅ Complete
+
+---
+
+**What would you like to do?**
+1. ✅ Approve & Proceed to Step 3
+2. 🔄 Request Changes
+3. ⏸️ Pause Pipeline
+
+User: 🔄 Request Changes
+
+User: We need to add an event bus for async messaging. Can you include that?
+
+Orchestrator: Captured feedback. Re-invoking Architect Agent with your input...
+[Architect Agent runs with event bus requirement...]
+✅ artifacts/architecture.md updated
+
+---
+
+## Step 2 Review Gate (Revised): Architect Agent
+
+**Artifact:** artifacts/architecture.md
+
+**Summary:**
+- Microservices architecture (4 primary services)
+- PostgreSQL for persistent data, Redis for caching
+- **Event bus (Apache Kafka) for async messaging between services**
+- REST API with OpenAPI 3.0 spec
+
+**Changes from previous revision:**
+- Added Kafka cluster for event streaming
+- Updated deployment topology
+- Added event flow diagrams
+
+**Status:** ✅ Complete
+
+---
+
+**What would you like to do?**
+1. ✅ Approve & Proceed to Step 3
+2. 🔄 Request Changes
+3. ⏸️ Pause Pipeline
+
+User: ✅ Approve & Proceed
+
+Orchestrator: Updating ORCHESTRATION_LOG.md...
+→ Moving to Step 3 (Design Review Agent)
+[... and so on ...]
+```
+
+## Pipeline State Tracking
+
+The orchestrator maintains `ORCHESTRATION_LOG.md` in your repository:
+
+```markdown
+# SDLC Pipeline Orchestration Log
+
+| Step | Agent | Status | Artifact | Started | Completed | Notes |
+|------|-------|--------|----------|---------|-----------|-------|
+| 1 | Requirements | ✅ Approved | artifacts/requirements.md | 2024-01-15 10:00 | 2024-01-15 10:15 | No changes requested |
+| 2 | Architect | ✅ Approved | artifacts/architecture.md | 2024-01-15 10:16 | 2024-01-15 10:45 | Requested: add event bus; 1 revision |
+| 3 | Design Review | in-progress | artifacts/design-review.md | 2024-01-15 10:46 | — | — |
+```
+
+## When to Use Each Command
+
+| Goal | Command |
+|------|---------|
+| Start fresh pipeline | `/00-orchestrator.prompt` |
+| Resume after pause | `/00-orchestrator.prompt resume step=3` |
+| Check current progress | `/00-orchestrator.prompt status` |
+| Restart entire pipeline | `/00-orchestrator.prompt restart` |
+| Jump to Step 5 (skip 1–4) | `/00-orchestrator.prompt resume step=5` |
+
