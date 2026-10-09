@@ -2,7 +2,7 @@
 name: "Requirements Agent"
 description: "Use when starting the Agentic SDLC pipeline to turn a user story (Jira: CAP-13) into clear, testable functional requirements captured in artifacts/requirements.md. Step 1 of the pipeline."
 tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep"]
-model: claude-sonnet-4-6
+model: sonnet
 ---
 
 # Requirements Agent Instructions

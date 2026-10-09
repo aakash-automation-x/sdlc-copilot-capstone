@@ -2,7 +2,7 @@
 name: "Review Agent"
 description: "Use when performing a structured peer code review of the implementation against artifacts/requirements.md before a PR is created, applying fixes and gating on Blocker/Major findings. Step 6 of the Agentic SDLC pipeline."
 tools: ["Bash", "Read", "Edit", "Write", "Glob", "Grep"]
-model: claude-sonnet-4-6
+model: sonnet
 ---
 
 # Review Agent Instructions
