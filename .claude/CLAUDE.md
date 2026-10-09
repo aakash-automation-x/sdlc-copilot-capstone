@@ -112,21 +112,18 @@ data/               ← JSON flat-file store (users, questions, alternatives, ca
 
 `test/test_vehicle.py` overrides `get_db` with an in-memory SQLite engine and uses an `autouse` fixture to create/drop the schema and seed one `Vehicle` row per test. This is the pattern to follow for any new ORM-backed endpoint tests.
 
-### Dead code: `read_vehicle` in `api.py`
-
-`app/api/api.py` contains two vehicle lookup functions:
-- `get_vehicle_by_id(vehicle_id, db)` — ORM-based, wired to `GET /vehicles/{vehicle_id}` in `main.py`. This is the live path.
-- `read_vehicle(vehicle_id)` — JSON flat-file lookup from `data/cars.json`, not registered in any route. Dead code.
-
-Do not add a second route for `read_vehicle` without first deciding which data source owns vehicle retrieval.
-
 ### Vehicle recommendation matching
 
 `create_answer` in `api.py` matches vehicles by checking whether all three selected answer strings appear *anywhere* in `car.values()` — a loose value-set intersection, not a keyed field lookup. Changing alternative labels in `alternatives.json` must stay in sync with the exact string values in `data/cars.json` or recommendations will silently return zero results.
 
-### Dead code: `read_vehicle` note removed
+### Unused data file
 
-The `read_vehicle` JSON-based function was removed. The sole vehicle lookup path is `get_vehicle_by_id(vehicle_id, db)` — ORM-based, wired to `GET /vehicles/{vehicle_id}`.
+`data/answers.json` exists on disk but is not read by any endpoint. No route uses it.
+
+### Which test file to extend
+
+- New tests for JSON-file endpoints (`/user`, `/question`, `/alternatives`, `/answer`, `/result`) go in `test/test.py`.
+- New tests for ORM-backed endpoints follow the `test/test_vehicle.py` pattern: in-memory SQLite engine + `dependency_overrides[get_db]` + `autouse` fixture for schema setup/teardown.
 
 ---
 
@@ -177,6 +174,7 @@ No explicit invocation needed — they're part of every relevant editing session
 ```
 .claude/
 ├── CLAUDE.md                          ← this file
+├── settings.json                      ← hook wiring and permission configuration
 ├── agents/                            ← one agent per pipeline step
 ├── skills/                            ← one skill per agent (workflow detail)
 │   ├── read-user-story/
@@ -192,7 +190,10 @@ No explicit invocation needed — they're part of every relevant editing session
 ├── rules/                             ← path-scoped rules (auto-applied by Claude Code)
 │   ├── code-quality.md
 │   ├── tests.md
-│   └── sdlc-artifacts.md
+│   ├── sdlc-artifacts.md
+│   └── fastapi-backend.md
+├── hooks/
+│   └── scripts/                       ← hook scripts (see Hooks section above)
 └── commands/
     └── 00-orchestrator.prompt.md      ← pipeline entry point
 ```

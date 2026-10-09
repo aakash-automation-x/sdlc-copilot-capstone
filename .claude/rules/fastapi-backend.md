@@ -24,7 +24,7 @@ Applies to backend production code under `app/`.
 
 ## Persistence boundary: `data/*.json`
 
-- The current persistence mechanism is JSON files under `data/`; do not introduce PostgreSQL, SQLAlchemy, or another database without an approved architecture or implementation task.
+- JSON files under `data/` back the legacy endpoints. SQLAlchemy (via `app/db/`) is already used for the `/vehicles/{vehicle_id}` endpoint — extending ORM usage to new endpoints is fine. Introducing a new database technology (Redis, MongoDB, etc.) requires an approved architecture task.
 - Resolve paths consistently from the repository root or an explicit project path. Do not add new working-directory assumptions.
 - Treat loaded JSON as untrusted data: validate required fields before indexing or matching, and handle empty collections safely.
 - Avoid mutating source data in memory unless the operation explicitly requires persistence and the write behavior is specified.
